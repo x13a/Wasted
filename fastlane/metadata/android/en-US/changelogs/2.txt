@@ -1,0 +1,1 @@
+downgrade gradle for F-Droid
