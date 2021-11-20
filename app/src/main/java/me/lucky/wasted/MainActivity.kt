@@ -35,26 +35,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        init()
         setup()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         update()
     }
 
     private fun update() {
-        if (prefs.code == "") prefs.code = makeCode()
-        binding.apply {
-            code.text = prefs.code
-            toggle.isChecked = prefs.isServiceEnabled
-        }
         if (!isAdminActive() && prefs.isServiceEnabled)
             Toast.makeText(
                 this,
                 getString(R.string.service_unavailable_toast),
                 Toast.LENGTH_SHORT,
             ).show()
+    }
+
+    private fun init() {
+        if (prefs.code == "") prefs.code = makeCode()
+        binding.apply {
+            code.text = prefs.code
+            toggle.isChecked = prefs.isServiceEnabled
+        }
     }
 
     private fun setup() {
