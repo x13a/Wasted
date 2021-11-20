@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Wasted</string>
+    <string name="description">Turn on Wasted to wipe data on panic trigger. The app will listen for broadcast message with authentication code.</string>
+    <string name="device_admin_label">Wasted</string>
+    <string name="device_admin_description">Allow Wasted to wipe data on panic trigger</string>
+    <string name="service_unavailable_toast">Admin service unavailable</string>
+</resources>
