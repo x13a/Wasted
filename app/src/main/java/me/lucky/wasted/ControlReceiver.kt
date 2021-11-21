@@ -16,7 +16,9 @@ class ControlReceiver : BroadcastReceiver() {
             !prefs.isServiceEnabled ||
             intent.getStringExtra("code") != prefs.code) return
         val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-        dpm.lockNow()
-        dpm.wipeData(0)
+        try {
+            dpm.lockNow()
+            dpm.wipeData(0)
+        } catch (exc: SecurityException) {}
     }
 }
