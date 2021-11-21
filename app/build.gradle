@@ -10,8 +10,8 @@ android {
         applicationId "me.lucky.wasted"
         minSdk 25
         targetSdk 31
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 4
+        versionName "1.0.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -45,4 +45,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation 'androidx.preference:preference-ktx:1.1.1'
+    implementation 'androidx.security:security-crypto:1.0.0'
 }
