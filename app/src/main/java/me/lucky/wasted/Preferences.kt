@@ -14,7 +14,7 @@ class Preferences(ctx: Context) {
 
     private val mk = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
     private val prefs = EncryptedSharedPreferences.create(
-        "s_shared_prefs",
+        "sec_shared_prefs",
         mk,
         ctx,
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
