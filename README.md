@@ -6,7 +6,7 @@ Lock device and wipe data on panic trigger.
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/me.lucky.wasted/)
 
-<img src="https://user-images.githubusercontent.com/53379023/142707625-1c8a90e2-3254-4660-9635-fcc55056508a.png" width="30%" height="30%">
+<img src="https://user-images.githubusercontent.com/53379023/146620711-e8675350-3634-4e45-825a-1661c8018b38.png" width="30%" height="30%">
 
 The app will listen for broadcast message with authentication code. On receive, using 
 [Device Administration API](https://developer.android.com/guide/topics/admin/device-admin), it 
