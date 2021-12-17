@@ -5,20 +5,22 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 
-class ControlReceiver : BroadcastReceiver() {
+class CodeReceiver : BroadcastReceiver() {
     companion object {
-        private const val ESCAPE = "me.lucky.wasted.action.ESCAPE"
+        private const val TRIGGER = "me.lucky.wasted.action.TRIGGER"
     }
 
     override fun onReceive(context: Context, intent: Intent) {
         val prefs by lazy { Preferences(context) }
-        if (intent.action != ESCAPE ||
-            !prefs.isServiceEnabled ||
-            intent.getStringExtra("code") != prefs.code) return
+        val code = prefs.code
+        if (!prefs.isServiceEnabled ||
+            code == "" ||
+            intent.action != TRIGGER ||
+            intent.getStringExtra("code") != code) return
         val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
         try {
             dpm.lockNow()
-            dpm.wipeData(0)
+            if (prefs.doWipe) dpm.wipeData(0)
         } catch (exc: SecurityException) {}
     }
 }

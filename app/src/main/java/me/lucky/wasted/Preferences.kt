@@ -10,6 +10,7 @@ class Preferences(ctx: Context) {
     companion object {
         private const val SERVICE_ENABLED = "service_enabled"
         private const val CODE = "code"
+        private const val DO_WIPE = "do_wipe"
     }
 
     private val mk = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
@@ -28,4 +29,8 @@ class Preferences(ctx: Context) {
     var code: String?
         get() = prefs.getString(CODE, "")
         set(value) = prefs.edit { putString(CODE, value) }
+
+    var doWipe: Boolean
+        get() = prefs.getBoolean(DO_WIPE, false)
+        set(value) = prefs.edit { putBoolean(DO_WIPE, value) }
 }

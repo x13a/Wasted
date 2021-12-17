@@ -1,1 +1,1 @@
-Wipe data on panic trigger
+Lock device and wipe data on panic trigger

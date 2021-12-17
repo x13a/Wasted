@@ -35,8 +35,22 @@
         android:id="@+id/toggle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingVertical="12dp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/wipeDataCheckBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layoutDirection="rtl"
+        android:text="@string/wipe_data_check_box"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/code" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

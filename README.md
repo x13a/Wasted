@@ -1,6 +1,6 @@
 # Wasted
 
-Wipe data on panic trigger.
+Lock device and wipe data on panic trigger.
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
@@ -17,8 +17,8 @@ locks device and runs wipe.
 Broadcast message:
 ```sh
 $ adb shell am broadcast \
-    -a me.lucky.wasted.action.ESCAPE \
-    -n me.lucky.wasted/.ControlReceiver \
+    -a me.lucky.wasted.action.TRIGGER \
+    -n me.lucky.wasted/.CodeReceiver \
     -e code "b49a6576-0c27-4f03-b96b-da53501022ba"
 ```
 

@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         if (prefs.code == "") prefs.code = makeCode()
         binding.apply {
             code.text = prefs.code
+            wipeDataCheckBox.isChecked = prefs.doWipe
             toggle.isChecked = prefs.isServiceEnabled
         }
     }
@@ -67,6 +68,9 @@ class MainActivity : AppCompatActivity() {
                 prefs.code = makeCode()
                 code.text = prefs.code
                 true
+            }
+            wipeDataCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                prefs.doWipe = isChecked
             }
             toggle.setOnCheckedChangeListener { _, isChecked ->
                 when (isChecked) {
@@ -104,7 +108,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setControlReceiverState(ctx: Context, value: Boolean) {
         ctx.packageManager.setComponentEnabledSetting(
-            ComponentName(ctx, ControlReceiver::class.java),
+            ComponentName(ctx, CodeReceiver::class.java),
             if (value) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
             PackageManager.DONT_KILL_APP,
