@@ -8,7 +8,7 @@ Lock device and wipe data on panic trigger.
 
 <img src="https://user-images.githubusercontent.com/53379023/146620711-e8675350-3634-4e45-825a-1661c8018b38.png" width="30%" height="30%">
 
-The app will listen for broadcast message with authentication code. On receive, using 
+You can use PanicKit or send broadcast message with authentication code. On trigger, using 
 [Device Administration API](https://developer.android.com/guide/topics/admin/device-admin), it 
 locks device and runs wipe.
 

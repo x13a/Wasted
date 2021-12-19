@@ -8,10 +8,10 @@ android {
 
     defaultConfig {
         applicationId "me.lucky.wasted"
-        minSdk 25
+        minSdk 23
         targetSdk 31
-        versionCode 6
-        versionName "1.0.5"
+        versionCode 7
+        versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -45,4 +45,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation 'androidx.security:security-crypto:1.0.0'
+    implementation 'info.guardianproject.panic:panic:1.0'
 }

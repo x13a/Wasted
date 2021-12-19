@@ -1,7 +1,6 @@
 package me.lucky.wasted
 
 import android.app.admin.DevicePolicyManager
-import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -15,7 +14,7 @@ import java.util.*
 
 import me.lucky.wasted.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+open class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val prefs by lazy { Preferences(this) }
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     private val requestAdminPolicy =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         when (result.resultCode) {
-            Activity.RESULT_OK -> setOn()
+            RESULT_OK -> setOn()
             else -> binding.toggle.isChecked = false
         }
     }
