@@ -20,7 +20,7 @@ class CodeReceiver : BroadcastReceiver() {
         val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
         try {
             dpm.lockNow()
-            if (prefs.doWipe) dpm.wipeData(0)
+            if (prefs.doWipe) dpm.wipeData(Utils.getWipeDataFlags())
         } catch (exc: SecurityException) {}
     }
 }

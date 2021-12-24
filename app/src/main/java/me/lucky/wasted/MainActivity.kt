@@ -17,10 +17,7 @@ open class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val prefs by lazy { Preferences(this) }
-    private val dpm by lazy {
-        getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-    }
-    private val deviceAdmin by lazy { ComponentName(this, DeviceAdminReceiver::class.java) }
+    private val admin by lazy { DeviceAdmin(this) }
 
     private val requestAdminPolicy =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -44,7 +41,7 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun update() {
-        if (!isAdminActive() && prefs.isServiceEnabled)
+        if (!admin.isActive() && prefs.isServiceEnabled)
             Toast.makeText(
                 this,
                 getString(R.string.service_unavailable_toast),
@@ -73,7 +70,7 @@ open class MainActivity : AppCompatActivity() {
             }
             toggle.setOnCheckedChangeListener { _, isChecked ->
                 when (isChecked) {
-                    true -> if (!isAdminActive()) requestAdmin() else setOn()
+                    true -> if (!admin.isActive()) requestAdmin() else setOn()
                     false -> setOff()
                 }
             }
@@ -86,14 +83,14 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun setOff() {
-        dpm.removeActiveAdmin(deviceAdmin)
+        admin.remove()
         setControlReceiverState(this, false)
         prefs.isServiceEnabled = false
     }
 
     private fun requestAdmin() {
         val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).apply {
-            putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, deviceAdmin)
+            putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, admin.deviceAdmin)
             putExtra(
                 DevicePolicyManager.EXTRA_ADD_EXPLANATION,
                 getString(R.string.device_admin_description),
@@ -103,7 +100,6 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun makeCode(): String = UUID.randomUUID().toString()
-    private fun isAdminActive(): Boolean = dpm.isAdminActive(deviceAdmin)
 
     private fun setControlReceiverState(ctx: Context, value: Boolean) {
         ctx.packageManager.setComponentEnabledSetting(

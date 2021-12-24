@@ -23,7 +23,7 @@ class PanicResponderActivity : AppCompatActivity() {
         try {
             dpm.lockNow()
             if (PanicResponder.receivedTriggerFromConnectedApp(this) &&
-                prefs.doWipe) dpm.wipeData(0)
+                prefs.doWipe) dpm.wipeData(Utils.getWipeDataFlags())
         } catch (exc: SecurityException) {}
         finish()
     }
