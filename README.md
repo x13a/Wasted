@@ -13,8 +13,6 @@ with authentication code. On trigger, using
 [Device Administration API](https://developer.android.com/guide/topics/admin/device-admin), it 
 locks device and (optionally) runs wipe.
 
-If you are looking something for computer try [wanted](https://github.com/x13a/wanted).
-
 ## Example
 
 Broadcast message:
