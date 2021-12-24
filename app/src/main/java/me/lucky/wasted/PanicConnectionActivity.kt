@@ -2,13 +2,11 @@ package me.lucky.wasted
 
 import android.content.pm.PackageManager
 import android.os.Bundle
-
 import androidx.appcompat.app.AlertDialog
 
 import info.guardianproject.panic.PanicResponder
 
 class PanicConnectionActivity : MainActivity() {
-
     private val pm by lazy { packageManager }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
-
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
@@ -19,7 +18,8 @@ open class MainActivity : AppCompatActivity() {
 
     private val prefs by lazy { Preferences(this) }
     private val dpm by lazy {
-        getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager }
+        getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+    }
     private val deviceAdmin by lazy { ComponentName(this, DeviceAdminReceiver::class.java) }
 
     private val requestAdminPolicy =

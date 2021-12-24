@@ -8,7 +8,7 @@ Lock device and wipe data on panic trigger.
 
 <img src="https://user-images.githubusercontent.com/53379023/146694310-41316fdb-b7c7-44e7-b18d-a1f4d0a7bec5.png" width="30%" height="30%">
 
-You can use [PanicKit](https://guardianproject.info/code/panickit/) or send broadcast message 
+You can use [PanicKit](https://guardianproject.info/code/panickit/), Tile or send broadcast message 
 with authentication code. On trigger, using 
 [Device Administration API](https://developer.android.com/guide/topics/admin/device-admin), it 
 locks device and runs wipe.
