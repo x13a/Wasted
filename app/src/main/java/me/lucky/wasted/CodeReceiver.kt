@@ -1,6 +1,5 @@
 package me.lucky.wasted
 
-import android.app.admin.DevicePolicyManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -17,10 +16,10 @@ class CodeReceiver : BroadcastReceiver() {
             code == "" ||
             intent.action != TRIGGER ||
             intent.getStringExtra("code") != code) return
-        val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+        val admin = DeviceAdmin(context)
         try {
-            dpm.lockNow()
-            if (prefs.doWipe) dpm.wipeData(Utils.getWipeDataFlags())
+            admin.dpm.lockNow()
+            if (prefs.doWipe) admin.wipeData()
         } catch (exc: SecurityException) {}
     }
 }

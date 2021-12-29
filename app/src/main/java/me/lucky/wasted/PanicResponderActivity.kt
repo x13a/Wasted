@@ -1,7 +1,5 @@
 package me.lucky.wasted
 
-import android.app.admin.DevicePolicyManager
-import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
@@ -10,9 +8,7 @@ import info.guardianproject.panic.PanicResponder
 
 class PanicResponderActivity : AppCompatActivity() {
     private val prefs by lazy { Preferences(this) }
-    private val dpm by lazy {
-        getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-    }
+    private val admin by lazy { DeviceAdmin(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,9 +17,9 @@ class PanicResponderActivity : AppCompatActivity() {
             return
         }
         try {
-            dpm.lockNow()
+            admin.dpm.lockNow()
             if (PanicResponder.receivedTriggerFromConnectedApp(this) &&
-                prefs.doWipe) dpm.wipeData(Utils.getWipeDataFlags())
+                prefs.doWipe) admin.wipeData()
         } catch (exc: SecurityException) {}
         finish()
     }

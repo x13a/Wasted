@@ -6,7 +6,7 @@
     <string name="service_unavailable_toast">Admin service unavailable</string>
     <string name="wipe_data_check_box">Wipe data</string>
     <string name="panic_app_dialog_title">Confirm Panic App</string>
-    <string name="panic_app_dialog_message">Are you sure that you want to allow %1$s to trigger destructive panic actions?</string>
+    <string name="panic_app_dialog_message">Are you sure that you want to allow %1$s to trigger destructive panic actions\?</string>
     <string name="panic_app_unknown_app">an unknown app</string>
     <string name="allow">Allow</string>
     <string name="cancel">Cancel</string>

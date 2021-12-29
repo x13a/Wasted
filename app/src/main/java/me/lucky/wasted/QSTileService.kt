@@ -40,7 +40,7 @@ class QSTileService : TileService() {
                 timer?.schedule(timerTask {
                     try {
                         admin.dpm.lockNow()
-                        admin.dpm.wipeData(Utils.getWipeDataFlags())
+                        admin.wipeData()
                     } catch (exc: SecurityException) {}
                 }, 2000)
             }

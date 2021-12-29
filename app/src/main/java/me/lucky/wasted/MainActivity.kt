@@ -9,9 +9,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import java.util.*
-
 import me.lucky.wasted.databinding.ActivityMainBinding
+import java.util.*
 
 open class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
