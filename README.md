@@ -6,12 +6,12 @@ Lock device and wipe data on panic trigger.
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/me.lucky.wasted/)
 
-<img src="https://user-images.githubusercontent.com/53379023/146694310-41316fdb-b7c7-44e7-b18d-a1f4d0a7bec5.png" width="30%" height="30%">
+<img src="https://user-images.githubusercontent.com/53379023/147702625-7aef3d46-b819-40df-86e9-c3de418f2b58.png" width="30%" height="30%">
 
 You can use [PanicKit](https://guardianproject.info/code/panickit/), Tile or send broadcast message 
 with authentication code. On trigger, using 
 [Device Administration API](https://developer.android.com/guide/topics/admin/device-admin), it 
-locks device and (optionally) runs wipe.
+locks device and optionally runs wipe.
 
 ## Example
 
