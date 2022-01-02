@@ -65,6 +65,17 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ShortcutActivity"
+            android:noHistory="true"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="me.lucky.wasted.action.TRIGGER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".QSTileService"
             android:icon="@android:drawable/ic_lock_lock"

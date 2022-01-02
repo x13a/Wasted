@@ -6,20 +6,25 @@ import android.content.Intent
 
 class CodeReceiver : BroadcastReceiver() {
     companion object {
-        private const val TRIGGER = "me.lucky.wasted.action.TRIGGER"
+        const val KEY = "code"
+        const val ACTION = "me.lucky.wasted.action.TRIGGER"
+
+        fun panic(context: Context, intent: Intent) {
+            val prefs = Preferences(context)
+            val code = prefs.code
+            if (!prefs.isServiceEnabled ||
+                code == "" ||
+                intent.action != ACTION ||
+                intent.getStringExtra(KEY) != code) return
+            val admin = DeviceAdminManager(context)
+            try {
+                admin.lockNow()
+                if (prefs.isWipeData) admin.wipeData()
+            } catch (exc: SecurityException) {}
+        }
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        val prefs by lazy { Preferences(context) }
-        val code = prefs.code
-        if (!prefs.isServiceEnabled ||
-            code == "" ||
-            intent.action != TRIGGER ||
-            intent.getStringExtra("code") != code) return
-        val admin = DeviceAdmin(context)
-        try {
-            admin.dpm.lockNow()
-            if (prefs.doWipe) admin.wipeData()
-        } catch (exc: SecurityException) {}
+        panic(context, intent)
     }
 }

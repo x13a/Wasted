@@ -11,7 +11,7 @@ import kotlin.concurrent.timerTask
 @RequiresApi(Build.VERSION_CODES.N)
 class QSTileService : TileService() {
     private val prefs by lazy { Preferences(this) }
-    private val admin by lazy { DeviceAdmin(this) }
+    private val admin by lazy { DeviceAdminManager(this) }
     private val counter = AtomicInteger(0)
     private var timer: Timer? = null
 
@@ -26,9 +26,9 @@ class QSTileService : TileService() {
     override fun onClick() {
         super.onClick()
         if (!prefs.isServiceEnabled) return
-        if (!prefs.doWipe) {
+        if (!prefs.isWipeData) {
             try {
-                admin.dpm.lockNow()
+                admin.lockNow()
             } catch (exc: SecurityException) {}
             return
         }
@@ -39,7 +39,7 @@ class QSTileService : TileService() {
                 timer = Timer()
                 timer?.schedule(timerTask {
                     try {
-                        admin.dpm.lockNow()
+                        admin.lockNow()
                         admin.wipeData()
                     } catch (exc: SecurityException) {}
                 }, 2000)
@@ -53,9 +53,7 @@ class QSTileService : TileService() {
     }
 
     private fun update(tileState: Int) {
-        qsTile.apply {
-            state = tileState
-            updateTile()
-        }
+        qsTile.state = tileState
+        qsTile.updateTile()
     }
 }

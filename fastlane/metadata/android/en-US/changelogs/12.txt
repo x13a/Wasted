@@ -1,0 +1,4 @@
+add option to wipe eSIM
+add option to limit the maximum number of failed password attempts
+add option to disable code receiver
+add app panic shortcut
