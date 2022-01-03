@@ -6,7 +6,7 @@ Lock device and wipe data on panic trigger.
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/me.lucky.wasted/)
 
-<img src="https://user-images.githubusercontent.com/53379023/147702625-7aef3d46-b819-40df-86e9-c3de418f2b58.png" width="30%" height="30%">
+<img src="https://user-images.githubusercontent.com/53379023/147894297-8956fa20-72f2-4bd7-a8b5-39677e052e59.png" width="30%" height="30%">
 
 You can use [PanicKit](https://guardianproject.info/code/panickit/), tile, shortcut or send 
 broadcast message with authentication code. On trigger, using 
