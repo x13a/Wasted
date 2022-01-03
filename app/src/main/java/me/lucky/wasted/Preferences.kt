@@ -14,13 +14,14 @@ class Preferences(ctx: Context) {
         private const val WIPE_ESIM = "wipe_esim"
         private const val MAX_FAILED_PASSWORD_ATTEMPTS = "max_failed_password_attempts"
 
+        private const val FILE_NAME = "sec_shared_prefs"
         // migration
         private const val DO_WIPE = "do_wipe"
     }
 
     private val mk = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
     private val prefs = EncryptedSharedPreferences.create(
-        "sec_shared_prefs",
+        FILE_NAME,
         mk,
         ctx,
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
