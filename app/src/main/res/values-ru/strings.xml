@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Потрачено</string>
-    <string name="description">Включите Потрачено чтобы заблокировать устройство при получении тревожного триггера. Вы можете использовать PanicKit, плитку быстрых настроек, ярлык или отправить широковещательное сообщение с этим кодом аутентификации.</string>
+    <string name="description">Включите Потрачено чтобы заблокировать устройство при получении тревожного сигнала. Вы можете использовать PanicKit, плитку быстрых настроек, ярлык или отправить широковещательное сообщение с этим кодом аутентификации.</string>
     <string name="device_admin_label">Потрачено</string>
-    <string name="device_admin_description">Разрешите Потрачено блокировать устройство и опционально стирать данные при получении тревожного триггера</string>
+    <string name="device_admin_description">Разрешите Потрачено блокировать устройство и опционально стирать данные при получении тревожного сигнала</string>
     <string name="service_unavailable_toast">Сервис администратора недоступен</string>
     <string name="wipe_data_check_box">Стереть данные</string>
     <string name="wipe_esim_check_box">Стереть eSIM</string>
@@ -13,5 +13,5 @@
     <string name="cancel">Отменить</string>
     <string name="tile_label">Разблокировать устройство</string>
     <string name="shortcut_label">Паниковать</string>
-    <string name="max_failed_password_attempts_description">Также Вы можете установить лимит на максимальное количество неудачных попыток ввода пароля. После исчерпания лимита устройство будет стёрто.</string>
+    <string name="max_failed_password_attempts_description">Также Вы можете установить лимит на максимальное количество неудачных попыток ввода пароля. После исчерпания лимита данные на устройстве будут стёрты.</string>
 </resources>
