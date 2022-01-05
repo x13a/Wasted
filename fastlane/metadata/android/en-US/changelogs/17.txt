@@ -1,0 +1,1 @@
+remove action bar
