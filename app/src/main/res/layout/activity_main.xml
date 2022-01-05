@@ -42,22 +42,30 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"/>
+
             <CheckBox
                 android:id="@+id/wipeData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
                 android:layoutDirection="rtl"
                 android:text="@string/wipe_data_check_box"
                 android:textSize="16sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="2dp" />
 
             <CheckBox
                 android:id="@+id/wipeESIM"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="4dp"
                 android:layoutDirection="rtl"
                 android:text="@string/wipe_esim_check_box"
                 android:textSize="16sp" />
@@ -75,14 +83,19 @@
                 android:layout_height="wrap_content"
                 android:text="@string/max_failed_password_attempts_description" />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp" />
+
             <SeekBar
                 android:id="@+id/maxFailedPasswordAttempts"
                 style="@style/Widget.AppCompat.SeekBar.Discrete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
                 android:max="10"
                 android:progress="0" />
+
         </LinearLayout>
     </ScrollView>
 
