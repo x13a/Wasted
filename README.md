@@ -2,19 +2,23 @@
 
 Lock device and wipe data on panic trigger.
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+[<img 
+     src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/me.lucky.wasted/)
 
-<img src="https://user-images.githubusercontent.com/53379023/147894297-8956fa20-72f2-4bd7-a8b5-39677e052e59.png" width="30%" height="30%">
+<img 
+     src="https://user-images.githubusercontent.com/53379023/147894297-8956fa20-72f2-4bd7-a8b5-39677e052e59.png" 
+     width="30%" 
+     height="30%">
 
 You can use [PanicKit](https://guardianproject.info/code/panickit/), tile, shortcut or send 
 broadcast message with authentication code. On trigger, using 
 [Device Administration API](https://developer.android.com/guide/topics/admin/device-admin), it 
 locks device and optionally runs wipe.
 
-Also you can limit the maximum number of failed password attempts. After the limit exceeded 
-device will be wiped.
+Also you can limit the maximum number of failed password attempts. After the limit exceeded device 
+will be wiped.
 
 ## Example
 
@@ -27,9 +31,9 @@ $ adb shell am broadcast \
 ```
 
 ## License
-[![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](http://www.gnu.org/licenses/gpl-3.0.en.html)  
+[![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)  
 
-This application is Free Software: You can use, study share and improve it at your
-will. Specifically you can redistribute and/or modify it under the terms of the
-[GNU General Public License v3](https://www.gnu.org/licenses/gpl.html) as
-published by the Free Software Foundation.
+This application is Free Software: You can use, study share and improve it at your will. 
+Specifically you can redistribute and/or modify it under the terms of the
+[GNU General Public License v3](https://www.gnu.org/licenses/gpl.html) as published by the Free 
+Software Foundation.
