@@ -20,6 +20,12 @@ locks device and optionally runs wipe.
 Also you can limit the maximum number of failed password attempts. After the limit exceeded device 
 will be wiped.
 
+The app works in `Work Profile` too. You can use [Shelter](https://github.com/PeterCxy/Shelter) to 
+install risky apps and `Wasted` in it. Then you can wipe this profile data with one click without 
+wiping the whole device.
+
+Only encrypted device may guarantee that the data will not be recoverable.
+
 ## Example
 
 Broadcast message:
