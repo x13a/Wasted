@@ -6,9 +6,9 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 import me.lucky.wasted.databinding.ActivityMainBinding
@@ -43,10 +43,10 @@ open class MainActivity : AppCompatActivity() {
 
     private fun update() {
         if (!admin.isActive() && prefs.isServiceEnabled)
-            Toast.makeText(
-                this,
-                getString(R.string.service_unavailable_toast),
-                Toast.LENGTH_SHORT,
+            Snackbar.make(
+                findViewById(R.id.toggle),
+                R.string.service_unavailable_popup,
+                Snackbar.LENGTH_SHORT,
             ).show()
     }
 
