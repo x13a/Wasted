@@ -7,8 +7,6 @@ import androidx.appcompat.app.AlertDialog
 import info.guardianproject.panic.PanicResponder
 
 class PanicConnectionActivity : MainActivity() {
-    private val pm by lazy { packageManager }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (PanicResponder.checkForDisconnectIntent(this)) {
@@ -27,7 +25,8 @@ class PanicConnectionActivity : MainActivity() {
         val packageName = callingActivity?.packageName
         if (packageName != null) {
             try {
-                app = pm.getApplicationLabel(pm.getApplicationInfo(packageName, 0))
+                app = packageManager
+                    .getApplicationLabel(packageManager.getApplicationInfo(packageName, 0))
             } catch (exc: PackageManager.NameNotFoundException) {}
         }
 
