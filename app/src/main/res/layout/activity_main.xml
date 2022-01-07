@@ -11,6 +11,7 @@
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:labelFor="@id/toggle"
         android:text="@string/description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,6 +82,7 @@
                 android:id="@+id/description2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:labelFor="@id/maxFailedPasswordAttempts"
                 android:text="@string/max_failed_password_attempts_description" />
 
             <Space
