@@ -3,7 +3,7 @@
     <string name="description">Включите Потрачено чтобы заблокировать устройство при получении тревожного сигнала. Вы можете использовать PanicKit, плитку быстрых настроек, ярлык или отправить широковещательное сообщение с этим кодом аутентификации.</string>
     <string name="device_admin_label">Потрачено</string>
     <string name="device_admin_description">Разрешите Потрачено блокировать устройство и опционально стирать данные при получении тревожного сигнала</string>
-    <string name="service_unavailable_popup">Сервис администратора недоступен</string>
+    <string name="service_unavailable_popup">Администратор устройства недоступен</string>
     <string name="wipe_data_check_box">Стереть данные</string>
     <string name="wipe_esim_check_box">Стереть eSIM</string>
     <string name="panic_app_dialog_title">Подтвердите приложение тревожной кнопки</string>
