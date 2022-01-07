@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -60,7 +59,7 @@ open class MainActivity : AppCompatActivity() {
             wipeData.isChecked = prefs.isWipeData
             wipeESIM.isChecked = prefs.isWipeESIM
             wipeESIM.isEnabled = wipeData.isChecked
-            maxFailedPasswordAttempts.progress = prefs.maxFailedPasswordAttempts
+            maxFailedPasswordAttempts.value = prefs.maxFailedPasswordAttempts.toFloat()
             toggle.isChecked = prefs.isServiceEnabled
         }
     }
@@ -87,20 +86,9 @@ open class MainActivity : AppCompatActivity() {
             wipeESIM.setOnCheckedChangeListener { _, isChecked ->
                 prefs.isWipeESIM = isChecked
             }
-            maxFailedPasswordAttempts.setOnSeekBarChangeListener(
-                object : SeekBar.OnSeekBarChangeListener {
-
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean,
-                ) {
-                    prefs.maxFailedPasswordAttempts = progress
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-            })
+            maxFailedPasswordAttempts.addOnChangeListener { _, value, _ ->
+                prefs.maxFailedPasswordAttempts = value.toInt()
+            }
             toggle.setOnCheckedChangeListener { _, isChecked ->
                 when (isChecked) {
                     true -> if (!admin.isActive()) requestAdmin() else setOn()

@@ -2,7 +2,7 @@ package me.lucky.wasted
 
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import info.guardianproject.panic.PanicResponder
 
@@ -30,7 +30,7 @@ class PanicConnectionActivity : MainActivity() {
             } catch (exc: PackageManager.NameNotFoundException) {}
         }
 
-        AlertDialog.Builder(this)
+        MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.panic_app_dialog_title))
             .setMessage(String.format(getString(R.string.panic_app_dialog_message), app))
             .setNegativeButton(R.string.allow) { _, _ ->
