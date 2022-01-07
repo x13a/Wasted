@@ -111,10 +111,10 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun setOff() {
-        admin.remove()
+        prefs.isServiceEnabled = false
         setCodeReceiverState(this, false)
         shortcut.remove()
-        prefs.isServiceEnabled = false
+        admin.remove()
     }
 
     private fun requestAdmin() = requestAdminPolicy.launch(admin.makeRequestIntent())

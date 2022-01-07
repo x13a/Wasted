@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.UserHandle
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 
 class DeviceAdminReceiver : DeviceAdminReceiver() {
@@ -18,6 +19,17 @@ class DeviceAdminReceiver : DeviceAdminReceiver() {
     override fun onPasswordFailed(context: Context, intent: Intent) {
         super.onPasswordFailed(context, intent)
         onPasswordFailedInternal(context)
+    }
+
+    override fun onDisabled(context: Context, intent: Intent) {
+        super.onDisabled(context, intent)
+        if (Preferences(context).isServiceEnabled) {
+            Toast.makeText(
+                context,
+                context.getString(R.string.service_unavailable_popup),
+                Toast.LENGTH_SHORT,
+            ).show()
+        }
     }
 
     private fun onPasswordFailedInternal(ctx: Context) {
