@@ -74,13 +74,28 @@
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginVertical="16dp"
+                android:layout_marginVertical="8dp"
                 android:background="?android:attr/listDivider" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/maxFailedPasswordAttempts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/max_failed_password_attempts_content_description"
+                android:valueFrom="0"
+                android:valueTo="10"
+                android:stepSize="1.0" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="2dp" />
 
             <TextView
                 android:id="@+id/description2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:text="@string/max_failed_password_attempts_description" />
 
             <Space

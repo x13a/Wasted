@@ -13,6 +13,6 @@
     <string name="cancel">Cancel</string>
     <string name="tile_label">Unlock device</string>
     <string name="shortcut_label">Panic</string>
-    <string name="max_failed_password_attempts_description">Also you can limit the maximum number of failed password attempts. After the limit exceeded device will be wiped.</string>
+    <string name="max_failed_password_attempts_description">Maximum number of failed password attempts.</string>
     <string name="max_failed_password_attempts_content_description">Count</string>
 </resources>
