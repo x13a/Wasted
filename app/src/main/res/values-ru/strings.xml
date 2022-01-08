@@ -14,4 +14,5 @@
     <string name="tile_label">Разблокировать устройство</string>
     <string name="shortcut_label">Паниковать</string>
     <string name="max_failed_password_attempts_description">Также Вы можете установить лимит на максимальное количество неудачных попыток ввода пароля. После исчерпания лимита данные на устройстве будут стёрты.</string>
+    <string name="max_failed_password_attempts_content_description">Количество</string>
 </resources>
