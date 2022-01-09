@@ -34,7 +34,7 @@ class DeviceAdminReceiver : DeviceAdminReceiver() {
 
     private fun onPasswordFailedInternal(ctx: Context) {
         val prefs = Preferences(ctx)
-        if (!prefs.isServiceEnabled || prefs.maxFailedPasswordAttempts == 0) return
+        if (!prefs.isServiceEnabled || prefs.maxFailedPasswordAttempts <= 0) return
         val admin = DeviceAdminManager(ctx)
         if (admin.getCurrentFailedPasswordAttempts() >= prefs.maxFailedPasswordAttempts)
             admin.wipeData()
