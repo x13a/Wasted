@@ -69,10 +69,7 @@ open class MainActivity : AppCompatActivity() {
             code.setOnClickListener {
                 prefs.isCodeEnabled = !prefs.isCodeEnabled
                 updateCodeColorState()
-                setCodeReceiverState(
-                    this@MainActivity,
-                    prefs.isServiceEnabled && prefs.isCodeEnabled,
-                )
+                setCodeReceiverState(prefs.isServiceEnabled && prefs.isCodeEnabled)
             }
             code.setOnLongClickListener {
                 prefs.code = makeCode()
@@ -106,13 +103,13 @@ open class MainActivity : AppCompatActivity() {
 
     private fun setOn() {
         prefs.isServiceEnabled = true
-        setCodeReceiverState(this, prefs.isCodeEnabled)
+        setCodeReceiverState(prefs.isCodeEnabled)
         shortcut.push()
     }
 
     private fun setOff() {
         prefs.isServiceEnabled = false
-        setCodeReceiverState(this, false)
+        setCodeReceiverState(false)
         shortcut.remove()
         admin.remove()
     }
@@ -120,9 +117,9 @@ open class MainActivity : AppCompatActivity() {
     private fun requestAdmin() = requestAdminPolicy.launch(admin.makeRequestIntent())
     private fun makeCode(): String = UUID.randomUUID().toString()
 
-    private fun setCodeReceiverState(ctx: Context, value: Boolean) {
-        ctx.packageManager.setComponentEnabledSetting(
-            ComponentName(ctx, CodeReceiver::class.java),
+    private fun setCodeReceiverState(value: Boolean) {
+        packageManager.setComponentEnabledSetting(
+            ComponentName(this, CodeReceiver::class.java),
             if (value) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
             PackageManager.DONT_KILL_APP,
