@@ -20,12 +20,10 @@ class DeviceAdminManager(private val ctx: Context) {
 
     fun wipeData() {
         var flags = 0
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
             flags = flags.or(DevicePolicyManager.WIPE_SILENTLY)
-        }
-        if (prefs.isWipeESIM && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        if (prefs.isWipeESIM && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
             flags = flags.or(DevicePolicyManager.WIPE_EUICC)
-        }
         dpm.wipeData(flags)
     }
 
