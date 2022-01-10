@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="me.lucky.wasted">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -89,6 +92,29 @@
                 android:name="android.service.quicksettings.TOGGLEABLE_TILE"
                 android:value="true" />
         </service>
+
+        <service
+            android:name=".WipeJobService"
+            android:exported="true"
+            android:description="@string/wipe_job_service_description"
+            android:permission="android.permission.BIND_JOB_SERVICE">
+        </service>
+
+        <service
+            android:name=".UnlockService"
+            android:exported="false"
+            android:description="@string/unlock_service_description">
+        </service>
+
+        <receiver
+            android:name=".RestartReceiver"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 </manifest>

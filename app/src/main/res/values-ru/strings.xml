@@ -15,4 +15,13 @@
     <string name="shortcut_label">Паниковать</string>
     <string name="max_failed_password_attempts_description">Максимальное количество неудачных попыток ввода пароля.</string>
     <string name="max_failed_password_attempts_content_description">Количество</string>
+    <string name="wipe_on_inactive_switch">Стереть при неактивности</string>
+    <string name="wipe_on_inactive_description">Стереть данные когда устройство не разблокируется N дней.</string>
+    <string name="wipe_on_inactive_days">Дней</string>
+    <string name="notification_channel_default_name">Дефолт</string>
+    <string name="ok">OK</string>
+    <string name="wipe_job_service_description">Стереть данные при условии</string>
+    <string name="wipe_job_service_start_failed_popup">Не удалось запустить службу стирания данных</string>
+    <string name="unlock_service_description">Получать события разблокировки</string>
+    <string name="unlock_service_notification_title">Служба Разблокировки</string>
 </resources>

@@ -86,17 +86,29 @@
                 android:valueTo="10"
                 android:stepSize="1.0" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="2dp" />
-
             <TextView
                 android:id="@+id/description2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:text="@string/max_failed_password_attempts_description" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/wipeOnInactiveSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/wipe_on_inactive_switch" />
+
+            <TextView
+                android:id="@+id/description3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/wipe_on_inactive_description" />
 
         </LinearLayout>
     </ScrollView>

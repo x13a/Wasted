@@ -17,14 +17,25 @@ with authentication code. On trigger, using
 [Device Administration API](https://developer.android.com/guide/topics/admin/device-admin), it 
 locks device and optionally runs wipe.
 
-Also you can limit the maximum number of failed password attempts. After the limit exceeded device 
-will be wiped.
+Also you can:
+- limit the maximum number of failed password attempts
+- wipe device when it was not unlocked for N days
 
 The app works in `Work Profile` too. You can use [Shelter](https://github.com/PeterCxy/Shelter) to 
 install risky apps and `Wasted` in it. Then you can wipe this profile data with one click without 
 wiping the whole device.
 
 Only encrypted device may guarantee that the data will not be recoverable.
+
+## Permissions
+
+`FOREGROUND_SERVICE`
+
+[Wipe on inactive] receive unlock events
+
+`RECEIVE_BOOT_COMPLETED`
+
+[Wipe on inactive] persist wipe job across reboots
 
 ## Example
 

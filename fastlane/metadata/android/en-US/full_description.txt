@@ -3,8 +3,9 @@ Lock device and wipe data on panic trigger.
 You can use PanicKit, tile, shortcut or send broadcast message with authentication code. On
 trigger, using Device Administration API, it locks device and optionally runs wipe.
 
-Also you can limit the maximum number of failed password attempts. After the limit exceeded device
-will be wiped.
+Also you can:
+* limit the maximum number of failed password attempts
+* wipe device when it was not unlocked for N days
 
 The app works in Work Profile too. You can use Shelter to install risky apps and Wasted in it. Then
 you can wipe this profile data with one click without wiping the whole device.

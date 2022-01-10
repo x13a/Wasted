@@ -1,13 +1,15 @@
 package me.lucky.wasted
 
 import android.content.ComponentName
-import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
@@ -19,6 +21,7 @@ open class MainActivity : AppCompatActivity() {
     private val prefs by lazy { Preferences(this) }
     private val admin by lazy { DeviceAdminManager(this) }
     private val shortcut by lazy { ShortcutManager(this) }
+    private val job by lazy { WipeJobManager(this) }
 
     private val requestAdminPolicy =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -51,6 +54,7 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        AppNotificationManager(this).createNotificationChannels()
         if (prefs.code == "") prefs.code = makeCode()
         updateCodeColorState()
         binding.apply {
@@ -60,6 +64,7 @@ open class MainActivity : AppCompatActivity() {
             wipeESIM.isChecked = prefs.isWipeESIM
             wipeESIM.isEnabled = wipeData.isChecked
             maxFailedPasswordAttempts.value = prefs.maxFailedPasswordAttempts.toFloat()
+            wipeOnInactiveSwitch.isChecked = prefs.isWipeOnInactive
             toggle.isChecked = prefs.isServiceEnabled
         }
     }
@@ -86,6 +91,19 @@ open class MainActivity : AppCompatActivity() {
             maxFailedPasswordAttempts.addOnChangeListener { _, value, _ ->
                 prefs.maxFailedPasswordAttempts = value.toInt()
             }
+            wipeOnInactiveSwitch.setOnCheckedChangeListener { _, isChecked ->
+                if (!setWipeOnInactiveComponentsState(prefs.isServiceEnabled && isChecked)) {
+                    wipeOnInactiveSwitch.isChecked = false
+                    showWipeJobServiceStartFailedPopup()
+                    return@setOnCheckedChangeListener
+                }
+                prefs.isWipeOnInactive = isChecked
+
+            }
+            wipeOnInactiveSwitch.setOnLongClickListener {
+                showWipeOnInactiveSettings()
+                true
+            }
             toggle.setOnCheckedChangeListener { _, isChecked ->
                 when (isChecked) {
                     true -> if (!admin.isActive()) requestAdmin() else setOn()
@@ -95,6 +113,23 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showWipeOnInactiveSettings() {
+        val items = arrayOf("1", "2", "3", "5", "7", "10", "15", "30")
+        var days = prefs.wipeOnInactiveDays
+        var checked = items.indexOf(days.toString())
+        if (checked == -1) checked = items
+            .indexOf(Preferences.DEFAULT_WIPE_ON_INACTIVE_DAYS.toString())
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.wipe_on_inactive_days)
+            .setSingleChoiceItems(items, checked) { _, which ->
+                days = items[which].toInt()
+            }
+            .setPositiveButton(R.string.ok) { _, _ ->
+                prefs.wipeOnInactiveDays = days
+            }
+            .show()
+    }
+
     private fun updateCodeColorState() {
         binding.code.setBackgroundColor(getColor(
             if (prefs.isCodeEnabled) R.color.code_receiver_on else R.color.code_receiver_off
@@ -102,27 +137,60 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun setOn() {
+        if (!setWipeOnInactiveComponentsState(prefs.isWipeOnInactive)) {
+            binding.toggle.isChecked = false
+            showWipeJobServiceStartFailedPopup()
+            return
+        }
         prefs.isServiceEnabled = true
         setCodeReceiverState(prefs.isCodeEnabled)
         shortcut.push()
     }
 
+    private fun showWipeJobServiceStartFailedPopup() {
+        Snackbar.make(
+            findViewById(R.id.toggle),
+            R.string.wipe_job_service_start_failed_popup,
+            Snackbar.LENGTH_LONG,
+        ).show()
+    }
+
     private fun setOff() {
         prefs.isServiceEnabled = false
         setCodeReceiverState(false)
+        setWipeOnInactiveComponentsState(false)
         shortcut.remove()
         admin.remove()
     }
 
     private fun requestAdmin() = requestAdminPolicy.launch(admin.makeRequestIntent())
     private fun makeCode(): String = UUID.randomUUID().toString()
+    private fun setCodeReceiverState(value: Boolean) =
+        setReceiverState(CodeReceiver::class.java, value)
+    private fun setRestartReceiverState(value: Boolean) =
+        setReceiverState(RestartReceiver::class.java, value)
 
-    private fun setCodeReceiverState(value: Boolean) {
+    private fun setReceiverState(cls: Class<*>, value: Boolean) {
         packageManager.setComponentEnabledSetting(
-            ComponentName(this, CodeReceiver::class.java),
+            ComponentName(this, cls),
             if (value) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
             PackageManager.DONT_KILL_APP,
         )
+    }
+
+    private fun setUnlockServiceState(value: Boolean) {
+        Intent(this, UnlockService::class.java).also {
+            if (value) ContextCompat.startForegroundService(this, it) else stopService(it)
+        }
+    }
+
+    private fun setWipeOnInactiveComponentsState(value: Boolean): Boolean {
+        val result = job.setState(value)
+        if (result) {
+            setUnlockServiceState(value)
+            setRestartReceiverState(value)
+        }
+        return result
     }
 }
