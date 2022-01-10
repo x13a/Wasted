@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Wasted</string>
-    <string name="description">Turn on Wasted to lock device on panic trigger. You can use PanicKit, tile, shortcut or send broadcast message with this authentication code.</string>
+    <string name="description">Turn on Wasted to lock device on panic trigger. You can use PanicKit, tile, shortcut or send message with this authentication code.</string>
     <string name="device_admin_label">Wasted</string>
     <string name="device_admin_description">Allow Wasted to lock device and optionally wipe data on panic trigger</string>
     <string name="service_unavailable_popup">Device admin unavailable</string>
