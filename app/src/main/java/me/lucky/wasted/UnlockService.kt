@@ -23,7 +23,8 @@ class UnlockService : Service() {
             val keyguardManager = context
                 .getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
             if (!keyguardManager.isDeviceSecure) return
-            while (WipeJobManager(context).schedule() == JobScheduler.RESULT_FAILURE)
+            val manager = WipeJobManager(context)
+            while (manager.schedule() != JobScheduler.RESULT_SUCCESS)
                 SystemClock.sleep(1000)
         }
     }
