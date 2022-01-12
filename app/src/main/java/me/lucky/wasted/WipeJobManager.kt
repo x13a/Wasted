@@ -11,24 +11,26 @@ class WipeJobManager(private val ctx: Context) {
         private const val JOB_ID = 1000
     }
     private val prefs by lazy { Preferences(ctx) }
-    private val jobScheduler by lazy {
-        ctx.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+    private var scheduler: JobScheduler? = null
+
+    init {
+        scheduler = ctx.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler?
     }
 
     fun schedule(): Int {
-        return jobScheduler.schedule(
+        return scheduler?.schedule(
             JobInfo.Builder(JOB_ID, ComponentName(ctx, WipeJobService::class.java))
                 .setMinimumLatency(TimeUnit.DAYS.toMillis(prefs.wipeOnInactivityDays.toLong()))
                 .setBackoffCriteria(0, JobInfo.BACKOFF_POLICY_LINEAR)
                 .setPersisted(true)
                 .build()
-        )
+        ) ?: JobScheduler.RESULT_FAILURE
     }
 
     fun setState(value: Boolean): Boolean {
         if (value) {
             if (schedule() == JobScheduler.RESULT_FAILURE) return false
-        } else { jobScheduler.cancel(JOB_ID) }
+        } else { scheduler?.cancel(JOB_ID) }
         return true
     }
 }

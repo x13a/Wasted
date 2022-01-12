@@ -19,13 +19,17 @@ class UnlockService : Service() {
     private lateinit var receiver: BroadcastReceiver
 
     private class UnlockReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (context == null) return
             val keyguardManager = context
-                .getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-            if (!keyguardManager.isDeviceSecure) return
+                .getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager?
+            if (keyguardManager?.isDeviceSecure != true) return
             val manager = WipeJobManager(context)
-            while (manager.schedule() != JobScheduler.RESULT_SUCCESS)
-                SystemClock.sleep(1000)
+            var delay = 1000L
+            while (manager.schedule() != JobScheduler.RESULT_SUCCESS) {
+                SystemClock.sleep(delay)
+                delay = delay.shl(1)
+            }
         }
     }
 

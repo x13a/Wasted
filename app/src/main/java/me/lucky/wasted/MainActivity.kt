@@ -47,7 +47,7 @@ open class MainActivity : AppCompatActivity() {
     private fun update() {
         if (!admin.isActive() && prefs.isServiceEnabled)
             Snackbar.make(
-                findViewById(R.id.toggle),
+                binding.toggle,
                 R.string.service_unavailable_popup,
                 Snackbar.LENGTH_SHORT,
             ).show()
@@ -149,7 +149,7 @@ open class MainActivity : AppCompatActivity() {
 
     private fun showWipeJobServiceStartFailedPopup() {
         Snackbar.make(
-            findViewById(R.id.toggle),
+            binding.toggle,
             R.string.wipe_job_service_start_failed_popup,
             Snackbar.LENGTH_LONG,
         ).show()

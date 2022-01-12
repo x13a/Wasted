@@ -38,8 +38,8 @@ class Preferences(ctx: Context) {
         get() = prefs.getBoolean(SERVICE_ENABLED, false)
         set(value) = prefs.edit { putBoolean(SERVICE_ENABLED, value) }
 
-    var code: String?
-        get() = prefs.getString(CODE, "")
+    var code: String
+        get() = prefs.getString(CODE, "") ?: ""
         set(value) = prefs.edit { putString(CODE, value) }
 
     var isCodeEnabled: Boolean

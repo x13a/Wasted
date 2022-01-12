@@ -7,16 +7,18 @@ import android.content.Intent
 import android.os.Build
 
 class DeviceAdminManager(private val ctx: Context) {
-    private val dpm by lazy {
-        ctx.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-    }
+    private var dpm: DevicePolicyManager? = null
     private val deviceAdmin by lazy { ComponentName(ctx, DeviceAdminReceiver::class.java) }
     private val prefs by lazy { Preferences(ctx) }
 
-    fun remove() = dpm.removeActiveAdmin(deviceAdmin)
-    fun isActive(): Boolean = dpm.isAdminActive(deviceAdmin)
-    fun getCurrentFailedPasswordAttempts(): Int = dpm.currentFailedPasswordAttempts
-    fun lockNow() = dpm.lockNow()
+    init {
+        dpm = ctx.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager?
+    }
+
+    fun remove() = dpm?.removeActiveAdmin(deviceAdmin)
+    fun isActive(): Boolean = dpm?.isAdminActive(deviceAdmin) ?: false
+    fun getCurrentFailedPasswordAttempts(): Int = dpm?.currentFailedPasswordAttempts ?: 0
+    fun lockNow() = dpm?.lockNow()
 
     fun wipeData() {
         var flags = 0
@@ -24,7 +26,7 @@ class DeviceAdminManager(private val ctx: Context) {
             flags = flags.or(DevicePolicyManager.WIPE_SILENTLY)
         if (prefs.isWipeESIM && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
             flags = flags.or(DevicePolicyManager.WIPE_EUICC)
-        dpm.wipeData(flags)
+        dpm?.wipeData(flags)
     }
 
     fun makeRequestIntent(): Intent {

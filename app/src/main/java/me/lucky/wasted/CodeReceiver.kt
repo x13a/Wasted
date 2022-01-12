@@ -9,7 +9,8 @@ class CodeReceiver : BroadcastReceiver() {
         const val KEY = "code"
         const val ACTION = "me.lucky.wasted.action.TRIGGER"
 
-        fun panic(context: Context, intent: Intent) {
+        fun panic(context: Context?, intent: Intent?) {
+            if (context == null || intent == null) return
             val prefs = Preferences(context)
             val code = prefs.code
             if (!prefs.isServiceEnabled ||
@@ -24,7 +25,7 @@ class CodeReceiver : BroadcastReceiver() {
         }
     }
 
-    override fun onReceive(context: Context, intent: Intent) {
+    override fun onReceive(context: Context?, intent: Intent?) {
         panic(context, intent)
     }
 }
