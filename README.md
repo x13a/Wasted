@@ -31,11 +31,11 @@ Only encrypted device may guarantee that the data will not be recoverable.
 
 `FOREGROUND_SERVICE`
 
-[Wipe on inactive] receive unlock events
+[Wipe on inactivity] receive unlock events
 
 `RECEIVE_BOOT_COMPLETED`
 
-[Wipe on inactive] persist wipe job across reboots
+[Wipe on inactivity] persist wipe job across reboots
 
 ## Example
 
