@@ -11,11 +11,7 @@ class WipeJobManager(private val ctx: Context) {
         private const val JOB_ID = 1000
     }
     private val prefs by lazy { Preferences(ctx) }
-    private var scheduler: JobScheduler? = null
-
-    init {
-        scheduler = ctx.getSystemService(JobScheduler::class.java)
-    }
+    private val scheduler = ctx.getSystemService(JobScheduler::class.java)
 
     fun schedule(): Int {
         return scheduler?.schedule(

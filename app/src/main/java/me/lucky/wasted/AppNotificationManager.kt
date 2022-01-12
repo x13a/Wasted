@@ -10,11 +10,7 @@ class AppNotificationManager(private val ctx: Context) {
         const val CHANNEL_DEFAULT_ID = "default"
     }
 
-    private var manager: NotificationManager? = null
-
-    init {
-        manager = ctx.getSystemService(NotificationManager::class.java)
-    }
+    private val manager = ctx.getSystemService(NotificationManager::class.java)
 
     fun createNotificationChannels() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return

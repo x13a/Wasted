@@ -7,13 +7,9 @@ import android.content.Intent
 import android.os.Build
 
 class DeviceAdminManager(private val ctx: Context) {
-    private var dpm: DevicePolicyManager? = null
+    private val dpm = ctx.getSystemService(DevicePolicyManager::class.java)
     private val deviceAdmin by lazy { ComponentName(ctx, DeviceAdminReceiver::class.java) }
     private val prefs by lazy { Preferences(ctx) }
-
-    init {
-        dpm = ctx.getSystemService(DevicePolicyManager::class.java)
-    }
 
     fun remove() = dpm?.removeActiveAdmin(deviceAdmin)
     fun isActive(): Boolean = dpm?.isAdminActive(deviceAdmin) ?: false
