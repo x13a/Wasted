@@ -34,6 +34,7 @@ class UnlockService : Service() {
     override fun onCreate() {
         super.onCreate()
         receiver = UnlockReceiver()
+        registerReceiver(receiver, IntentFilter(Intent.ACTION_USER_PRESENT))
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -46,7 +47,6 @@ class UnlockService : Service() {
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .build()
         )
-        registerReceiver(receiver, IntentFilter(Intent.ACTION_USER_PRESENT))
         return START_STICKY
     }
 
