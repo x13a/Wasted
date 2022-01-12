@@ -64,7 +64,7 @@ open class MainActivity : AppCompatActivity() {
             wipeESIM.isChecked = prefs.isWipeESIM
             wipeESIM.isEnabled = wipeData.isChecked
             maxFailedPasswordAttempts.value = prefs.maxFailedPasswordAttempts.toFloat()
-            wipeOnInactiveSwitch.isChecked = prefs.isWipeOnInactive
+            wipeOnInactivitySwitch.isChecked = prefs.isWipeOnInactivity
             toggle.isChecked = prefs.isServiceEnabled
         }
     }
@@ -91,17 +91,17 @@ open class MainActivity : AppCompatActivity() {
             maxFailedPasswordAttempts.addOnChangeListener { _, value, _ ->
                 prefs.maxFailedPasswordAttempts = value.toInt()
             }
-            wipeOnInactiveSwitch.setOnCheckedChangeListener { _, isChecked ->
-                if (!setWipeOnInactiveComponentsState(prefs.isServiceEnabled && isChecked)) {
-                    wipeOnInactiveSwitch.isChecked = false
+            wipeOnInactivitySwitch.setOnCheckedChangeListener { _, isChecked ->
+                if (!setWipeOnInactivityComponentsState(prefs.isServiceEnabled && isChecked)) {
+                    wipeOnInactivitySwitch.isChecked = false
                     showWipeJobServiceStartFailedPopup()
                     return@setOnCheckedChangeListener
                 }
-                prefs.isWipeOnInactive = isChecked
+                prefs.isWipeOnInactivity = isChecked
 
             }
-            wipeOnInactiveSwitch.setOnLongClickListener {
-                showWipeOnInactiveSettings()
+            wipeOnInactivitySwitch.setOnLongClickListener {
+                showWipeOnInactivitySettings()
                 true
             }
             toggle.setOnCheckedChangeListener { _, isChecked ->
@@ -113,19 +113,19 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showWipeOnInactiveSettings() {
+    private fun showWipeOnInactivitySettings() {
         val items = arrayOf("1", "2", "3", "5", "7", "10", "15", "30")
-        var days = prefs.wipeOnInactiveDays
+        var days = prefs.wipeOnInactivityDays
         var checked = items.indexOf(days.toString())
         if (checked == -1) checked = items
-            .indexOf(Preferences.DEFAULT_WIPE_ON_INACTIVE_DAYS.toString())
+            .indexOf(Preferences.DEFAULT_WIPE_ON_INACTIVITY_DAYS.toString())
         MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.wipe_on_inactive_days)
+            .setTitle(R.string.wipe_on_inactivity_days)
             .setSingleChoiceItems(items, checked) { _, which ->
                 days = items[which].toInt()
             }
             .setPositiveButton(R.string.ok) { _, _ ->
-                prefs.wipeOnInactiveDays = days
+                prefs.wipeOnInactivityDays = days
             }
             .show()
     }
@@ -137,7 +137,7 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun setOn() {
-        if (!setWipeOnInactiveComponentsState(prefs.isWipeOnInactive)) {
+        if (!setWipeOnInactivityComponentsState(prefs.isWipeOnInactivity)) {
             binding.toggle.isChecked = false
             showWipeJobServiceStartFailedPopup()
             return
@@ -158,7 +158,7 @@ open class MainActivity : AppCompatActivity() {
     private fun setOff() {
         prefs.isServiceEnabled = false
         setCodeReceiverState(false)
-        setWipeOnInactiveComponentsState(false)
+        setWipeOnInactivityComponentsState(false)
         shortcut.remove()
         admin.remove()
     }
@@ -185,7 +185,7 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setWipeOnInactiveComponentsState(value: Boolean): Boolean {
+    private fun setWipeOnInactivityComponentsState(value: Boolean): Boolean {
         val result = job.setState(value)
         if (result) {
             setUnlockServiceState(value)

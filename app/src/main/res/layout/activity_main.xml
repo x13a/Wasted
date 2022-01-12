@@ -98,17 +98,17 @@
                 android:layout_marginVertical="8dp" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/wipeOnInactiveSwitch"
+                android:id="@+id/wipeOnInactivitySwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="@string/wipe_on_inactive_switch" />
+                android:text="@string/wipe_on_inactivity_switch" />
 
             <TextView
                 android:id="@+id/description3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/wipe_on_inactive_description" />
+                android:text="@string/wipe_on_inactivity_description" />
 
         </LinearLayout>
     </ScrollView>

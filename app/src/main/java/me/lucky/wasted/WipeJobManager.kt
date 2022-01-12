@@ -18,7 +18,7 @@ class WipeJobManager(private val ctx: Context) {
     fun schedule(): Int {
         return jobScheduler.schedule(
             JobInfo.Builder(JOB_ID, ComponentName(ctx, WipeJobService::class.java))
-                .setMinimumLatency(TimeUnit.DAYS.toMillis(prefs.wipeOnInactiveDays.toLong()))
+                .setMinimumLatency(TimeUnit.DAYS.toMillis(prefs.wipeOnInactivityDays.toLong()))
                 .setBackoffCriteria(0, JobInfo.BACKOFF_POLICY_LINEAR)
                 .setPersisted(true)
                 .build()

@@ -6,7 +6,7 @@ import android.app.job.JobService
 class WipeJobService : JobService() {
     override fun onStartJob(params: JobParameters?): Boolean {
         val prefs = Preferences(this)
-        if (!prefs.isServiceEnabled || !prefs.isWipeOnInactive) return false
+        if (!prefs.isServiceEnabled || !prefs.isWipeOnInactivity) return false
         try {
             DeviceAdminManager(this).wipeData()
         } catch (exc: SecurityException) {}

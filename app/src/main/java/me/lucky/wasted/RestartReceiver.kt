@@ -10,7 +10,7 @@ class RestartReceiver : BroadcastReceiver() {
         if (intent.action != Intent.ACTION_BOOT_COMPLETED &&
             intent.action != Intent.ACTION_MY_PACKAGE_REPLACED) return
         val prefs = Preferences(context)
-        if (!prefs.isServiceEnabled || !prefs.isWipeOnInactive) return
+        if (!prefs.isServiceEnabled || !prefs.isWipeOnInactivity) return
         ContextCompat.startForegroundService(context, Intent(context, UnlockService::class.java))
     }
 }
