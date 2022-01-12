@@ -14,7 +14,7 @@ class WipeJobManager(private val ctx: Context) {
     private var scheduler: JobScheduler? = null
 
     init {
-        scheduler = ctx.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler?
+        scheduler = ctx.getSystemService(JobScheduler::class.java)
     }
 
     fun schedule(): Int {

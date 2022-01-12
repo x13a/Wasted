@@ -13,7 +13,7 @@ class AppNotificationManager(private val ctx: Context) {
     private var manager: NotificationManager? = null
 
     init {
-        manager = ctx.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
+        manager = ctx.getSystemService(NotificationManager::class.java)
     }
 
     fun createNotificationChannels() {

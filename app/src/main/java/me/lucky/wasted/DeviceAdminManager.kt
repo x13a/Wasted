@@ -12,7 +12,7 @@ class DeviceAdminManager(private val ctx: Context) {
     private val prefs by lazy { Preferences(ctx) }
 
     init {
-        dpm = ctx.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager?
+        dpm = ctx.getSystemService(DevicePolicyManager::class.java)
     }
 
     fun remove() = dpm?.removeActiveAdmin(deviceAdmin)

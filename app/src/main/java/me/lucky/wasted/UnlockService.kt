@@ -21,9 +21,7 @@ class UnlockService : Service() {
     private class UnlockReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (context == null) return
-            val keyguardManager = context
-                .getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager?
-            if (keyguardManager?.isDeviceSecure != true) return
+            if (context.getSystemService(KeyguardManager::class.java)?.isDeviceSecure != true) return
             val manager = WipeJobManager(context)
             var delay = 1000L
             while (manager.schedule() != JobScheduler.RESULT_SUCCESS) {
