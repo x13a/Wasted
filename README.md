@@ -8,7 +8,7 @@ Lock device and wipe data on panic trigger.
      height="80">](https://f-droid.org/packages/me.lucky.wasted/)
 
 <img 
-     src="https://user-images.githubusercontent.com/53379023/148791880-bbcba0c4-b54c-4d7d-9861-e55c0deeff7d.png" 
+     src="https://user-images.githubusercontent.com/53379023/149060362-e512a327-e37b-476d-bfea-d84b31b047ec.png" 
      width="30%" 
      height="30%">
 
