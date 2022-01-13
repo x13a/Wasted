@@ -17,7 +17,6 @@ import me.lucky.wasted.databinding.ActivityMainBinding
 
 open class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
     private val prefs by lazy { Preferences(this) }
     private val admin by lazy { DeviceAdminManager(this) }
     private val shortcut by lazy { ShortcutManager(this) }
