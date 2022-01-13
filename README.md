@@ -21,9 +21,9 @@ Also you can:
 - limit the maximum number of failed password attempts
 - wipe device when it was not unlocked for N days
 
-The app works in `Work Profile` too. You can use [Shelter](https://github.com/PeterCxy/Shelter) to 
-install risky apps and `Wasted` in it. Then you can wipe this profile data with one click without 
-wiping the whole device.
+The app works in `Work Profile` too. Use [Shelter](https://github.com/PeterCxy/Shelter) to install 
+risky apps and `Wasted` in it. Then you can wipe this profile data with one click without wiping 
+the whole device.
 
 Only encrypted device may guarantee that the data will not be recoverable.
 
