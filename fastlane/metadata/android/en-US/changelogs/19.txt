@@ -1,0 +1,1 @@
+wipe device on inactivity (beta)
