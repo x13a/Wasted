@@ -56,19 +56,10 @@ open class MainActivity : AppCompatActivity() {
         AppNotificationManager(this).createNotificationChannels()
         if (prefs.code == "") prefs.code = makeCode()
         updateCodeColorState()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) hideESIM()
+        if (!packageManager.hasSystemFeature(PackageManager.FEATURE_SECURE_LOCK_SCREEN))
+            hideSecureLockScreenRequired()
         binding.apply {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                wipeESIMSpace.visibility = View.GONE
-                wipeESIM.visibility = View.GONE
-            }
-            if (!packageManager.hasSystemFeature(PackageManager.FEATURE_SECURE_LOCK_SCREEN)) {
-                divider.visibility = View.GONE
-                maxFailedPasswordAttempts.visibility = View.GONE
-                maxFailedPasswordAttemptsDescription.visibility = View.GONE
-                wipeOnInactivitySpace.visibility = View.GONE
-                wipeOnInactivitySwitch.visibility = View.GONE
-                wipeOnInactivityDescription.visibility = View.GONE
-            }
             code.text = prefs.code
             wipeData.isChecked = prefs.isWipeData
             wipeESIM.isChecked = prefs.isWipeESIM
@@ -76,6 +67,22 @@ open class MainActivity : AppCompatActivity() {
             maxFailedPasswordAttempts.value = prefs.maxFailedPasswordAttempts.toFloat()
             wipeOnInactivitySwitch.isChecked = prefs.isWipeOnInactivity
             toggle.isChecked = prefs.isServiceEnabled
+        }
+    }
+
+    private fun hideESIM() {
+        binding.wipeESIMSpace.visibility = View.GONE
+        binding.wipeESIM.visibility = View.GONE
+    }
+
+    private fun hideSecureLockScreenRequired() {
+        binding.apply {
+            divider.visibility = View.GONE
+            maxFailedPasswordAttempts.visibility = View.GONE
+            maxFailedPasswordAttemptsDescription.visibility = View.GONE
+            wipeOnInactivitySpace.visibility = View.GONE
+            wipeOnInactivitySwitch.visibility = View.GONE
+            wipeOnInactivityDescription.visibility = View.GONE
         }
     }
 
