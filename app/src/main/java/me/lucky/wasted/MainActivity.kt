@@ -169,6 +169,7 @@ open class MainActivity : AppCompatActivity() {
         }
         prefs.isServiceEnabled = true
         setCodeReceiverState(prefs.isCodeEnabled)
+        setTileState(true)
         shortcut.push()
     }
 
@@ -184,6 +185,7 @@ open class MainActivity : AppCompatActivity() {
         prefs.isServiceEnabled = false
         setCodeReceiverState(false)
         setWipeOnInactivityComponentsState(false)
+        setTileState(false)
         shortcut.remove()
         admin.remove()
     }
@@ -191,11 +193,13 @@ open class MainActivity : AppCompatActivity() {
     private fun requestAdmin() = requestAdminPolicy.launch(admin.makeRequestIntent())
     private fun makeCode(): String = UUID.randomUUID().toString()
     private fun setCodeReceiverState(value: Boolean) =
-        setReceiverState(CodeReceiver::class.java, value)
+        setComponentState(CodeReceiver::class.java, value)
     private fun setRestartReceiverState(value: Boolean) =
-        setReceiverState(RestartReceiver::class.java, value)
+        setComponentState(RestartReceiver::class.java, value)
+    private fun setTileState(value: Boolean) =
+        setComponentState(QSTileService::class.java, value)
 
-    private fun setReceiverState(cls: Class<*>, value: Boolean) {
+    private fun setComponentState(cls: Class<*>, value: Boolean) {
         packageManager.setComponentEnabledSetting(
             ComponentName(this, cls),
             if (value) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else
