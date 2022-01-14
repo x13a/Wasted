@@ -17,12 +17,12 @@ class Preferences(ctx: Context) {
         private const val WIPE_ON_INACTIVITY = "wipe_on_inactivity"
 
         private const val LAUNCHERS = "launchers"
-        private const val CODE_ENABLED = "code_enabled"
         private const val WIPE_ON_INACTIVITY_DAYS = "wipe_on_inactivity_days"
 
         private const val FILE_NAME = "sec_shared_prefs"
         // migration
         private const val DO_WIPE = "do_wipe"
+        private const val CODE_ENABLED = "code_enabled"
         private const val WIPE_ON_INACTIVE = "wipe_on_inactive"
         private const val WIPE_ON_INACTIVE_DAYS = "wipe_on_inactive_days"
     }
@@ -41,16 +41,15 @@ class Preferences(ctx: Context) {
         set(value) = prefs.edit { putBoolean(SERVICE_ENABLED, value) }
 
     var launchers: Int
-        get() = prefs.getInt(LAUNCHERS, 0)
+        get() = prefs.getInt(
+            LAUNCHERS,
+            if (prefs.getBoolean(CODE_ENABLED, false)) Launcher.CODE.flag else 0,
+        )
         set(value) = prefs.edit { putInt(LAUNCHERS, value) }
 
     var code: String
         get() = prefs.getString(CODE, "") ?: ""
         set(value) = prefs.edit { putString(CODE, value) }
-
-    var isCodeEnabled: Boolean
-        get() = prefs.getBoolean(CODE_ENABLED, false)
-        set(value) = prefs.edit { putBoolean(CODE_ENABLED, value) }
 
     var isWipeData: Boolean
         get() = prefs.getBoolean(WIPE_DATA, prefs.getBoolean(DO_WIPE, false))
@@ -80,6 +79,8 @@ class Preferences(ctx: Context) {
 }
 
 enum class Launcher(val flag: Int) {
-    TILE(1),
-    SHORTCUT(1 shl 1),
+    PANIC_KIT(1),
+    TILE(1 shl 1),
+    SHORTCUT(1 shl 2),
+    CODE(1 shl 3)
 }

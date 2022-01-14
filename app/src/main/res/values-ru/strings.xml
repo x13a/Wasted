@@ -28,7 +28,9 @@
     <string name="dialog_confirm_panic_message">Активировать тревогу\? Это заблокирует устройство и опционально сотрёт его данные.</string>
     <string name="yes">Да</string>
     <string-array name="launchers">
+        <item>PanicKit</item>
         <item>Плитка</item>
         <item>Ярлык</item>
+        <item>Код</item>
     </string-array>
 </resources>

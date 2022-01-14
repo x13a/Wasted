@@ -88,14 +88,8 @@ open class MainActivity : AppCompatActivity() {
 
     private fun setup() {
         binding.apply {
-            description.setOnLongClickListener {
-                showLaunchersSettings()
-                true
-            }
             code.setOnClickListener {
-                prefs.isCodeEnabled = !prefs.isCodeEnabled
-                updateCodeColorState()
-                setCodeReceiverState(prefs.isServiceEnabled && prefs.isCodeEnabled)
+                showLaunchersSettings()
             }
             code.setOnLongClickListener {
                 prefs.code = makeCode()
@@ -172,7 +166,7 @@ open class MainActivity : AppCompatActivity() {
             }
             .setPositiveButton(R.string.ok) { _, _ ->
                 prefs.launchers = launchers
-                setLaunchers(prefs.isServiceEnabled)
+                setLaunchersState(prefs.isServiceEnabled)
             }
             .show()
     }
@@ -196,7 +190,7 @@ open class MainActivity : AppCompatActivity() {
 
     private fun updateCodeColorState() {
         binding.code.setBackgroundColor(getColor(
-            if (prefs.isCodeEnabled) R.color.code_receiver_on else R.color.code_receiver_off
+            if (prefs.launchers != 0) R.color.code_receiver_on else R.color.code_receiver_off
         ))
     }
 
@@ -207,19 +201,23 @@ open class MainActivity : AppCompatActivity() {
             return
         }
         prefs.isServiceEnabled = true
-        setCodeReceiverState(prefs.isCodeEnabled)
-        setLaunchers(true)
+        setLaunchersState(true)
     }
 
-    private fun setLaunchers(value: Boolean) {
+    private fun setLaunchersState(value: Boolean) {
         if (value) {
             val launchers = prefs.launchers
+            setPanicKitState(launchers.and(Launcher.PANIC_KIT.flag) != 0)
             setTileState(launchers.and(Launcher.TILE.flag) != 0)
-            if (launchers.and(Launcher.SHORTCUT.flag) != 0) shortcut.push() else shortcut.remove()
+            shortcut.setState(launchers.and(Launcher.SHORTCUT.flag) != 0)
+            setCodeReceiverState(launchers.and(Launcher.CODE.flag) != 0)
         } else {
+            setPanicKitState(false)
             setTileState(false)
-            shortcut.remove()
+            shortcut.setState(false)
+            setCodeReceiverState(false)
         }
+        updateCodeColorState()
     }
 
     private fun showWipeJobServiceStartFailedPopup() {
@@ -232,9 +230,8 @@ open class MainActivity : AppCompatActivity() {
 
     private fun setOff() {
         prefs.isServiceEnabled = false
-        setCodeReceiverState(false)
         setWipeOnInactivityComponentsState(false)
-        setLaunchers(false)
+        setLaunchersState(false)
         admin.remove()
     }
 
@@ -246,6 +243,11 @@ open class MainActivity : AppCompatActivity() {
         setComponentState(RestartReceiver::class.java, value)
     private fun setTileState(value: Boolean) =
         setComponentState(QSTileService::class.java, value)
+
+    private fun setPanicKitState(value: Boolean) {
+        setComponentState(PanicConnectionActivity::class.java, value)
+        setComponentState(PanicResponderActivity::class.java, value)
+    }
 
     private fun setComponentState(cls: Class<*>, value: Boolean) {
         packageManager.setComponentEnabledSetting(

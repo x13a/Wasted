@@ -51,6 +51,7 @@
         <activity
             android:name=".PanicResponderActivity"
             android:noHistory="true"
+            android:enabled="false"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
@@ -62,6 +63,7 @@
         <activity
             android:name=".PanicConnectionActivity"
             android:noHistory="true"
+            android:enabled="false"
             android:exported="true">
             <intent-filter>
                 <action android:name="info.guardianproject.panic.action.CONNECT" />
