@@ -81,6 +81,10 @@ open class MainActivity : AppCompatActivity() {
 
     private fun setup() {
         binding.apply {
+            description.setOnLongClickListener {
+                showLaunchersSettings()
+                true
+            }
             code.setOnClickListener {
                 prefs.isCodeEnabled = !prefs.isCodeEnabled
                 updateCodeColorState()
@@ -138,6 +142,30 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showLaunchersSettings() {
+        var launchers = prefs.launchers
+        val checkedLaunchers = mutableListOf<Boolean>()
+        for (launcher in Launcher.values()) {
+            checkedLaunchers.add(launchers.and(launcher.flag) != 0)
+        }
+        MaterialAlertDialogBuilder(this)
+            .setMultiChoiceItems(
+                resources.getStringArray(R.array.launchers),
+                checkedLaunchers.toBooleanArray(),
+            ) { _, index, isChecked ->
+                val value = Launcher.values()[index]
+                launchers = when (isChecked) {
+                    true -> launchers.or(value.flag)
+                    false -> launchers.and(value.flag.inv())
+                }
+            }
+            .setPositiveButton(R.string.ok) { _, _ ->
+                prefs.launchers = launchers
+                setLaunchers(prefs.isServiceEnabled)
+            }
+            .show()
+    }
+
     private fun showWipeOnInactivitySettings() {
         val items = arrayOf("1", "2", "3", "5", "7", "10", "15", "30")
         var days = prefs.wipeOnInactivityDays
@@ -169,8 +197,18 @@ open class MainActivity : AppCompatActivity() {
         }
         prefs.isServiceEnabled = true
         setCodeReceiverState(prefs.isCodeEnabled)
-        setTileState(true)
-        shortcut.push()
+        setLaunchers(true)
+    }
+
+    private fun setLaunchers(value: Boolean) {
+        if (value) {
+            val launchers = prefs.launchers
+            setTileState(launchers.and(Launcher.TILE.flag) != 0)
+            if (launchers.and(Launcher.SHORTCUT.flag) != 0) shortcut.push() else shortcut.remove()
+        } else {
+            setTileState(false)
+            shortcut.remove()
+        }
     }
 
     private fun showWipeJobServiceStartFailedPopup() {
@@ -185,8 +223,7 @@ open class MainActivity : AppCompatActivity() {
         prefs.isServiceEnabled = false
         setCodeReceiverState(false)
         setWipeOnInactivityComponentsState(false)
-        setTileState(false)
-        shortcut.remove()
+        setLaunchers(false)
         admin.remove()
     }
 

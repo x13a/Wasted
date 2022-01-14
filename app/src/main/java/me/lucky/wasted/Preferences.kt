@@ -11,11 +11,13 @@ class Preferences(ctx: Context) {
 
         private const val SERVICE_ENABLED = "service_enabled"
         private const val CODE = "code"
-        private const val CODE_ENABLED = "code_enabled"
         private const val WIPE_DATA = "wipe_data"
         private const val WIPE_ESIM = "wipe_esim"
         private const val MAX_FAILED_PASSWORD_ATTEMPTS = "max_failed_password_attempts"
         private const val WIPE_ON_INACTIVITY = "wipe_on_inactivity"
+
+        private const val LAUNCHERS = "launchers"
+        private const val CODE_ENABLED = "code_enabled"
         private const val WIPE_ON_INACTIVITY_DAYS = "wipe_on_inactivity_days"
 
         private const val FILE_NAME = "sec_shared_prefs"
@@ -37,6 +39,10 @@ class Preferences(ctx: Context) {
     var isServiceEnabled: Boolean
         get() = prefs.getBoolean(SERVICE_ENABLED, false)
         set(value) = prefs.edit { putBoolean(SERVICE_ENABLED, value) }
+
+    var launchers: Int
+        get() = prefs.getInt(LAUNCHERS, 0)
+        set(value) = prefs.edit { putInt(LAUNCHERS, value) }
 
     var code: String
         get() = prefs.getString(CODE, "") ?: ""
@@ -71,4 +77,9 @@ class Preferences(ctx: Context) {
             prefs.getInt(WIPE_ON_INACTIVE_DAYS, DEFAULT_WIPE_ON_INACTIVITY_DAYS),
         )
         set(value) = prefs.edit { putInt(WIPE_ON_INACTIVITY_DAYS, value) }
+}
+
+enum class Launcher(val flag: Int) {
+    TILE(1),
+    SHORTCUT(1 shl 1),
 }

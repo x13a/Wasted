@@ -27,4 +27,8 @@
     <string name="dialog_confirm_panic_title">Confirm</string>
     <string name="dialog_confirm_panic_message">Activate panic\? This will lock a device and optionally wipe its data.</string>
     <string name="yes">Yes</string>
+    <string-array name="launchers">
+        <item>Tile</item>
+        <item>Shortcut</item>
+    </string-array>
 </resources>
