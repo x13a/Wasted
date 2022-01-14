@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Wasted</string>
-    <string name="description">Turn on Wasted to lock device on panic trigger. You can use PanicKit, tile, shortcut or send a message with this authentication code.</string>
+    <string name="description">Turn on Wasted to lock a device on panic trigger. You can use PanicKit, tile, shortcut or send a message with this authentication code.</string>
     <string name="device_admin_label">Wasted</string>
-    <string name="device_admin_description">Allow Wasted to lock device and optionally wipe data on panic trigger</string>
+    <string name="device_admin_description">Allow Wasted to lock a device and optionally wipe its data on panic trigger</string>
     <string name="service_unavailable_popup">Device admin unavailable</string>
     <string name="wipe_data_check_box">Wipe data</string>
     <string name="wipe_esim_check_box">Wipe eSIM</string>
@@ -11,16 +11,16 @@
     <string name="panic_app_unknown_app">an unknown app</string>
     <string name="allow">Allow</string>
     <string name="cancel">Cancel</string>
-    <string name="tile_label">Unlock device</string>
+    <string name="tile_label">Unlock a device</string>
     <string name="shortcut_label">Panic</string>
     <string name="max_failed_password_attempts_description">Maximum number of failed password attempts.</string>
     <string name="max_failed_password_attempts_content_description">Count</string>
     <string name="wipe_on_inactivity_switch">Wipe on inactivity</string>
-    <string name="wipe_on_inactivity_description">Wipe device when it was not unlocked for N days.</string>
+    <string name="wipe_on_inactivity_description">Wipe a device when it was not unlocked for N days.</string>
     <string name="wipe_on_inactivity_days">Days</string>
     <string name="notification_channel_default_name">Default</string>
     <string name="ok">OK</string>
-    <string name="wipe_job_service_description">Wipe device on inactivity</string>
+    <string name="wipe_job_service_description">Wipe a device on inactivity</string>
     <string name="wipe_job_service_start_failed_popup">Failed to start a wipe service</string>
     <string name="unlock_service_description">Receive unlock events</string>
     <string name="unlock_service_notification_title">Unlock Service</string>

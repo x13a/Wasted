@@ -1,6 +1,6 @@
 # Wasted
 
-Lock device and wipe data on panic trigger.
+Lock a device and wipe its data on panic trigger.
 
 [<img 
      src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
@@ -15,11 +15,11 @@ Lock device and wipe data on panic trigger.
 You can use [PanicKit](https://guardianproject.info/code/panickit/), tile, shortcut or send a 
 message with authentication code. On trigger, using 
 [Device Administration API](https://developer.android.com/guide/topics/admin/device-admin), it 
-locks device and optionally runs wipe.
+locks a device and optionally runs wipe.
 
 Also you can:
 - limit the maximum number of failed password attempts
-- wipe device when it was not unlocked for N days
+- wipe a device when it was not unlocked for N days
 
 The app works in `Work Profile` too. Use [Shelter](https://github.com/PeterCxy/Shelter) to install 
 risky apps and `Wasted` in it. Then you can wipe this profile data with one click without wiping 

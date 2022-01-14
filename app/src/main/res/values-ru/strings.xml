@@ -2,7 +2,7 @@
     <string name="app_name">Потрачено</string>
     <string name="description">Включите Потрачено чтобы заблокировать устройство при получении тревожного сигнала. Вы можете использовать PanicKit, плитку быстрых настроек, ярлык или отправить сообщение с этим кодом аутентификации.</string>
     <string name="device_admin_label">Потрачено</string>
-    <string name="device_admin_description">Разрешите Потрачено блокировать устройство и опционально стирать данные при получении тревожного сигнала</string>
+    <string name="device_admin_description">Разрешите Потрачено блокировать устройство и опционально стирать его данные при получении тревожного сигнала</string>
     <string name="service_unavailable_popup">Администратор устройства недоступен</string>
     <string name="wipe_data_check_box">Стереть данные</string>
     <string name="wipe_esim_check_box">Стереть eSIM</string>
@@ -12,7 +12,7 @@
     <string name="allow">Разрешить</string>
     <string name="cancel">Отменить</string>
     <string name="tile_label">Разблокировать устройство</string>
-    <string name="shortcut_label">Паниковать</string>
+    <string name="shortcut_label">Тревога</string>
     <string name="max_failed_password_attempts_description">Максимальное количество неудачных попыток ввода пароля.</string>
     <string name="max_failed_password_attempts_content_description">Количество</string>
     <string name="wipe_on_inactivity_switch">Стереть при неактивности</string>
@@ -21,7 +21,7 @@
     <string name="notification_channel_default_name">Дефолт</string>
     <string name="ok">OK</string>
     <string name="wipe_job_service_description">Стереть данные при неактивности</string>
-    <string name="wipe_job_service_start_failed_popup">Не удалось запустить службу стирания данных</string>
+    <string name="wipe_job_service_start_failed_popup">Не удалось запустить сервис стирания данных</string>
     <string name="unlock_service_description">Получать события разблокировки</string>
     <string name="unlock_service_notification_title">Служба Разблокировки</string>
 </resources>
