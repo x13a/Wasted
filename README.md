@@ -39,7 +39,7 @@ Only encrypted device may guarantee that the data will not be recoverable.
 
 ## Example
 
-Broadcast message:
+Message:
 ```sh
 $ adb shell am broadcast \
     -a me.lucky.wasted.action.TRIGGER \
