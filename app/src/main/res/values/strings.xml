@@ -24,4 +24,7 @@
     <string name="wipe_job_service_start_failed_popup">Failed to start a wipe service</string>
     <string name="unlock_service_description">Receive unlock events</string>
     <string name="unlock_service_notification_title">Unlock Service</string>
+    <string name="dialog_confirm_panic_title">Confirm</string>
+    <string name="dialog_confirm_panic_message">Activate panic\? This will lock a device and optionally wipe its data.</string>
+    <string name="yes">Yes</string>
 </resources>

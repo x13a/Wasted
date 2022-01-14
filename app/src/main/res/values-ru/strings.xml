@@ -24,4 +24,7 @@
     <string name="wipe_job_service_start_failed_popup">Не удалось запустить сервис стирания данных</string>
     <string name="unlock_service_description">Получать события разблокировки</string>
     <string name="unlock_service_notification_title">Служба Разблокировки</string>
+    <string name="dialog_confirm_panic_title">Подтвердите</string>
+    <string name="dialog_confirm_panic_message">Активировать тревогу\? Это заблокирует устройство и опционально сотрёт его данные.</string>
+    <string name="yes">Да</string>
 </resources>

@@ -120,6 +120,21 @@ open class MainActivity : AppCompatActivity() {
                     false -> setOff()
                 }
             }
+            toggle.setOnLongClickListener {
+                if (!toggle.isChecked) return@setOnLongClickListener false
+                MaterialAlertDialogBuilder(this@MainActivity)
+                    .setTitle(R.string.dialog_confirm_panic_title)
+                    .setMessage(R.string.dialog_confirm_panic_message)
+                    .setPositiveButton(R.string.yes) { _, _ ->
+                        try {
+                            admin.lockNow()
+                            if (prefs.isWipeData) admin.wipeData()
+                        } catch (exc: SecurityException) {}
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+                true
+            }
         }
     }
 
