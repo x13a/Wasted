@@ -23,7 +23,7 @@ open class MainActivity : AppCompatActivity() {
     private val shortcut by lazy { ShortcutManager(this) }
     private val job by lazy { WipeJobManager(this) }
 
-    private val requestAdminPolicy =
+    private val registerForDeviceAdmin =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         when (result.resultCode) {
             RESULT_OK -> setOn()
@@ -238,7 +238,7 @@ open class MainActivity : AppCompatActivity() {
         admin.remove()
     }
 
-    private fun requestAdmin() = requestAdminPolicy.launch(admin.makeRequestIntent())
+    private fun requestAdmin() = registerForDeviceAdmin.launch(admin.makeRequestIntent())
     private fun makeCode(): String = UUID.randomUUID().toString()
     private fun setCodeReceiverState(value: Boolean) =
         setComponentState(CodeReceiver::class.java, value)
