@@ -20,8 +20,8 @@
     <string name="wipe_on_inactivity_days">Days</string>
     <string name="notification_channel_default_name">Default</string>
     <string name="ok">OK</string>
-    <string name="wipe_job_service_description">Wipe a device on inactivity</string>
-    <string name="wipe_job_service_start_failed_popup">Failed to start a wipe service</string>
+    <string name="wipe_job_description">Wipe a device on inactivity</string>
+    <string name="wipe_job_schedule_failed_popup">Failed to schedule a wipe service</string>
     <string name="unlock_service_description">Receive unlock events</string>
     <string name="unlock_service_notification_title">Unlock Service</string>
     <string name="dialog_confirm_panic_title">Confirm</string>

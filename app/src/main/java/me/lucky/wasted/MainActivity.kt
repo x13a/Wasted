@@ -1,5 +1,6 @@
 package me.lucky.wasted
 
+import android.app.job.JobScheduler
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -109,7 +110,7 @@ open class MainActivity : AppCompatActivity() {
             wipeOnInactivitySwitch.setOnCheckedChangeListener { _, isChecked ->
                 if (!setWipeOnInactivityComponentsState(prefs.isServiceEnabled && isChecked)) {
                     wipeOnInactivitySwitch.isChecked = false
-                    showWipeJobServiceStartFailedPopup()
+                    showWipeJobScheduleFailedPopup()
                     return@setOnCheckedChangeListener
                 }
                 prefs.isWipeOnInactivity = isChecked
@@ -184,6 +185,8 @@ open class MainActivity : AppCompatActivity() {
             }
             .setPositiveButton(R.string.ok) { _, _ ->
                 prefs.wipeOnInactivityDays = days
+                if (prefs.isServiceEnabled && job.schedule() == JobScheduler.RESULT_FAILURE)
+                    showWipeJobScheduleFailedPopup()
             }
             .show()
     }
@@ -197,7 +200,7 @@ open class MainActivity : AppCompatActivity() {
     private fun setOn() {
         if (!setWipeOnInactivityComponentsState(prefs.isWipeOnInactivity)) {
             binding.toggle.isChecked = false
-            showWipeJobServiceStartFailedPopup()
+            showWipeJobScheduleFailedPopup()
             return
         }
         prefs.isServiceEnabled = true
@@ -220,10 +223,10 @@ open class MainActivity : AppCompatActivity() {
         updateCodeColorState()
     }
 
-    private fun showWipeJobServiceStartFailedPopup() {
+    private fun showWipeJobScheduleFailedPopup() {
         Snackbar.make(
             binding.toggle,
-            R.string.wipe_job_service_start_failed_popup,
+            R.string.wipe_job_schedule_failed_popup,
             Snackbar.LENGTH_LONG,
         ).show()
     }
