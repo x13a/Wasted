@@ -210,7 +210,7 @@ open class MainActivity : AppCompatActivity() {
             setPanicKitState(launchers.and(Launcher.PANIC_KIT.flag) != 0)
             setTileState(launchers.and(Launcher.TILE.flag) != 0)
             shortcut.setState(launchers.and(Launcher.SHORTCUT.flag) != 0)
-            setCodeReceiverState(launchers.and(Launcher.CODE.flag) != 0)
+            setCodeReceiverState(launchers.and(Launcher.BROADCAST.flag) != 0)
         } else {
             setPanicKitState(false)
             setTileState(false)
