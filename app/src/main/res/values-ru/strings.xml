@@ -25,8 +25,8 @@
     <string name="wipe_job_schedule_failed_popup">Не удалось запланировать сервис стирания данных</string>
     <string name="unlock_service_description">Получать события разблокировки</string>
     <string name="unlock_service_notification_title">Служба Разблокировки</string>
-    <string name="dialog_confirm_panic_title">Подтвердите</string>
-    <string name="dialog_confirm_panic_message">Активировать тревогу\? Это заблокирует устройство и опционально сотрёт его данные.</string>
+    <string name="dialog_confirm_panic_title">Активировать тревогу\?</string>
+    <string name="dialog_confirm_panic_message">Это заблокирует устройство и опционально сотрёт его данные.</string>
     <string name="yes">Да</string>
     <string name="launchers_array_0">PanicKit</string>
     <string name="launchers_array_1">Плитка</string>
