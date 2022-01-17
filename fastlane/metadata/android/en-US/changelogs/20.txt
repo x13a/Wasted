@@ -1,0 +1,8 @@
+change theme to material3
+add internal panic launcher by long click on toggle (toggle has to be at ON state)
+add options to enable/disable external panic launchers by single click on code
+auto hide options that require screen lock feature if not supported by device
+reschedule wipe job on change inactivity days
+under the hood improvements
+
+BACKWARD COMPATIBILITY: You have to re-enable required panic launchers.
