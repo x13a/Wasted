@@ -13,7 +13,7 @@ Lock a device and wipe its data on panic trigger.
      height="30%">
 
 You can use [PanicKit](https://guardianproject.info/code/panickit/), tile, shortcut or send a 
-message with authentication code. On trigger, using 
+broadcast with authentication code. On trigger, using 
 [Device Administration API](https://developer.android.com/guide/topics/admin/device-admin), it 
 locks a device and optionally runs wipe.
 
@@ -39,7 +39,7 @@ Only encrypted device may guarantee that the data will not be recoverable.
 
 ## Example
 
-Message:
+Broadcast:
 ```sh
 $ adb shell am broadcast \
     -a me.lucky.wasted.action.TRIGGER \

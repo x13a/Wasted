@@ -1,7 +1,7 @@
 Lock a device and wipe its data on panic trigger.
 
-You can use PanicKit, tile, shortcut or send a message with authentication code. On trigger, using
-Device Administration API, it locks a device and optionally runs wipe.
+You can use PanicKit, tile, shortcut or send a broadcast with authentication code. On trigger,
+using Device Administration API, it locks a device and optionally runs wipe.
 
 Also you can:
 * limit the maximum number of failed password attempts
