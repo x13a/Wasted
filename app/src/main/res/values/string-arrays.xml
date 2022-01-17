@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="launchers">
+        <item>@string/launchers_array_0</item>
+        <item>@string/launchers_array_1</item>
+        <item>@string/launchers_array_2</item>
+        <item>@string/launchers_array_3</item>
+    </string-array>
+</resources>

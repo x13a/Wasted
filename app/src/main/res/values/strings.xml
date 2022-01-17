@@ -28,10 +28,8 @@
     <string name="dialog_confirm_panic_title">Confirm</string>
     <string name="dialog_confirm_panic_message">Activate panic\? This will lock a device and optionally wipe its data.</string>
     <string name="yes">Yes</string>
-    <string-array name="launchers">
-        <item>PanicKit</item>
-        <item>Tile</item>
-        <item>Shortcut</item>
-        <item>Broadcast</item>
-    </string-array>
+    <string name="launchers_array_0">PanicKit</string>
+    <string name="launchers_array_1">Tile</string>
+    <string name="launchers_array_2">Shortcut</string>
+    <string name="launchers_array_3">Broadcast</string>
 </resources>
