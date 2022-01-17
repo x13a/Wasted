@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wasted</string>
     <string name="description">Turn on Wasted to lock a device on panic trigger. You can use PanicKit, tile, shortcut or send a broadcast with this authentication code.</string>
