@@ -82,5 +82,5 @@ enum class Launcher(val flag: Int) {
     PANIC_KIT(1),
     TILE(1 shl 1),
     SHORTCUT(1 shl 2),
-    BROADCAST(1 shl 3)
+    BROADCAST(1 shl 3),
 }

@@ -18,8 +18,8 @@ import me.lucky.wasted.databinding.ActivityMainBinding
 
 open class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val prefs by lazy { Preferences(this) }
-    private val admin by lazy { DeviceAdminManager(this) }
+    private lateinit var prefs: Preferences
+    private lateinit var admin: DeviceAdminManager
     private val shortcut by lazy { ShortcutManager(this) }
     private val job by lazy { WipeJobManager(this) }
 
@@ -54,6 +54,8 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        prefs = Preferences(this)
+        admin = DeviceAdminManager(this)
         AppNotificationManager(this).createNotificationChannels()
         if (prefs.code == "") prefs.code = makeCode()
         updateCodeColorState()
