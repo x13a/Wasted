@@ -11,7 +11,7 @@ import android.os.IBinder
 import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 
-class UnlockService : Service() {
+class ForegroundService : Service() {
     companion object {
         private const val NOTIFICATION_ID = 1000
     }
@@ -42,7 +42,7 @@ class UnlockService : Service() {
         startForeground(
             NOTIFICATION_ID,
             NotificationCompat.Builder(this, AppNotificationManager.CHANNEL_DEFAULT_ID)
-                .setContentTitle(getString(R.string.unlock_service_notification_title))
+                .setContentTitle(getString(R.string.foreground_service_notification_title))
                 .setSmallIcon(android.R.drawable.ic_delete)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .build()

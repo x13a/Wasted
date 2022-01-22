@@ -12,7 +12,7 @@
     <string name="panic_app_unknown_app">an unknown app</string>
     <string name="allow">Allow</string>
     <string name="cancel">Cancel</string>
-    <string name="tile_label">Unlock a device</string>
+    <string name="tile_label">Unlock device</string>
     <string name="shortcut_label">Panic</string>
     <string name="max_failed_password_attempts_description">Maximum number of failed password attempts.</string>
     <string name="max_failed_password_attempts_content_description">Count</string>
@@ -23,8 +23,8 @@
     <string name="ok">OK</string>
     <string name="wipe_job_description">Wipe a device on inactivity</string>
     <string name="wipe_job_schedule_failed_popup">Failed to schedule a wipe job</string>
-    <string name="unlock_service_description">Receive unlock events</string>
-    <string name="unlock_service_notification_title">Unlock Service</string>
+    <string name="foreground_service_description">Receive unlock events</string>
+    <string name="foreground_service_notification_title">Unlock Service</string>
     <string name="dialog_confirm_panic_title">Activate panic\?</string>
     <string name="dialog_confirm_panic_message">This will lock a device and optionally wipe its data.</string>
     <string name="yes">Yes</string>

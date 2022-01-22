@@ -213,16 +213,16 @@ open class MainActivity : AppCompatActivity() {
         if (value) {
             val launchers = prefs.launchers
             setPanicKitState(launchers.and(Launcher.PANIC_KIT.flag) != 0)
-            setTileState(launchers.and(Launcher.TILE.flag) != 0)
+            setQSTileState(launchers.and(Launcher.TILE.flag) != 0)
             shortcut.setState(launchers.and(Launcher.SHORTCUT.flag) != 0)
             setCodeReceiverState(launchers.and(Launcher.BROADCAST.flag) != 0)
-            setNotificationState(launchers.and(Launcher.NOTIFICATION.flag) != 0)
+            setNotificationListenerState(launchers.and(Launcher.NOTIFICATION.flag) != 0)
         } else {
             setPanicKitState(false)
-            setTileState(false)
+            setQSTileState(false)
             shortcut.setState(false)
             setCodeReceiverState(false)
-            setNotificationState(false)
+            setNotificationListenerState(false)
         }
         updateCodeColorState()
     }
@@ -248,9 +248,9 @@ open class MainActivity : AppCompatActivity() {
         setComponentState(CodeReceiver::class.java, value)
     private fun setRestartReceiverState(value: Boolean) =
         setComponentState(RestartReceiver::class.java, value)
-    private fun setTileState(value: Boolean) =
+    private fun setQSTileState(value: Boolean) =
         setComponentState(QSTileService::class.java, value)
-    private fun setNotificationState(value: Boolean) =
+    private fun setNotificationListenerState(value: Boolean) =
         setComponentState(NotificationListenerService::class.java, value)
 
     private fun setPanicKitState(value: Boolean) {
@@ -267,8 +267,8 @@ open class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun setUnlockServiceState(value: Boolean) {
-        Intent(this, UnlockService::class.java).also {
+    private fun setForegroundServiceState(value: Boolean) {
+        Intent(this, ForegroundService::class.java).also {
             if (value) ContextCompat.startForegroundService(this, it) else stopService(it)
         }
     }
@@ -276,7 +276,7 @@ open class MainActivity : AppCompatActivity() {
     private fun setWipeOnInactivityComponentsState(value: Boolean): Boolean {
         val result = job.setState(value)
         if (result) {
-            setUnlockServiceState(value)
+            setForegroundServiceState(value)
             setRestartReceiverState(value)
         }
         return result

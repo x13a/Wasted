@@ -107,9 +107,9 @@
         </service>
 
         <service
-            android:name=".UnlockService"
+            android:name=".ForegroundService"
             android:exported="false"
-            android:description="@string/unlock_service_description">
+            android:description="@string/foreground_service_description">
         </service>
 
         <receiver
