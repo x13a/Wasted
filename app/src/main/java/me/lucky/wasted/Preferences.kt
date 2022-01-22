@@ -83,4 +83,5 @@ enum class Launcher(val flag: Int) {
     TILE(1 shl 1),
     SHORTCUT(1 shl 2),
     BROADCAST(1 shl 3),
+    NOTIFICATION(1 shl 4),
 }

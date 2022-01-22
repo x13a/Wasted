@@ -216,11 +216,13 @@ open class MainActivity : AppCompatActivity() {
             setTileState(launchers.and(Launcher.TILE.flag) != 0)
             shortcut.setState(launchers.and(Launcher.SHORTCUT.flag) != 0)
             setCodeReceiverState(launchers.and(Launcher.BROADCAST.flag) != 0)
+            setNotificationState(launchers.and(Launcher.NOTIFICATION.flag) != 0)
         } else {
             setPanicKitState(false)
             setTileState(false)
             shortcut.setState(false)
             setCodeReceiverState(false)
+            setNotificationState(false)
         }
         updateCodeColorState()
     }
@@ -248,6 +250,8 @@ open class MainActivity : AppCompatActivity() {
         setComponentState(RestartReceiver::class.java, value)
     private fun setTileState(value: Boolean) =
         setComponentState(QSTileService::class.java, value)
+    private fun setNotificationState(value: Boolean) =
+        setComponentState(NotificationListenerService::class.java, value)
 
     private fun setPanicKitState(value: Boolean) {
         setComponentState(PanicConnectionActivity::class.java, value)

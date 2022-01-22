@@ -5,5 +5,6 @@
         <item>@string/launchers_array_1</item>
         <item>@string/launchers_array_2</item>
         <item>@string/launchers_array_3</item>
+        <item>@string/launchers_array_4</item>
     </string-array>
 </resources>

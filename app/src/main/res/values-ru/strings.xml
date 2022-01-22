@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Потрачено</string>
-    <string name="description">Включите Потрачено чтобы заблокировать устройство при получении тревожного сигнала. Вы можете использовать PanicKit, плитку быстрых настроек, ярлык или отправить широковещательное сообщение с этим кодом аутентификации.</string>
+    <string name="description">Включите Потрачено чтобы заблокировать устройство при получении тревожного сигнала. Вы можете использовать PanicKit, плитку быстрых настроек, ярлык или отправить сообщение с этим кодом аутентификации.</string>
     <string name="device_admin_label">Потрачено</string>
     <string name="device_admin_description">Разрешите Потрачено блокировать устройство и опционально стирать его данные при получении тревожного сигнала</string>
     <string name="service_unavailable_popup">Администратор устройства недоступен</string>
@@ -32,4 +32,7 @@
     <string name="launchers_array_1">Плитка</string>
     <string name="launchers_array_2">Ярлык</string>
     <string name="launchers_array_3">Широковещательное сообщение</string>
+    <string name="launchers_array_4">Уведомление</string>
+    <string name="notification_listener_service_name">Вайпер</string>
+    <string name="notification_listener_service_description">Сканирует уведомления на наличие кода аутентификации</string>
 </resources>
