@@ -33,6 +33,10 @@ class ForegroundService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        init()
+    }
+
+    private fun init() {
         receiver = UnlockReceiver()
         registerReceiver(receiver, IntentFilter(Intent.ACTION_USER_PRESENT))
     }
