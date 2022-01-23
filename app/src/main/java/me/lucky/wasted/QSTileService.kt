@@ -12,7 +12,7 @@ import kotlin.concurrent.timerTask
 class QSTileService : TileService() {
     private lateinit var prefs: Preferences
     private lateinit var admin: DeviceAdminManager
-    private val counter = AtomicInteger(0)
+    private val counter = AtomicInteger()
     private var timer: Timer? = null
 
     override fun onCreate() {
