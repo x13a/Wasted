@@ -10,10 +10,20 @@ import kotlin.concurrent.timerTask
 
 @RequiresApi(Build.VERSION_CODES.N)
 class QSTileService : TileService() {
-    private val prefs by lazy { Preferences(this) }
-    private val admin by lazy { DeviceAdminManager(this) }
+    private lateinit var prefs: Preferences
+    private lateinit var admin: DeviceAdminManager
     private val counter = AtomicInteger(0)
     private var timer: Timer? = null
+
+    override fun onCreate() {
+        super.onCreate()
+        init()
+    }
+
+    private fun init() {
+        prefs = Preferences(this)
+        admin = DeviceAdminManager(this)
+    }
 
     override fun onStartListening() {
         super.onStartListening()
