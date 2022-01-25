@@ -11,3 +11,6 @@ The app works in Work Profile too. Use Shelter to install risky apps and Wasted 
 wipe this profile data with one click without wiping the whole device.
 
 Only encrypted device may guarantee that the data will not be recoverable.
+
+It is Free Open Source Software.
+License: GPL-3
