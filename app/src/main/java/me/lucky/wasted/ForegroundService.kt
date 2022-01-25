@@ -45,7 +45,7 @@ class ForegroundService : Service() {
         super.onStartCommand(intent, flags, startId)
         startForeground(
             NOTIFICATION_ID,
-            NotificationCompat.Builder(this, AppNotificationManager.CHANNEL_DEFAULT_ID)
+            NotificationCompat.Builder(this, NotificationManager.CHANNEL_DEFAULT_ID)
                 .setContentTitle(getString(R.string.foreground_service_notification_title))
                 .setSmallIcon(android.R.drawable.ic_delete)
                 .setPriority(NotificationCompat.PRIORITY_LOW)

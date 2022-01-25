@@ -56,7 +56,7 @@ open class MainActivity : AppCompatActivity() {
     private fun init() {
         prefs = Preferences(this)
         admin = DeviceAdminManager(this)
-        AppNotificationManager(this).createNotificationChannels()
+        NotificationManager(this).createNotificationChannels()
         if (prefs.code == "") prefs.code = makeCode()
         updateCodeColorState()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) hideESIM()

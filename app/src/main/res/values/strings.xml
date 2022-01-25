@@ -19,7 +19,6 @@
     <string name="wipe_on_inactivity_switch">Wipe on inactivity</string>
     <string name="wipe_on_inactivity_description">Wipe a device when it was not unlocked for N days.</string>
     <string name="wipe_on_inactivity_days">Days</string>
-    <string name="notification_channel_default_name">Default</string>
     <string name="ok">OK</string>
     <string name="wipe_job_description">Wipe a device on inactivity</string>
     <string name="wipe_job_schedule_failed_popup">Failed to schedule a wipe job</string>
