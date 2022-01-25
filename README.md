@@ -33,6 +33,8 @@ Only encrypted device may guarantee that the data will not be recoverable.
 
 ## Permissions
 
+`DEVICE_ADMIN` lock and wipe
+
 `FOREGROUND_SERVICE`
 
 [Wipe on inactivity] receive unlock events
