@@ -10,6 +10,10 @@ import kotlin.concurrent.timerTask
 
 @RequiresApi(Build.VERSION_CODES.N)
 class QSTileService : TileService() {
+    companion object {
+        private const val SAFE_DELAY = 2000L
+    }
+
     private lateinit var prefs: Preferences
     private lateinit var admin: DeviceAdminManager
     private val counter = AtomicInteger()
@@ -52,7 +56,7 @@ class QSTileService : TileService() {
                         admin.lockNow()
                         admin.wipeData()
                     } catch (exc: SecurityException) {}
-                }, 2000)
+                }, SAFE_DELAY)
             }
             else -> {
                 timer?.cancel()
