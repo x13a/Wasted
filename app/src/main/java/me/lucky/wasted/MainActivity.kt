@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -153,16 +152,18 @@ open class MainActivity : AppCompatActivity() {
 
     private fun showLaunchersSettings() {
         var launchers = prefs.launchers
-        val checkedLaunchers = mutableListOf<Boolean>()
-        for (launcher in Launcher.values()) {
-            checkedLaunchers.add(launchers.and(launcher.flag) != 0)
+        val launchersValues = Launcher.values().toMutableList()
+        val launchersStrings = resources.getStringArray(R.array.launchers).toMutableList()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            launchersStrings.removeAt(launchersValues.indexOf(Launcher.TILE))
+            launchersValues.remove(Launcher.TILE)
         }
         MaterialAlertDialogBuilder(this)
             .setMultiChoiceItems(
-                resources.getStringArray(R.array.launchers),
-                checkedLaunchers.toBooleanArray(),
+                launchersStrings.toTypedArray(),
+                launchersValues.map { launchers.and(it.flag) != 0 }.toBooleanArray(),
             ) { _, index, isChecked ->
-                val value = Launcher.values()[index]
+                val value = launchersValues[index]
                 launchers = when (isChecked) {
                     true -> launchers.or(value.flag)
                     false -> launchers.and(value.flag.inv())
@@ -214,14 +215,13 @@ open class MainActivity : AppCompatActivity() {
         if (value) {
             val launchers = prefs.launchers
             setPanicKitState(launchers.and(Launcher.PANIC_KIT.flag) != 0)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                setQSTileState(launchers.and(Launcher.TILE.flag) != 0)
+            setQSTileState(launchers.and(Launcher.TILE.flag) != 0)
             shortcut.setState(launchers.and(Launcher.SHORTCUT.flag) != 0)
             setCodeReceiverState(launchers.and(Launcher.BROADCAST.flag) != 0)
             setNotificationListenerState(launchers.and(Launcher.NOTIFICATION.flag) != 0)
         } else {
             setPanicKitState(false)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) setQSTileState(false)
+            setQSTileState(false)
             shortcut.setState(false)
             setCodeReceiverState(false)
             setNotificationListenerState(false)
@@ -250,9 +250,10 @@ open class MainActivity : AppCompatActivity() {
         setComponentState(CodeReceiver::class.java, value)
     private fun setRestartReceiverState(value: Boolean) =
         setComponentState(RestartReceiver::class.java, value)
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun setQSTileState(value: Boolean) =
-        setComponentState(QSTileService::class.java, value)
+    private fun setQSTileState(value: Boolean) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            setComponentState(QSTileService::class.java, value)
+    }
     private fun setNotificationListenerState(value: Boolean) =
         setComponentState(NotificationListenerService::class.java, value)
 
