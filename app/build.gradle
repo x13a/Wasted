@@ -33,7 +33,7 @@ android {
     buildFeatures {
         viewBinding true
     }
-    lintOptions {
+    lint {
         disable 'MissingTranslation'
     }
 }
