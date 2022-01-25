@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -213,13 +214,14 @@ open class MainActivity : AppCompatActivity() {
         if (value) {
             val launchers = prefs.launchers
             setPanicKitState(launchers.and(Launcher.PANIC_KIT.flag) != 0)
-            setQSTileState(launchers.and(Launcher.TILE.flag) != 0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                setQSTileState(launchers.and(Launcher.TILE.flag) != 0)
             shortcut.setState(launchers.and(Launcher.SHORTCUT.flag) != 0)
             setCodeReceiverState(launchers.and(Launcher.BROADCAST.flag) != 0)
             setNotificationListenerState(launchers.and(Launcher.NOTIFICATION.flag) != 0)
         } else {
             setPanicKitState(false)
-            setQSTileState(false)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) setQSTileState(false)
             shortcut.setState(false)
             setCodeReceiverState(false)
             setNotificationListenerState(false)
@@ -248,6 +250,7 @@ open class MainActivity : AppCompatActivity() {
         setComponentState(CodeReceiver::class.java, value)
     private fun setRestartReceiverState(value: Boolean) =
         setComponentState(RestartReceiver::class.java, value)
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun setQSTileState(value: Boolean) =
         setComponentState(QSTileService::class.java, value)
     private fun setNotificationListenerState(value: Boolean) =
