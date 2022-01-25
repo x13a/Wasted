@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
 
-class NotificationManager(ctx: Context) {
+class NotificationManager(private val ctx: Context) {
     companion object {
         const val CHANNEL_DEFAULT_ID = "default"
     }
@@ -15,6 +15,6 @@ class NotificationManager(ctx: Context) {
         manager.createNotificationChannel(NotificationChannelCompat.Builder(
             CHANNEL_DEFAULT_ID,
             NotificationManagerCompat.IMPORTANCE_LOW,
-        ).build())
+        ).setName(ctx.getString(R.string.notification_channel_default_name)).build())
     }
 }
