@@ -11,7 +11,7 @@
     <string name="panic_app_dialog_message">Are you sure that you want to allow %1$s to trigger destructive panic actions\?</string>
     <string name="panic_app_unknown_app">an unknown app</string>
     <string name="allow">Allow</string>
-    <string name="tile_label">Unlock device</string>
+    <string name="tile_label">Airplane mode</string>
     <string name="shortcut_label">Panic</string>
     <string name="max_failed_password_attempts_description">Maximum number of failed password attempts.</string>
     <string name="max_failed_password_attempts_content_description">Count</string>

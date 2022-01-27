@@ -11,7 +11,7 @@
     <string name="panic_app_dialog_message">Вы уверены, что хотите разрешить %1$s запускать действия тревожной кнопки\?</string>
     <string name="panic_app_unknown_app">неизвестное приложение</string>
     <string name="allow">Разрешить</string>
-    <string name="tile_label">Разблокировать устройство</string>
+    <string name="tile_label">Режим полета</string>
     <string name="shortcut_label">Тревога</string>
     <string name="max_failed_password_attempts_description">Максимальное количество неудачных попыток ввода пароля.</string>
     <string name="max_failed_password_attempts_content_description">Количество</string>
