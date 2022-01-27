@@ -146,7 +146,7 @@ open class MainActivity : AppCompatActivity() {
                     if (prefs.isWipeData) admin.wipeData()
                 } catch (exc: SecurityException) {}
             }
-            .setNegativeButton(R.string.cancel, null)
+            .setNegativeButton(android.R.string.cancel, null)
             .show()
     }
 
@@ -169,7 +169,7 @@ open class MainActivity : AppCompatActivity() {
                     false -> launchers.and(value.flag.inv())
                 }
             }
-            .setPositiveButton(R.string.ok) { _, _ ->
+            .setPositiveButton(android.R.string.ok) { _, _ ->
                 prefs.launchers = launchers
                 setLaunchersState(prefs.isServiceEnabled)
             }
@@ -187,7 +187,7 @@ open class MainActivity : AppCompatActivity() {
             .setSingleChoiceItems(items, checked) { _, which ->
                 days = items[which].toInt()
             }
-            .setPositiveButton(R.string.ok) { _, _ ->
+            .setPositiveButton(android.R.string.ok) { _, _ ->
                 prefs.wipeOnInactivityDays = days
                 if (prefs.isServiceEnabled && job.schedule() == JobScheduler.RESULT_FAILURE)
                     showWipeJobScheduleFailedPopup()
