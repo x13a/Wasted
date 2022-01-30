@@ -123,7 +123,7 @@
 
         <service
             android:name=".NotificationListenerService"
-            android:label="@string/notification_listener_service_name"
+            android:label="@string/notification_listener_service_label"
             android:description="@string/notification_listener_service_description"
             android:enabled="false"
             android:exported="true"

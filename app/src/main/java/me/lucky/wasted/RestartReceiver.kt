@@ -12,6 +12,9 @@ class RestartReceiver : BroadcastReceiver() {
             intent.action != Intent.ACTION_MY_PACKAGE_REPLACED) return
         val prefs = Preferences(context)
         if (!prefs.isServiceEnabled || !prefs.isWipeOnInactivity) return
-        ContextCompat.startForegroundService(context, Intent(context, ForegroundService::class.java))
+        ContextCompat.startForegroundService(
+            context.applicationContext,
+            Intent(context.applicationContext, ForegroundService::class.java),
+        )
     }
 }

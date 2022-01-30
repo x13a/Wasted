@@ -45,7 +45,7 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun update() {
-        if (!admin.isActive() && prefs.isServiceEnabled)
+        if (prefs.isServiceEnabled && !admin.isActive())
             Snackbar.make(
                 binding.toggle,
                 R.string.service_unavailable_popup,
@@ -152,18 +152,18 @@ open class MainActivity : AppCompatActivity() {
 
     private fun showLaunchersSettings() {
         var launchers = prefs.launchers
-        val launchersValues = Launcher.values().toMutableList()
-        val launchersStrings = resources.getStringArray(R.array.launchers).toMutableList()
+        val values = Launcher.values().toMutableList()
+        val strings = resources.getStringArray(R.array.launchers).toMutableList()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            launchersStrings.removeAt(launchersValues.indexOf(Launcher.TILE))
-            launchersValues.remove(Launcher.TILE)
+            strings.removeAt(values.indexOf(Launcher.TILE))
+            values.remove(Launcher.TILE)
         }
         MaterialAlertDialogBuilder(this)
             .setMultiChoiceItems(
-                launchersStrings.toTypedArray(),
-                launchersValues.map { launchers.and(it.flag) != 0 }.toBooleanArray(),
+                strings.toTypedArray(),
+                values.map { launchers.and(it.flag) != 0 }.toBooleanArray(),
             ) { _, index, isChecked ->
-                val value = launchersValues[index]
+                val value = values[index]
                 launchers = when (isChecked) {
                     true -> launchers.or(value.flag)
                     false -> launchers.and(value.flag.inv())
@@ -177,7 +177,7 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun showWipeOnInactivitySettings() {
-        val items = arrayOf("1", "2", "3", "5", "7", "10", "15", "30")
+        val items = resources.getStringArray(R.array.wipe_on_inactivity_days)
         var days = prefs.wipeOnInactivityDays
         var checked = items.indexOf(days.toString())
         if (checked == -1) checked = items
@@ -272,8 +272,9 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun setForegroundServiceState(value: Boolean) {
-        Intent(this, ForegroundService::class.java).also {
-            if (value) ContextCompat.startForegroundService(this, it) else stopService(it)
+        Intent(this.applicationContext, ForegroundService::class.java).also {
+            if (value) ContextCompat.startForegroundService(this.applicationContext, it)
+            else stopService(it)
         }
     }
 

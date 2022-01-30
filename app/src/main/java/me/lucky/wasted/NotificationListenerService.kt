@@ -25,7 +25,7 @@ class NotificationListenerService : NotificationListenerService() {
         val code = prefs.code
         if (!prefs.isServiceEnabled ||
             code == "" ||
-            sbn.notification.extras.getString(Notification.EXTRA_TEXT) != code) return
+            sbn.notification.extras.getString(Notification.EXTRA_TEXT)?.trim() != code) return
         cancelAllNotifications()
         try {
             admin.lockNow()

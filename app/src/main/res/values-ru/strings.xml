@@ -22,15 +22,15 @@
     <string name="wipe_job_description">Стереть данные при неактивности</string>
     <string name="wipe_job_schedule_failed_popup">Не удалось запланировать сервис стирания данных</string>
     <string name="foreground_service_description">Получать события разблокировки</string>
-    <string name="foreground_service_notification_title">Служба Разблокировки</string>
+    <string name="foreground_service_notification_title">Островок Стабильности</string>
     <string name="dialog_confirm_panic_title">Активировать тревогу\?</string>
     <string name="dialog_confirm_panic_message">Это заблокирует устройство и опционально сотрёт его данные.</string>
     <string name="yes">Да</string>
-    <string name="launchers_array_0">PanicKit</string>
-    <string name="launchers_array_1">Плитка</string>
-    <string name="launchers_array_2">Ярлык</string>
-    <string name="launchers_array_3">Широковещательное сообщение</string>
-    <string name="launchers_array_4">Уведомление</string>
-    <string name="notification_listener_service_name">Вайпер</string>
+    <string name="launchers_array_panic_kit">PanicKit</string>
+    <string name="launchers_array_tile">Плитка</string>
+    <string name="launchers_array_shortcut">Ярлык</string>
+    <string name="launchers_array_broadcast">Широковещательное сообщение</string>
+    <string name="launchers_array_notification">Уведомление</string>
+    <string name="notification_listener_service_label">Вайпер</string>
     <string name="notification_listener_service_description">Сканирует уведомления на наличие кода аутентификации</string>
 </resources>

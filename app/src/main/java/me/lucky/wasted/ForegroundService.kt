@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
-import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 
 class ForegroundService : Service() {
@@ -16,29 +15,25 @@ class ForegroundService : Service() {
         private const val NOTIFICATION_ID = 1000
     }
 
-    private lateinit var receiver: BroadcastReceiver
-
-    private class UnlockReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (context == null) return
-            if (context.getSystemService(KeyguardManager::class.java)?.isDeviceSecure != true) return
-            val manager = WipeJobManager(context)
-            var delay = 1000L
-            while (manager.schedule() != JobScheduler.RESULT_SUCCESS) {
-                SystemClock.sleep(delay)
-                delay = delay.shl(1)
-            }
-        }
-    }
+    private lateinit var unlockReceiver: UnlockReceiver
 
     override fun onCreate() {
         super.onCreate()
         init()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        deinit()
+    }
+
     private fun init() {
-        receiver = UnlockReceiver()
-        registerReceiver(receiver, IntentFilter(Intent.ACTION_USER_PRESENT))
+        unlockReceiver = UnlockReceiver()
+        registerReceiver(unlockReceiver, IntentFilter(Intent.ACTION_USER_PRESENT))
+    }
+
+    private fun deinit() {
+        unregisterReceiver(unlockReceiver)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -58,8 +53,27 @@ class ForegroundService : Service() {
         return null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(receiver)
+    private class UnlockReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (context == null ||
+                context.getSystemService(KeyguardManager::class.java)?.isDeviceSecure != true)
+                return
+            Thread(Runner(context, goAsync())).start()
+        }
+
+        private class Runner(
+            private val ctx: Context,
+            private val pendingResult: PendingResult,
+        ) : Runnable {
+            override fun run() {
+                val manager = WipeJobManager(ctx)
+                var delay = 1000L
+                while (manager.schedule() != JobScheduler.RESULT_SUCCESS) {
+                    Thread.sleep(delay)
+                    delay = delay.shl(1)
+                }
+                pendingResult.finish()
+            }
+        }
     }
 }

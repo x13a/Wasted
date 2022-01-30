@@ -22,15 +22,15 @@
     <string name="wipe_job_description">Wipe a device on inactivity</string>
     <string name="wipe_job_schedule_failed_popup">Failed to schedule a wipe job</string>
     <string name="foreground_service_description">Receive unlock events</string>
-    <string name="foreground_service_notification_title">Unlock Service</string>
+    <string name="foreground_service_notification_title">Guard</string>
     <string name="dialog_confirm_panic_title">Activate panic\?</string>
     <string name="dialog_confirm_panic_message">This will lock a device and optionally wipe its data.</string>
     <string name="yes">Yes</string>
-    <string name="launchers_array_0">PanicKit</string>
-    <string name="launchers_array_1">Tile</string>
-    <string name="launchers_array_2">Shortcut</string>
-    <string name="launchers_array_3">Broadcast</string>
-    <string name="launchers_array_4">Notification</string>
-    <string name="notification_listener_service_name">Viper</string>
+    <string name="launchers_array_panic_kit">PanicKit</string>
+    <string name="launchers_array_tile">Tile</string>
+    <string name="launchers_array_shortcut">Shortcut</string>
+    <string name="launchers_array_broadcast">Broadcast</string>
+    <string name="launchers_array_notification">Notification</string>
+    <string name="notification_listener_service_label">Viper</string>
     <string name="notification_listener_service_description">Scan notifications for authentication code</string>
 </resources>
