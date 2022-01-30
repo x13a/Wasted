@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.timerTask
 
 @RequiresApi(Build.VERSION_CODES.N)
-class QSTileService : TileService() {
+class TileService : TileService() {
     companion object {
         private const val SAFE_DELAY = 2000L
     }

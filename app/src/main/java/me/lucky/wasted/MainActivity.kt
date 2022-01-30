@@ -252,7 +252,7 @@ open class MainActivity : AppCompatActivity() {
         setComponentState(RestartReceiver::class.java, value)
     private fun setQSTileState(value: Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            setComponentState(QSTileService::class.java, value)
+            setComponentState(TileService::class.java, value)
     }
     private fun setNotificationListenerState(value: Boolean) =
         setComponentState(NotificationListenerService::class.java, value)

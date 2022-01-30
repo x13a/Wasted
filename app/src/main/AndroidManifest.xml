@@ -84,7 +84,7 @@
         </activity>
 
         <service
-            android:name=".QSTileService"
+            android:name=".TileService"
             android:icon="@drawable/ic_baseline_airplanemode_active_24"
             android:label="@string/tile_label"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
