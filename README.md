@@ -33,17 +33,9 @@ Only encrypted device may guarantee that the data will not be recoverable.
 
 ## Permissions
 
-`DEVICE_ADMIN` 
-
-lock and wipe
-
-`FOREGROUND_SERVICE`
-
-[Wipe on inactivity] receive unlock events
-
-`RECEIVE_BOOT_COMPLETED`
-
-[Wipe on inactivity] persist wipe job across reboots
+* DEVICE_ADMIN           - lock and optionally wipe a device
+* FOREGROUND_SERVICE     - receive unlock events
+* RECEIVE_BOOT_COMPLETED - persist wipe job across reboots
 
 ## Example
 
