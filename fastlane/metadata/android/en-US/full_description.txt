@@ -13,8 +13,8 @@ wipe this profile data with one click without wiping the whole device.
 Only encrypted device may guarantee that the data will not be recoverable.
 
 Permissions:
-* DEVICE_ADMIN           - lock and optionally wipe a device
-* FOREGROUND_SERVICE     - receive unlock events
+* DEVICE_ADMIN - lock and optionally wipe a device
+* FOREGROUND_SERVICE - receive unlock events
 * RECEIVE_BOOT_COMPLETED - persist wipe job across reboots
 
 It is Free Open Source Software.
