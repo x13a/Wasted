@@ -35,7 +35,7 @@ class NotificationListenerService : NotificationListenerService() {
 
     override fun onListenerConnected() {
         super.onListenerConnected()
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return
-        migrateNotificationFilter(0, null)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            migrateNotificationFilter(0, null)
     }
 }
