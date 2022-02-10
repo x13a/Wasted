@@ -49,10 +49,13 @@ $ adb shell am broadcast \
 
 ## Localization
 
-Is Wasted not in your language, or the translation is incorrect or incomplete? Get involved on 
+Is `Wasted` not in your language, or the translation is incorrect or incomplete? Get involved on 
 [Crowdin](https://crwd.in/me-lucky-wasted).
 
-
+[<img 
+      src="https://user-images.githubusercontent.com/53379023/153461055-50169c86-b187-40c7-8ec8-97d5e93660b8.png" 
+      alt="Crowdin" 
+      height="51">](https://crwd.in/me-lucky-wasted)
 
 ## License
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)  
