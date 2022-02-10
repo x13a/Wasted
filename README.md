@@ -47,6 +47,13 @@ $ adb shell am broadcast \
     -e code "b49a6576-0c27-4f03-b96b-da53501022ba"
 ```
 
+## Localization
+
+Is Wasted not in your language, or the translation is incorrect or incomplete? Get involved on 
+[Crowdin](https://crwd.in/me-lucky-wasted).
+
+
+
 ## License
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)  
 
