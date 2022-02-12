@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Потрачено</string>
-    <string name="description">Включите приложение, чтобы заблокировать устройство при получении тревожного сигнала. Вы можете использовать Тревожную кнопку, плитку быстрых настроек, ярлык или отправить сообщение с этим кодом аутентификации.</string>
+    <string name="description">Включите приложение, чтобы заблокировать устройство при возникновении опасности. Вы можете использовать Тревожную кнопку, плитку быстрых настроек, ярлык или отправить сообщение с этим кодом аутентификации.</string>
     <string name="device_admin_label">Потрачено</string>
-    <string name="device_admin_description">Разрешите приложению блокировать устройство и опционально стирать его данные при получении тревожного сигнала</string>
+    <string name="device_admin_description">Разрешите приложению блокировать устройство и опционально стирать его данные при возникновении опасности</string>
     <string name="service_unavailable_popup">Администратор устройства недоступен</string>
     <string name="wipe_data_check_box">Стереть данные</string>
     <string name="wipe_esim_check_box">Стереть eSIM</string>

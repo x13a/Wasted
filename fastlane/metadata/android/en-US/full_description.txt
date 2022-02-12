@@ -1,4 +1,4 @@
-Lock a device and wipe its data on panic trigger.
+Lock a device and wipe its data on danger.
 
 You can use PanicKit, tile, shortcut or send a message with authentication code. On trigger, using
 Device Administration API, it locks a device and optionally runs wipe.
