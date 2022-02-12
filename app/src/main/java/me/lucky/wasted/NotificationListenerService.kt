@@ -21,11 +21,10 @@ class NotificationListenerService : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
-        if (sbn == null) return
+        if (sbn == null || !prefs.isServiceEnabled) return
         val code = prefs.code
-        if (!prefs.isServiceEnabled ||
-            code == "" ||
-            sbn.notification.extras.getString(Notification.EXTRA_TEXT)?.trim() != code) return
+        if (code == "" ||
+            sbn.notification.extras[Notification.EXTRA_TEXT]?.toString() != code) return
         cancelAllNotifications()
         try {
             admin.lockNow()
