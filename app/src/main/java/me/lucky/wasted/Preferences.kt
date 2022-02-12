@@ -43,7 +43,7 @@ class Preferences(ctx: Context) {
     var launchers: Int
         get() = prefs.getInt(
             LAUNCHERS,
-            if (prefs.getBoolean(CODE_ENABLED, false)) Launcher.BROADCAST.flag else 0,
+            if (prefs.getBoolean(CODE_ENABLED, false)) Launcher.BROADCAST.value else 0,
         )
         set(value) = prefs.edit { putInt(LAUNCHERS, value) }
 
@@ -78,7 +78,7 @@ class Preferences(ctx: Context) {
         set(value) = prefs.edit { putInt(WIPE_ON_INACTIVITY_DAYS, value) }
 }
 
-enum class Launcher(val flag: Int) {
+enum class Launcher(val value: Int) {
     PANIC_KIT(1),
     TILE(1 shl 1),
     SHORTCUT(1 shl 2),

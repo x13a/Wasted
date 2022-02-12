@@ -161,12 +161,12 @@ open class MainActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this)
             .setMultiChoiceItems(
                 strings.toTypedArray(),
-                values.map { launchers.and(it.flag) != 0 }.toBooleanArray(),
+                values.map { launchers.and(it.value) != 0 }.toBooleanArray(),
             ) { _, index, isChecked ->
-                val value = values[index]
+                val flag = values[index]
                 launchers = when (isChecked) {
-                    true -> launchers.or(value.flag)
-                    false -> launchers.and(value.flag.inv())
+                    true -> launchers.or(flag.value)
+                    false -> launchers.and(flag.value.inv())
                 }
             }
             .setPositiveButton(android.R.string.ok) { _, _ ->
@@ -214,11 +214,11 @@ open class MainActivity : AppCompatActivity() {
     private fun setLaunchersState(value: Boolean) {
         if (value) {
             val launchers = prefs.launchers
-            setPanicKitState(launchers.and(Launcher.PANIC_KIT.flag) != 0)
-            setQSTileState(launchers.and(Launcher.TILE.flag) != 0)
-            shortcut.setState(launchers.and(Launcher.SHORTCUT.flag) != 0)
-            setCodeReceiverState(launchers.and(Launcher.BROADCAST.flag) != 0)
-            setNotificationListenerState(launchers.and(Launcher.NOTIFICATION.flag) != 0)
+            setPanicKitState(launchers.and(Launcher.PANIC_KIT.value) != 0)
+            setQSTileState(launchers.and(Launcher.TILE.value) != 0)
+            shortcut.setState(launchers.and(Launcher.SHORTCUT.value) != 0)
+            setCodeReceiverState(launchers.and(Launcher.BROADCAST.value) != 0)
+            setNotificationListenerState(launchers.and(Launcher.NOTIFICATION.value) != 0)
         } else {
             setPanicKitState(false)
             setQSTileState(false)
