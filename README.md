@@ -1,6 +1,6 @@
 # Wasted
 
-Lock a device and wipe its data on panic trigger.
+Lock a device and wipe its data on danger.
 
 [<img 
      src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
