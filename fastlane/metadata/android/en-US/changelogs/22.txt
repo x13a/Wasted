@@ -1,0 +1,3 @@
+fix notification trigger via messengers, thanks to Said el Aonke, @user334411
+mimic tile to airplane mode, be careful!
+update Russian translation, thanks to ferhad.necef
