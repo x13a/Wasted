@@ -20,6 +20,7 @@ class Preferences(ctx: Context) {
         private const val WIPE_ON_INACTIVITY_DAYS = "wipe_on_inactivity_days"
 
         private const val FILE_NAME = "sec_shared_prefs"
+
         // migration
         private const val DO_WIPE = "do_wipe"
         private const val CODE_ENABLED = "code_enabled"
