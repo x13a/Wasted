@@ -92,7 +92,7 @@ open class MainActivity : AppCompatActivity() {
     private fun setup() {
         binding.apply {
             code.setOnClickListener {
-                showLaunchersSettings()
+                showTriggersSettings()
             }
             code.setOnLongClickListener {
                 prefs.code = makeCode()
@@ -150,28 +150,28 @@ open class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun showLaunchersSettings() {
-        var launchers = prefs.launchers
-        val values = Launcher.values().toMutableList()
-        val strings = resources.getStringArray(R.array.launchers).toMutableList()
+    private fun showTriggersSettings() {
+        var triggers = prefs.triggers
+        val values = Trigger.values().toMutableList()
+        val strings = resources.getStringArray(R.array.triggers).toMutableList()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            strings.removeAt(values.indexOf(Launcher.TILE))
-            values.remove(Launcher.TILE)
+            strings.removeAt(values.indexOf(Trigger.TILE))
+            values.remove(Trigger.TILE)
         }
         MaterialAlertDialogBuilder(this)
             .setMultiChoiceItems(
                 strings.toTypedArray(),
-                values.map { launchers.and(it.value) != 0 }.toBooleanArray(),
+                values.map { triggers.and(it.value) != 0 }.toBooleanArray(),
             ) { _, index, isChecked ->
                 val flag = values[index]
-                launchers = when (isChecked) {
-                    true -> launchers.or(flag.value)
-                    false -> launchers.and(flag.value.inv())
+                triggers = when (isChecked) {
+                    true -> triggers.or(flag.value)
+                    false -> triggers.and(flag.value.inv())
                 }
             }
             .setPositiveButton(android.R.string.ok) { _, _ ->
-                prefs.launchers = launchers
-                setLaunchersState(prefs.isServiceEnabled)
+                prefs.triggers = triggers
+                setTriggersState(prefs.isServiceEnabled)
             }
             .show()
     }
@@ -197,7 +197,7 @@ open class MainActivity : AppCompatActivity() {
 
     private fun updateCodeColorState() {
         binding.code.setBackgroundColor(getColor(
-            if (prefs.launchers != 0) R.color.code_receiver_on else R.color.code_receiver_off
+            if (prefs.triggers != 0) R.color.code_on else R.color.code_off
         ))
     }
 
@@ -208,17 +208,17 @@ open class MainActivity : AppCompatActivity() {
             return
         }
         prefs.isServiceEnabled = true
-        setLaunchersState(true)
+        setTriggersState(true)
     }
 
-    private fun setLaunchersState(value: Boolean) {
+    private fun setTriggersState(value: Boolean) {
         if (value) {
-            val launchers = prefs.launchers
-            setPanicKitState(launchers.and(Launcher.PANIC_KIT.value) != 0)
-            setQSTileState(launchers.and(Launcher.TILE.value) != 0)
-            shortcut.setState(launchers.and(Launcher.SHORTCUT.value) != 0)
-            setCodeReceiverState(launchers.and(Launcher.BROADCAST.value) != 0)
-            setNotificationListenerState(launchers.and(Launcher.NOTIFICATION.value) != 0)
+            val triggers = prefs.triggers
+            setPanicKitState(triggers.and(Trigger.PANIC_KIT.value) != 0)
+            setQSTileState(triggers.and(Trigger.TILE.value) != 0)
+            shortcut.setState(triggers.and(Trigger.SHORTCUT.value) != 0)
+            setCodeReceiverState(triggers.and(Trigger.BROADCAST.value) != 0)
+            setNotificationListenerState(triggers.and(Trigger.NOTIFICATION.value) != 0)
         } else {
             setPanicKitState(false)
             setQSTileState(false)
@@ -240,7 +240,7 @@ open class MainActivity : AppCompatActivity() {
     private fun setOff() {
         prefs.isServiceEnabled = false
         setWipeOnInactivityComponentsState(false)
-        setLaunchersState(false)
+        setTriggersState(false)
         admin.remove()
     }
 

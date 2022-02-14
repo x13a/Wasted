@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="launchers">
-        <item>@string/launchers_array_panic_kit</item>
-        <item>@string/launchers_array_tile</item>
-        <item>@string/launchers_array_shortcut</item>
-        <item>@string/launchers_array_broadcast</item>
-        <item>@string/launchers_array_notification</item>
+    <string-array name="triggers">
+        <item>@string/triggers_array_panic_kit</item>
+        <item>@string/triggers_array_tile</item>
+        <item>@string/triggers_array_shortcut</item>
+        <item>@string/triggers_array_broadcast</item>
+        <item>@string/triggers_array_notification</item>
     </string-array>
 </resources>

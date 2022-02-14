@@ -39,7 +39,7 @@ class TileService : TileService() {
 
     override fun onClick() {
         super.onClick()
-        if (!prefs.isServiceEnabled) return
+        if (!prefs.isServiceEnabled || prefs.triggers.and(Trigger.TILE.value) == 0) return
         if (!prefs.isWipeData) {
             try {
                 admin.lockNow()

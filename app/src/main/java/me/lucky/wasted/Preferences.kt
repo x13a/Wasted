@@ -16,7 +16,7 @@ class Preferences(ctx: Context) {
         private const val MAX_FAILED_PASSWORD_ATTEMPTS = "max_failed_password_attempts"
         private const val WIPE_ON_INACTIVITY = "wipe_on_inactivity"
 
-        private const val LAUNCHERS = "launchers"
+        private const val TRIGGERS = "triggers"
         private const val WIPE_ON_INACTIVITY_DAYS = "wipe_on_inactivity_days"
 
         private const val FILE_NAME = "sec_shared_prefs"
@@ -25,6 +25,7 @@ class Preferences(ctx: Context) {
         private const val CODE_ENABLED = "code_enabled"
         private const val WIPE_ON_INACTIVE = "wipe_on_inactive"
         private const val WIPE_ON_INACTIVE_DAYS = "wipe_on_inactive_days"
+        private const val LAUNCHERS = "launchers"
     }
 
     private val mk = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
@@ -40,12 +41,15 @@ class Preferences(ctx: Context) {
         get() = prefs.getBoolean(SERVICE_ENABLED, false)
         set(value) = prefs.edit { putBoolean(SERVICE_ENABLED, value) }
 
-    var launchers: Int
+    var triggers: Int
         get() = prefs.getInt(
-            LAUNCHERS,
-            if (prefs.getBoolean(CODE_ENABLED, false)) Launcher.BROADCAST.value else 0,
+            TRIGGERS,
+            prefs.getInt(
+                LAUNCHERS,
+                if (prefs.getBoolean(CODE_ENABLED, false)) Trigger.BROADCAST.value else 0
+            ),
         )
-        set(value) = prefs.edit { putInt(LAUNCHERS, value) }
+        set(value) = prefs.edit { putInt(TRIGGERS, value) }
 
     var code: String
         get() = prefs.getString(CODE, "") ?: ""
@@ -78,7 +82,7 @@ class Preferences(ctx: Context) {
         set(value) = prefs.edit { putInt(WIPE_ON_INACTIVITY_DAYS, value) }
 }
 
-enum class Launcher(val value: Int) {
+enum class Trigger(val value: Int) {
     PANIC_KIT(1),
     TILE(1 shl 1),
     SHORTCUT(1 shl 2),

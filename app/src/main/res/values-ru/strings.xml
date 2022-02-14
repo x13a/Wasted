@@ -26,11 +26,11 @@
     <string name="dialog_confirm_panic_title">Активировать тревогу\?</string>
     <string name="dialog_confirm_panic_message">Это заблокирует устройство и опционально сотрёт его данные.</string>
     <string name="yes">Да</string>
-    <string name="launchers_array_panic_kit">Тревожная кнопка</string>
-    <string name="launchers_array_tile">Плитка</string>
-    <string name="launchers_array_shortcut">Ярлык</string>
-    <string name="launchers_array_broadcast">Широковещательное сообщение</string>
-    <string name="launchers_array_notification">Уведомление</string>
+    <string name="triggers_array_panic_kit">Тревожная кнопка</string>
+    <string name="triggers_array_tile">Плитка</string>
+    <string name="triggers_array_shortcut">Ярлык</string>
+    <string name="triggers_array_broadcast">Широковещательное сообщение</string>
+    <string name="triggers_array_notification">Уведомление</string>
     <string name="notification_listener_service_label">Вайпер</string>
     <string name="notification_listener_service_description">Сканирует уведомления на наличие кода аутентификации</string>
 </resources>

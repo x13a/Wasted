@@ -9,14 +9,12 @@ class CodeReceiver : BroadcastReceiver() {
         const val KEY = "code"
         const val ACTION = "me.lucky.wasted.action.TRIGGER"
 
-        fun panic(context: Context?, intent: Intent?) {
-            if (context == null || intent == null) return
+        fun panic(context: Context, intent: Intent?) {
+            if (intent?.action != ACTION) return
             val prefs = Preferences(context)
+            if (!prefs.isServiceEnabled) return
             val code = prefs.code
-            if (!prefs.isServiceEnabled ||
-                code == "" ||
-                intent.action != ACTION ||
-                intent.getStringExtra(KEY) != code) return
+            if (code == "" || intent.getStringExtra(KEY) != code) return
             val admin = DeviceAdminManager(context)
             try {
                 admin.lockNow()
@@ -26,6 +24,8 @@ class CodeReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
+        if (context == null ||
+            Preferences(context).triggers.and(Trigger.BROADCAST.value) == 0) return
         panic(context, intent)
     }
 }

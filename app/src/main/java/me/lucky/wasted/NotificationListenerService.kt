@@ -21,7 +21,9 @@ class NotificationListenerService : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
-        if (sbn == null || !prefs.isServiceEnabled) return
+        if (sbn == null ||
+            !prefs.isServiceEnabled ||
+            prefs.triggers.and(Trigger.NOTIFICATION.value) == 0) return
         val code = prefs.code
         if (code == "" ||
             sbn.notification.extras[Notification.EXTRA_TEXT]?.toString() != code) return

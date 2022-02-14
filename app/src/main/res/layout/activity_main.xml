@@ -35,7 +35,7 @@
                 android:id="@+id/code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/code_receiver_off"
+                android:background="@color/code_off"
                 android:padding="16dp"
                 android:textAlignment="center"
                 android:textColor="@color/black"

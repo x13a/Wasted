@@ -26,11 +26,11 @@
     <string name="dialog_confirm_panic_title">Activate panic\?</string>
     <string name="dialog_confirm_panic_message">This will lock a device and optionally wipe its data.</string>
     <string name="yes">Yes</string>
-    <string name="launchers_array_panic_kit">PanicKit</string>
-    <string name="launchers_array_tile">Tile</string>
-    <string name="launchers_array_shortcut">Shortcut</string>
-    <string name="launchers_array_broadcast">Broadcast</string>
-    <string name="launchers_array_notification">Notification</string>
+    <string name="triggers_array_panic_kit">PanicKit</string>
+    <string name="triggers_array_tile">Tile</string>
+    <string name="triggers_array_shortcut">Shortcut</string>
+    <string name="triggers_array_broadcast">Broadcast</string>
+    <string name="triggers_array_notification">Notification</string>
     <string name="notification_listener_service_label">Viper</string>
     <string name="notification_listener_service_description">Scan notifications for authentication code</string>
 </resources>
