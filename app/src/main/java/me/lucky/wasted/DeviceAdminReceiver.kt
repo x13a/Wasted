@@ -14,13 +14,8 @@ class DeviceAdminReceiver : DeviceAdminReceiver() {
 
     override fun onDisabled(context: Context, intent: Intent) {
         super.onDisabled(context, intent)
-        if (Preferences(context).isServiceEnabled) {
-            Toast.makeText(
-                context,
-                context.getString(R.string.service_unavailable_popup),
-                Toast.LENGTH_SHORT,
-            ).show()
-        }
+        if (Preferences(context).isServiceEnabled)
+            Toast.makeText(context, R.string.service_unavailable_popup, Toast.LENGTH_SHORT).show()
     }
 
     private fun onPasswordFailedInternal(ctx: Context) {
