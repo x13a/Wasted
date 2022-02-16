@@ -21,8 +21,8 @@
     <string name="notification_channel_default_name">Дефолт</string>
     <string name="wipe_job_description">Стереть данные при неактивности</string>
     <string name="wipe_job_schedule_failed_popup">Не удалось запланировать сервис стирания данных</string>
-    <string name="foreground_service_description">Получать события разблокировки</string>
-    <string name="foreground_service_notification_title">Защита</string>
+    <string name="foreground_service_description">Получать события для которых требуется сервис на переднем плане</string>
+    <string name="foreground_service_notification_title">Охрана</string>
     <string name="dialog_confirm_panic_title">Активировать тревогу\?</string>
     <string name="dialog_confirm_panic_message">Это заблокирует устройство и опционально сотрёт его данные.</string>
     <string name="yes">Да</string>
