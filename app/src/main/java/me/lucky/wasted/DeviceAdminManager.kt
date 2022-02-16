@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import java.lang.Exception
 
 class DeviceAdminManager(private val ctx: Context) {
     private val dpm = ctx.getSystemService(DevicePolicyManager::class.java)
@@ -14,7 +15,21 @@ class DeviceAdminManager(private val ctx: Context) {
     fun remove() = dpm?.removeActiveAdmin(deviceAdmin)
     fun isActive(): Boolean = dpm?.isAdminActive(deviceAdmin) ?: false
     fun getCurrentFailedPasswordAttempts(): Int = dpm?.currentFailedPasswordAttempts ?: 0
-    fun lockNow() = dpm?.lockNow()
+
+    fun lockNow() { if (!lockPrivilegedNow()) dpm?.lockNow() }
+
+    private fun lockPrivilegedNow(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return false
+        var ok = true
+        try {
+            dpm?.getParentProfileInstance(deviceAdmin)?.lockNow()
+        } catch (exc: SecurityException) { ok = false }
+        if (!ok || Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return false
+        try {
+            dpm?.lockNow(DevicePolicyManager.FLAG_EVICT_CREDENTIAL_ENCRYPTION_KEY)
+        } catch (exc: Exception) { ok = false }
+        return ok
+    }
 
     fun wipeData() {
         var flags = 0
