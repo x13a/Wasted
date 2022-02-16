@@ -107,7 +107,9 @@ open class MainActivity : AppCompatActivity() {
                 prefs.isWipeESIM = isChecked
             }
             maxFailedPasswordAttempts.addOnChangeListener { _, value, _ ->
-                prefs.maxFailedPasswordAttempts = value.toInt()
+                val num = value.toInt()
+                prefs.maxFailedPasswordAttempts = num
+                admin.setMaximumFailedPasswordsForWipe(num.shl(1))
             }
             wipeOnInactivitySwitch.setOnCheckedChangeListener { _, isChecked ->
                 if (!setWipeOnInactivityComponentsState(prefs.isServiceEnabled && isChecked)) {

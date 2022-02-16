@@ -31,6 +31,10 @@ class DeviceAdminManager(private val ctx: Context) {
         return ok
     }
 
+    fun setMaximumFailedPasswordsForWipe(num: Int) {
+        dpm?.setMaximumFailedPasswordsForWipe(deviceAdmin, num)
+    }
+
     fun wipeData() {
         var flags = 0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
