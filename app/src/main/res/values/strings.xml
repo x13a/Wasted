@@ -33,4 +33,5 @@
     <string name="triggers_array_notification">Notification</string>
     <string name="notification_listener_service_label">Viper</string>
     <string name="notification_listener_service_description">Scan notifications for authentication code</string>
+    <string name="triggers">Triggers</string>
 </resources>

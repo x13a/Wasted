@@ -159,6 +159,7 @@ open class MainActivity : AppCompatActivity() {
             values.remove(Trigger.TILE)
         }
         MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.triggers)
             .setMultiChoiceItems(
                 strings.toTypedArray(),
                 values.map { triggers.and(it.value) != 0 }.toBooleanArray(),

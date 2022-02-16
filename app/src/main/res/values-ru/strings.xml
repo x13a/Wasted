@@ -33,4 +33,5 @@
     <string name="triggers_array_notification">Уведомление</string>
     <string name="notification_listener_service_label">Вайпер</string>
     <string name="notification_listener_service_description">Сканирует уведомления на наличие кода аутентификации</string>
+    <string name="triggers">Триггеры</string>
 </resources>
