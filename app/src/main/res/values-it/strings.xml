@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wasted</string>
+    <string name="description">Attiva Wasted per bloccare un dispositivo in caso di pericolo. Puoi usare PanicKit, un toggle, una scorciatoia o inviare un messaggio con questo codice di autenticazione.</string>
+    <string name="device_admin_label">Wasted</string>
+    <string name="device_admin_description">Consenti a Wasted di bloccare un dispositivo e, facoltativamente, cancellare i suoi dati in caso di pericolo</string>
+    <string name="service_unavailable_popup">Amministrazione dispositivo non disponibile</string>
+    <string name="wipe_data_check_box">Cancella i dati</string>
+    <string name="wipe_esim_check_box">Cancella eSIM</string>
+    <string name="panic_app_dialog_title">Conferma app di panico</string>
+    <string name="panic_app_dialog_message">Sei sicuro di voler consentire a %1$s di attivare azioni di panico distruttive\?</string>
+    <string name="panic_app_unknown_app">un\'app sconosciuta</string>
+    <string name="allow">Consenti</string>
+    <string name="tile_label">Modalità aereo</string>
+    <string name="shortcut_label">Panico</string>
+    <string name="max_failed_password_attempts_description">Numero massimo di tentativi di password falliti.</string>
+    <string name="max_failed_password_attempts_content_description">Numero</string>
+    <string name="wipe_on_inactivity_switch">Cancella in caso di inattività</string>
+    <string name="wipe_on_inactivity_description">Cancella i dati quando il dispositivo non viene sbloccato per N giorni.</string>
+    <string name="wipe_on_inactivity_days">Giorni</string>
+    <string name="notification_channel_default_name">Predefinito</string>
+    <string name="wipe_job_description">Cancella i dati in caso di inattività</string>
+    <string name="wipe_job_schedule_failed_popup">Impossibile pianificare un processo di cancellazione</string>
+    <string name="foreground_service_description">Ricevi eventi che richiedono il servizio in primo piano</string>
+    <string name="foreground_service_notification_title">Guardia</string>
+    <string name="dialog_confirm_panic_title">Attivare il panico\?</string>
+    <string name="dialog_confirm_panic_message">Questo bloccherà un dispositivo e, facoltativamente, cancellerà i suoi dati.</string>
+    <string name="yes">Sì</string>
+    <string name="triggers_array_panic_kit">PanicKit</string>
+    <string name="triggers_array_tile">Toggle</string>
+    <string name="triggers_array_shortcut">Scorciatoia</string>
+    <string name="triggers_array_broadcast">Broadcast</string>
+    <string name="triggers_array_notification">Notifica</string>
+    <string name="notification_listener_service_label">Viper</string>
+    <string name="notification_listener_service_description">Scansiona le notifiche per il codice di autenticazione</string>
+    <string name="triggers">Attivatori</string>
+</resources>
