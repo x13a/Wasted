@@ -15,7 +15,7 @@ class ForegroundService : Service() {
         private const val NOTIFICATION_ID = 1000
     }
 
-    private lateinit var unlockReceiver: UnlockReceiver
+    private val unlockReceiver = UnlockReceiver()
 
     override fun onCreate() {
         super.onCreate()
@@ -28,7 +28,6 @@ class ForegroundService : Service() {
     }
 
     private fun init() {
-        unlockReceiver = UnlockReceiver()
         registerReceiver(unlockReceiver, IntentFilter(Intent.ACTION_USER_PRESENT))
     }
 
@@ -56,8 +55,8 @@ class ForegroundService : Service() {
     private class UnlockReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (context == null ||
-                context.getSystemService(KeyguardManager::class.java)?.isDeviceSecure != true)
-                return
+                context.getSystemService(KeyguardManager::class.java)?.isDeviceSecure != true ||
+                !Preferences(context).isWipeOnInactivity) return
             Thread(Runner(context, goAsync())).start()
         }
 
