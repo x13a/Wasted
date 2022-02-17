@@ -18,7 +18,7 @@
     <string name="wipe_on_inactivity_switch">Стереть при неактивности</string>
     <string name="wipe_on_inactivity_description">Стереть данные когда устройство не разблокируется N дней.</string>
     <string name="wipe_on_inactivity_days">Дней</string>
-    <string name="notification_channel_default_name">Дефолт</string>
+    <string name="notification_channel_default_name">По умолчанию</string>
     <string name="wipe_job_description">Стереть данные при неактивности</string>
     <string name="wipe_job_schedule_failed_popup">Не удалось запланировать сервис стирания данных</string>
     <string name="foreground_service_description">Получать события для которых требуется сервис на переднем плане</string>
