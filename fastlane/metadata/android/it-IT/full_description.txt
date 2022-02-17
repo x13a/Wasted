@@ -1,0 +1,22 @@
+Blocca un dispositivo e cancella i suoi dati in caso di pericolo.
+
+Puoi usare PanicKit, un toggle, una scorciatoia o inviare un messaggio con
+un codice di autenticazione. All'attivazione, utilizzando l'API di amministrazione
+del dispositivo, blocca un dispositivo e facoltativamente esegue la cancellazione.
+
+Puoi anche:
+* limitare il numero massimo di tentativi di password falliti
+* cancellare i dati quando un dispositivo non è stato sbloccato per N giorni
+
+L'app funziona anche nel Profilo di Lavoro. Usa Shelter per installarci dentro le app pericolose e Wasted.
+Potrai poi cancellare i dati di questo profilo con un clic senza cancellare l'intero dispositivo.
+
+Solo un dispositivo criptato può garantire che i dati non saranno recuperabili.
+
+Permessi:
+* DEVICE_ADMIN - blocca e, facoltativamente, cancella i dati
+* FOREGROUND_SERVICE - riceve eventi di sblocco
+* RECEIVE_BOOT_COMPLETED - continua il processo di cancellazione tra i riavvii
+
+È un software open source gratuito.
+Licenza: GPL-3
