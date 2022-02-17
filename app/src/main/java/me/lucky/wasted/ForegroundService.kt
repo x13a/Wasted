@@ -54,8 +54,7 @@ class ForegroundService : Service() {
 
     private class UnlockReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (context == null ||
-                context.getSystemService(KeyguardManager::class.java)?.isDeviceSecure != true ||
+            if (context?.getSystemService(KeyguardManager::class.java)?.isDeviceSecure != true ||
                 !Preferences(context).isWipeOnInactivity) return
             Thread(Runner(context, goAsync())).start()
         }
