@@ -22,7 +22,7 @@
     <string name="wipe_job_description">Wipe a device on inactivity</string>
     <string name="wipe_job_schedule_failed_popup">Failed to schedule a wipe job</string>
     <string name="foreground_service_description">Receive events which require foreground service</string>
-    <string name="foreground_service_notification_title">Guard</string>
+    <string name="foreground_service_notification_title">Sentry</string>
     <string name="dialog_confirm_panic_title">Activate panic\?</string>
     <string name="dialog_confirm_panic_message">This will lock a device and optionally wipe its data.</string>
     <string name="yes">Yes</string>

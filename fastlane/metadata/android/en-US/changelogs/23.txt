@@ -1,0 +1,4 @@
+fix logic bug in wipe on inactivity days selector, hope no one got wiped)
+add Italian translation, thanks to Giovanni Donisi (@gdonisi + @giovannidonisi)
+update Russian translation, thanks to ferhad.necef
+under the hood improvements

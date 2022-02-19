@@ -24,8 +24,8 @@ open class MainActivity : AppCompatActivity() {
     private val job by lazy { WipeJobManager(this) }
 
     private val registerForDeviceAdmin =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        when (result.resultCode) {
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        when (it.resultCode) {
             RESULT_OK -> setOn()
             else -> binding.toggle.isChecked = false
         }
@@ -109,16 +109,13 @@ open class MainActivity : AppCompatActivity() {
             maxFailedPasswordAttempts.addOnChangeListener { _, value, _ ->
                 val num = value.toInt()
                 prefs.maxFailedPasswordAttempts = num
-                admin.setMaximumFailedPasswordsForWipe(num.shl(1))
+                try {
+                    admin.setMaximumFailedPasswordsForWipe(num.shl(1))
+                } catch (exc: SecurityException) {}
             }
             wipeOnInactivitySwitch.setOnCheckedChangeListener { _, isChecked ->
-                if (!setWipeOnInactivityComponentsState(prefs.isServiceEnabled && isChecked)) {
-                    wipeOnInactivitySwitch.isChecked = false
-                    showWipeJobScheduleFailedPopup()
-                    return@setOnCheckedChangeListener
-                }
+                setWipeOnInactivityComponentsState(prefs.isServiceEnabled && isChecked)
                 prefs.isWipeOnInactivity = isChecked
-
             }
             wipeOnInactivitySwitch.setOnLongClickListener {
                 showWipeOnInactivitySettings()
@@ -192,8 +189,10 @@ open class MainActivity : AppCompatActivity() {
             }
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 prefs.wipeOnInactivityDays = days
-                if (prefs.isServiceEnabled && job.schedule() == JobScheduler.RESULT_FAILURE)
-                    showWipeJobScheduleFailedPopup()
+                if (prefs.isServiceEnabled && prefs.isWipeOnInactivity) {
+                    if (job.schedule() == JobScheduler.RESULT_FAILURE)
+                        showWipeJobScheduleFailedPopup()
+                }
             }
             .show()
     }
@@ -218,13 +217,13 @@ open class MainActivity : AppCompatActivity() {
         if (value) {
             val triggers = prefs.triggers
             setPanicKitState(triggers.and(Trigger.PANIC_KIT.value) != 0)
-            setQSTileState(triggers.and(Trigger.TILE.value) != 0)
+            setTileState(triggers.and(Trigger.TILE.value) != 0)
             shortcut.setState(triggers.and(Trigger.SHORTCUT.value) != 0)
             setCodeReceiverState(triggers.and(Trigger.BROADCAST.value) != 0)
             setNotificationListenerState(triggers.and(Trigger.NOTIFICATION.value) != 0)
         } else {
             setPanicKitState(false)
-            setQSTileState(false)
+            setTileState(false)
             shortcut.setState(false)
             setCodeReceiverState(false)
             setNotificationListenerState(false)
@@ -248,12 +247,12 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun requestAdmin() = registerForDeviceAdmin.launch(admin.makeRequestIntent())
-    private fun makeCode(): String = UUID.randomUUID().toString()
+    private fun makeCode() = UUID.randomUUID().toString()
     private fun setCodeReceiverState(value: Boolean) =
         setComponentState(CodeReceiver::class.java, value)
     private fun setRestartReceiverState(value: Boolean) =
         setComponentState(RestartReceiver::class.java, value)
-    private fun setQSTileState(value: Boolean) {
+    private fun setTileState(value: Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             setComponentState(TileService::class.java, value)
     }

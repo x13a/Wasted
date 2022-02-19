@@ -24,7 +24,7 @@
     <string name="foreground_service_description">Получать события для которых требуется сервис на переднем плане</string>
     <string name="foreground_service_notification_title">Охрана</string>
     <string name="dialog_confirm_panic_title">Активировать тревогу\?</string>
-    <string name="dialog_confirm_panic_message">Это заблокирует устройство и опционально сотрёт его данные.</string>
+    <string name="dialog_confirm_panic_message">Это заблокирует устройство и возможно сотрёт его данные.</string>
     <string name="yes">Да</string>
     <string name="triggers_array_panic_kit">Тревожная кнопка</string>
     <string name="triggers_array_tile">Плитка</string>

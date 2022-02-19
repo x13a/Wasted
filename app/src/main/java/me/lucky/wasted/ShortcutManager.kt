@@ -28,6 +28,7 @@ class ShortcutManager(private val ctx: Context) {
         )
     }
 
-    private fun remove() = ShortcutManagerCompat.removeDynamicShortcuts(ctx, arrayListOf(SHORTCUT_ID))
+    private fun remove() =
+        ShortcutManagerCompat.removeDynamicShortcuts(ctx, arrayListOf(SHORTCUT_ID))
     fun setState(value: Boolean) = if (value) push() else remove()
 }
