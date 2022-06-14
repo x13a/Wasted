@@ -60,8 +60,9 @@ open class MainActivity : AppCompatActivity() {
         if (prefs.code == "") prefs.code = makeCode()
         updateCodeColorState()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) hideESIM()
-        if (!packageManager.hasSystemFeature(PackageManager.FEATURE_SECURE_LOCK_SCREEN))
-            hideSecureLockScreenRequired()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q &&
+            !packageManager.hasSystemFeature(PackageManager.FEATURE_SECURE_LOCK_SCREEN))
+                hideSecureLockScreenRequired()
         binding.apply {
             code.text = prefs.code
             wipeData.isChecked = prefs.isWipeData
