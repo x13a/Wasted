@@ -13,8 +13,6 @@
     <string name="allow">Разрешить</string>
     <string name="tile_label">Режим полета</string>
     <string name="shortcut_label">Тревога</string>
-    <string name="max_failed_password_attempts_description">Максимальное количество неудачных попыток ввода пароля.</string>
-    <string name="max_failed_password_attempts_content_description">Количество</string>
     <string name="wipe_on_inactivity_switch">Стереть при неактивности</string>
     <string name="wipe_on_inactivity_description">Стереть данные когда устройство не разблокируется N дней.</string>
     <string name="wipe_on_inactivity_days">Дней</string>
@@ -23,9 +21,6 @@
     <string name="wipe_job_schedule_failed_popup">Не удалось запланировать сервис стирания данных</string>
     <string name="foreground_service_description">Получать события для которых требуется сервис на переднем плане</string>
     <string name="foreground_service_notification_title">Охрана</string>
-    <string name="dialog_confirm_panic_title">Активировать тревогу\?</string>
-    <string name="dialog_confirm_panic_message">Это заблокирует устройство и возможно сотрёт его данные.</string>
-    <string name="yes">Да</string>
     <string name="triggers_array_panic_kit">Тревожная кнопка</string>
     <string name="triggers_array_tile">Плитка</string>
     <string name="triggers_array_shortcut">Ярлык</string>
@@ -34,4 +29,5 @@
     <string name="notification_listener_service_label">Вайпер</string>
     <string name="notification_listener_service_description">Сканирует уведомления на наличие кода аутентификации</string>
     <string name="triggers">Триггеры</string>
+    <string name="copied_popup">Скопировано</string>
 </resources>

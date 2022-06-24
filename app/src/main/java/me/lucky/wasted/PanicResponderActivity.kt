@@ -13,7 +13,7 @@ class PanicResponderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (!Panic.isTriggerIntent(intent) ||
-            !prefs.isServiceEnabled ||
+            !prefs.isEnabled ||
             prefs.triggers.and(Trigger.PANIC_KIT.value) == 0)
         {
             finishAndRemoveTask()

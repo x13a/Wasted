@@ -54,7 +54,8 @@ class ForegroundService : Service() {
 
     private class UnlockReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (context?.getSystemService(KeyguardManager::class.java)?.isDeviceSecure != true ||
+            if (intent?.action != Intent.ACTION_USER_PRESENT ||
+                context?.getSystemService(KeyguardManager::class.java)?.isDeviceSecure != true ||
                 !Preferences(context).isWipeOnInactivity) return
             Thread(Runner(context, goAsync())).start()
         }
@@ -64,9 +65,9 @@ class ForegroundService : Service() {
             private val pendingResult: PendingResult,
         ) : Runnable {
             override fun run() {
-                val manager = WipeJobManager(ctx)
+                val job = WipeJobManager(ctx)
                 var delay = 1000L
-                while (manager.schedule() != JobScheduler.RESULT_SUCCESS) {
+                while (job.schedule() != JobScheduler.RESULT_SUCCESS) {
                     Thread.sleep(delay)
                     delay = delay.shl(1)
                 }

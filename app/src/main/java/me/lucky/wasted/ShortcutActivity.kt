@@ -10,7 +10,7 @@ class ShortcutActivity : AppCompatActivity() {
             finishAndRemoveTask()
             return
         }
-        CodeReceiver.panic(this, intent)
+        TriggerReceiver.panic(this, intent)
         finishAndRemoveTask()
     }
 }

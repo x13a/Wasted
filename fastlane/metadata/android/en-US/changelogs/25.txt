@@ -1,0 +1,16 @@
+remove all preferences migrations, you have to reconfigure Wasted !!
+.CodeReceiver renamed to .TriggerReceiver !!
+remove max failed password attempts, migrate to Sentry
+add copy authentication code with a long click
+add Chinese Simplified, German, Spanish, Turkish, Ukrainian translations
+update Italian translation
+under the hood improvements
+
+Thanks to:
+Alex Ortiz
+Alexander Sergevich
+Noah Fisker
+SuperM
+TolDYuThad
+Wong Anny
+Giovanni Donisi (@gdonisi + @giovannidonisi)

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wasted</string>
+    <string name="description">Active Wasted para bloquear un dispositivo en caso de emergencia. Puede usar PanicKit, title, acceso directo o enviar un mensaje con este código de autenticación.</string>
+    <string name="device_admin_label">Wasted</string>
+    <string name="device_admin_description">Permita que Wasted bloquee un dispositivo y, opcionalmente, borre sus datos en caso de emergencia</string>
+    <string name="service_unavailable_popup">Administrador de dispositivos no disponible</string>
+    <string name="wipe_data_check_box">Borrar datos</string>
+    <string name="wipe_esim_check_box">Borrar eSIM</string>
+    <string name="panic_app_dialog_title">Confirmar aplicación de pánico</string>
+    <string name="panic_app_dialog_message">¿Está seguro de que desea permitir que %1$s active acciones de pánico destructivas\?</string>
+    <string name="panic_app_unknown_app">una aplicación desconocida</string>
+    <string name="allow">Permitir</string>
+    <string name="tile_label">Modo avión</string>
+    <string name="shortcut_label">Pánico</string>
+    <string name="wipe_on_inactivity_switch">Borrar por inactividad</string>
+    <string name="wipe_on_inactivity_description">Limpia un dispositivo cuando no fue desbloqueado por N días.</string>
+    <string name="wipe_on_inactivity_days">Días</string>
+    <string name="notification_channel_default_name">Predeterminado</string>
+    <string name="wipe_job_description">Borrar un dispositivo por inactividad</string>
+    <string name="wipe_job_schedule_failed_popup">Error al programar un trabajo de borrado</string>
+    <string name="foreground_service_description">Recibir eventos que requieren servicio de primer plano</string>
+    <string name="foreground_service_notification_title">Guardia</string>
+    <string name="triggers_array_panic_kit">PanicKit</string>
+    <string name="triggers_array_tile">Título</string>
+    <string name="triggers_array_shortcut">Acceso directo</string>
+    <string name="triggers_array_broadcast">Transmisión</string>
+    <string name="triggers_array_notification">Notificación</string>
+    <string name="notification_listener_service_label">Viper</string>
+    <string name="notification_listener_service_description">Escanear notificaciones para el código de autenticación</string>
+    <string name="triggers">Activadores</string>
+    <string name="copied_popup">Copiado</string>
+</resources>

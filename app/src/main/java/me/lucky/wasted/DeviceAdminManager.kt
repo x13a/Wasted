@@ -13,8 +13,7 @@ class DeviceAdminManager(private val ctx: Context) {
     private val prefs by lazy { Preferences(ctx) }
 
     fun remove() = dpm?.removeActiveAdmin(deviceAdmin)
-    fun isActive(): Boolean = dpm?.isAdminActive(deviceAdmin) ?: false
-    fun getCurrentFailedPasswordAttempts(): Int = dpm?.currentFailedPasswordAttempts ?: 0
+    fun isActive() = dpm?.isAdminActive(deviceAdmin) ?: false
 
     fun lockNow() { if (!lockPrivilegedNow()) dpm?.lockNow() }
 
@@ -31,25 +30,20 @@ class DeviceAdminManager(private val ctx: Context) {
         return ok
     }
 
-    fun setMaximumFailedPasswordsForWipe(num: Int) {
-        dpm?.setMaximumFailedPasswordsForWipe(deviceAdmin, num)
-    }
-
     fun wipeData() {
         var flags = 0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
             flags = flags.or(DevicePolicyManager.WIPE_SILENTLY)
-        if (prefs.isWipeESIM && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+        if (prefs.isWipeEmbeddedSim && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
             flags = flags.or(DevicePolicyManager.WIPE_EUICC)
         dpm?.wipeData(flags)
     }
 
-    fun makeRequestIntent(): Intent {
-        return Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
+    fun makeRequestIntent() =
+        Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
             .putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, deviceAdmin)
             .putExtra(
                 DevicePolicyManager.EXTRA_ADD_EXPLANATION,
                 ctx.getString(R.string.device_admin_description),
             )
-    }
 }

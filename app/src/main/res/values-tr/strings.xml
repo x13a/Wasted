@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wasted</string>
+    <string name="description">Turn on Wasted to lock a device on emergency. You can use PanicKit, tile, shortcut or send a message with this authentication code.</string>
+    <string name="device_admin_label">Wasted</string>
+    <string name="device_admin_description">Allow Wasted to lock a device and optionally wipe its data on emergency</string>
+    <string name="service_unavailable_popup">Cihaz yöneticisi mevcut değil</string>
+    <string name="wipe_data_check_box">Verileri sil</string>
+    <string name="wipe_esim_check_box">eSIM\'i sil</string>
+    <string name="panic_app_dialog_title">Panik uygulamasını onayla</string>
+    <string name="panic_app_dialog_message">Yıkıcı panik eylemlerini tetiklemek için %1$s\'e izin vermek istediğinizden emin misiniz\?</string>
+    <string name="panic_app_unknown_app">bilinmeyen bir uygulama</string>
+    <string name="allow">İzin ver</string>
+    <string name="tile_label">Uçak modu</string>
+    <string name="shortcut_label">Panik</string>
+    <string name="wipe_on_inactivity_switch">Kullanılmadığında sil</string>
+    <string name="wipe_on_inactivity_description">N gün boyunca kilidi açılmamış bir cihazı silin.</string>
+    <string name="wipe_on_inactivity_days">Gün</string>
+    <string name="notification_channel_default_name">Varsayılan</string>
+    <string name="wipe_job_description">Cihaz kullanılmadığında siler</string>
+    <string name="wipe_job_schedule_failed_popup">Silme işi zamanlanamadı</string>
+    <string name="foreground_service_description">Ön plan hizmeti gerektiren olayları al</string>
+    <string name="foreground_service_notification_title">Guard</string>
+    <string name="triggers_array_panic_kit">PanicKit</string>
+    <string name="triggers_array_tile">Tile</string>
+    <string name="triggers_array_shortcut">Kısayol</string>
+    <string name="triggers_array_broadcast">Yayın</string>
+    <string name="triggers_array_notification">Bildirim</string>
+    <string name="notification_listener_service_label">Viper</string>
+    <string name="notification_listener_service_description">Kimlik doğrulama kodu için bildirimleri tara</string>
+    <string name="triggers">Tetikleyiciler</string>
+    <string name="copied_popup">Kopyalandı</string>
+</resources>

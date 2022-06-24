@@ -5,7 +5,6 @@ un codice di autenticazione. All'attivazione, utilizzando l'API di amministrazio
 del dispositivo, blocca un dispositivo e facoltativamente esegue la cancellazione.
 
 Puoi anche:
-* limitare il numero massimo di tentativi di password falliti
 * cancellare i dati quando un dispositivo non è stato sbloccato per N giorni
 
 L'app funziona anche nel Profilo di Lavoro. Usa Shelter per installarci dentro le app pericolose e Wasted.

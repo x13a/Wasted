@@ -1,6 +1,8 @@
 package me.lucky.wasted
 
 import android.app.job.JobScheduler
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,23 +15,30 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
+import kotlin.concurrent.timerTask
 
 import me.lucky.wasted.databinding.ActivityMainBinding
 
 open class MainActivity : AppCompatActivity() {
+    companion object {
+        private const val CLIPBOARD_CLEAR_DELAY = 30_000L
+    }
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: Preferences
     private lateinit var admin: DeviceAdminManager
     private val shortcut by lazy { ShortcutManager(this) }
     private val job by lazy { WipeJobManager(this) }
+    private var clipboardManager: ClipboardManager? = null
+    private var clipboardClearTask: Timer? = null
 
     private val registerForDeviceAdmin =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        when (it.resultCode) {
-            RESULT_OK -> setOn()
-            else -> binding.toggle.isChecked = false
+            when (it.resultCode) {
+                RESULT_OK -> setOn()
+                else -> binding.toggle.isChecked = false
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +54,7 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun update() {
-        if (prefs.isServiceEnabled && !admin.isActive())
+        if (prefs.isEnabled && !admin.isActive())
             Snackbar.make(
                 binding.toggle,
                 R.string.service_unavailable_popup,
@@ -56,35 +65,32 @@ open class MainActivity : AppCompatActivity() {
     private fun init() {
         prefs = Preferences(this)
         admin = DeviceAdminManager(this)
+        clipboardManager = getSystemService(ClipboardManager::class.java)
         NotificationManager(this).createNotificationChannels()
-        if (prefs.code == "") prefs.code = makeCode()
+        if (prefs.authenticationCode.isEmpty()) prefs.authenticationCode = makeAuthenticationCode()
         updateCodeColorState()
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) hideESIM()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) hideEmbeddedSim()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q &&
             !packageManager.hasSystemFeature(PackageManager.FEATURE_SECURE_LOCK_SCREEN))
                 hideSecureLockScreenRequired()
         binding.apply {
-            code.text = prefs.code
+            authenticationCode.text = prefs.authenticationCode
             wipeData.isChecked = prefs.isWipeData
-            wipeESIM.isChecked = prefs.isWipeESIM
-            wipeESIM.isEnabled = wipeData.isChecked
-            maxFailedPasswordAttempts.value = prefs.maxFailedPasswordAttempts.toFloat()
+            wipeEmbeddedSim.isChecked = prefs.isWipeEmbeddedSim
+            wipeEmbeddedSim.isEnabled = wipeData.isChecked
             wipeOnInactivitySwitch.isChecked = prefs.isWipeOnInactivity
-            toggle.isChecked = prefs.isServiceEnabled
+            toggle.isChecked = prefs.isEnabled
         }
     }
 
-    private fun hideESIM() {
-        binding.wipeESIMSpace.visibility = View.GONE
-        binding.wipeESIM.visibility = View.GONE
+    private fun hideEmbeddedSim() {
+        binding.wipeSpace.visibility = View.GONE
+        binding.wipeEmbeddedSim.visibility = View.GONE
     }
 
     private fun hideSecureLockScreenRequired() {
         binding.apply {
             divider.visibility = View.GONE
-            maxFailedPasswordAttempts.visibility = View.GONE
-            maxFailedPasswordAttemptsDescription.visibility = View.GONE
-            wipeOnInactivitySpace.visibility = View.GONE
             wipeOnInactivitySwitch.visibility = View.GONE
             wipeOnInactivityDescription.visibility = View.GONE
         }
@@ -92,30 +98,31 @@ open class MainActivity : AppCompatActivity() {
 
     private fun setup() {
         binding.apply {
-            code.setOnClickListener {
+            authenticationCode.setOnClickListener {
                 showTriggersSettings()
             }
-            code.setOnLongClickListener {
-                prefs.code = makeCode()
-                code.text = prefs.code
+            authenticationCode.setOnLongClickListener {
+                clipboardManager
+                    ?.setPrimaryClip(ClipData.newPlainText("", prefs.authenticationCode))
+                if (clipboardManager != null) {
+                    scheduleClipboardClear()
+                    Snackbar.make(
+                        authenticationCode,
+                        R.string.copied_popup,
+                        Snackbar.LENGTH_SHORT,
+                    ).show()
+                }
                 true
             }
             wipeData.setOnCheckedChangeListener { _, isChecked ->
                 prefs.isWipeData = isChecked
-                wipeESIM.isEnabled = isChecked
+                wipeEmbeddedSim.isEnabled = isChecked
             }
-            wipeESIM.setOnCheckedChangeListener { _, isChecked ->
-                prefs.isWipeESIM = isChecked
-            }
-            maxFailedPasswordAttempts.addOnChangeListener { _, value, _ ->
-                val num = value.toInt()
-                prefs.maxFailedPasswordAttempts = num
-                try {
-                    admin.setMaximumFailedPasswordsForWipe(num.shl(1))
-                } catch (exc: SecurityException) {}
+            wipeEmbeddedSim.setOnCheckedChangeListener { _, isChecked ->
+                prefs.isWipeEmbeddedSim = isChecked
             }
             wipeOnInactivitySwitch.setOnCheckedChangeListener { _, isChecked ->
-                setWipeOnInactivityComponentsState(prefs.isServiceEnabled && isChecked)
+                setWipeOnInactivityState(prefs.isEnabled && isChecked)
                 prefs.isWipeOnInactivity = isChecked
             }
             wipeOnInactivitySwitch.setOnLongClickListener {
@@ -123,31 +130,21 @@ open class MainActivity : AppCompatActivity() {
                 true
             }
             toggle.setOnCheckedChangeListener { _, isChecked ->
-                when (isChecked) {
-                    true -> if (!admin.isActive()) requestAdmin() else setOn()
-                    false -> setOff()
-                }
-            }
-            toggle.setOnLongClickListener {
-                if (!toggle.isChecked) return@setOnLongClickListener false
-                showPanicDialog()
-                true
+                if (isChecked) requestAdmin() else setOff()
             }
         }
     }
 
-    private fun showPanicDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.dialog_confirm_panic_title)
-            .setMessage(R.string.dialog_confirm_panic_message)
-            .setPositiveButton(R.string.yes) { _, _ ->
-                try {
-                    admin.lockNow()
-                    if (prefs.isWipeData) admin.wipeData()
-                } catch (exc: SecurityException) {}
+    private fun scheduleClipboardClear() {
+        clipboardClearTask?.cancel()
+        clipboardClearTask = Timer()
+        clipboardClearTask?.schedule(timerTask {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                clipboardManager?.clearPrimaryClip()
+            } else {
+                clipboardManager?.setPrimaryClip(ClipData.newPlainText("", ""))
             }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+        }, CLIPBOARD_CLEAR_DELAY)
     }
 
     private fun showTriggersSettings() {
@@ -172,25 +169,25 @@ open class MainActivity : AppCompatActivity() {
             }
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 prefs.triggers = triggers
-                setTriggersState(prefs.isServiceEnabled)
+                setTriggersState(prefs.isEnabled)
             }
             .show()
     }
 
     private fun showWipeOnInactivitySettings() {
         val items = resources.getStringArray(R.array.wipe_on_inactivity_days)
-        var days = prefs.wipeOnInactivityDays
+        var days = prefs.wipeOnInactivityCount / 24 / 60
         var checked = items.indexOf(days.toString())
         if (checked == -1) checked = items
-            .indexOf(Preferences.DEFAULT_WIPE_ON_INACTIVITY_DAYS.toString())
+            .indexOf((Preferences.DEFAULT_WIPE_ON_INACTIVITY_COUNT / 24 / 60).toString())
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.wipe_on_inactivity_days)
             .setSingleChoiceItems(items, checked) { _, which ->
                 days = items[which].toInt()
             }
             .setPositiveButton(android.R.string.ok) { _, _ ->
-                prefs.wipeOnInactivityDays = days
-                if (prefs.isServiceEnabled && prefs.isWipeOnInactivity) {
+                prefs.wipeOnInactivityCount = days * 24 * 60
+                if (prefs.isEnabled && prefs.isWipeOnInactivity) {
                     if (job.schedule() == JobScheduler.RESULT_FAILURE)
                         showWipeJobScheduleFailedPopup()
                 }
@@ -199,18 +196,14 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun updateCodeColorState() {
-        binding.code.setBackgroundColor(getColor(
+        binding.authenticationCode.setBackgroundColor(getColor(
             if (prefs.triggers != 0) R.color.code_on else R.color.code_off
         ))
     }
 
     private fun setOn() {
-        if (!setWipeOnInactivityComponentsState(prefs.isWipeOnInactivity)) {
-            binding.toggle.isChecked = false
-            showWipeJobScheduleFailedPopup()
-            return
-        }
-        prefs.isServiceEnabled = true
+        prefs.isEnabled = true
+        setWipeOnInactivityState(prefs.isWipeOnInactivity)
         setTriggersState(true)
     }
 
@@ -220,13 +213,13 @@ open class MainActivity : AppCompatActivity() {
             setPanicKitState(triggers.and(Trigger.PANIC_KIT.value) != 0)
             setTileState(triggers.and(Trigger.TILE.value) != 0)
             shortcut.setState(triggers.and(Trigger.SHORTCUT.value) != 0)
-            setCodeReceiverState(triggers.and(Trigger.BROADCAST.value) != 0)
+            setTriggerReceiverState(triggers.and(Trigger.BROADCAST.value) != 0)
             setNotificationListenerState(triggers.and(Trigger.NOTIFICATION.value) != 0)
         } else {
             setPanicKitState(false)
             setTileState(false)
             shortcut.setState(false)
-            setCodeReceiverState(false)
+            setTriggerReceiverState(false)
             setNotificationListenerState(false)
         }
         updateCodeColorState()
@@ -241,16 +234,18 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun setOff() {
-        prefs.isServiceEnabled = false
-        setWipeOnInactivityComponentsState(false)
+        prefs.isEnabled = false
+        setWipeOnInactivityState(false)
         setTriggersState(false)
-        admin.remove()
+        try {
+            admin.remove()
+        } catch (exc: SecurityException) {}
     }
 
     private fun requestAdmin() = registerForDeviceAdmin.launch(admin.makeRequestIntent())
-    private fun makeCode() = UUID.randomUUID().toString()
-    private fun setCodeReceiverState(value: Boolean) =
-        setComponentState(CodeReceiver::class.java, value)
+    private fun makeAuthenticationCode() = UUID.randomUUID().toString()
+    private fun setTriggerReceiverState(value: Boolean) =
+        setComponentState(TriggerReceiver::class.java, value)
     private fun setRestartReceiverState(value: Boolean) =
         setComponentState(RestartReceiver::class.java, value)
     private fun setTileState(value: Boolean) {
@@ -263,6 +258,11 @@ open class MainActivity : AppCompatActivity() {
     private fun setPanicKitState(value: Boolean) {
         setComponentState(PanicConnectionActivity::class.java, value)
         setComponentState(PanicResponderActivity::class.java, value)
+    }
+
+    private fun setWipeOnInactivityState(value: Boolean) {
+        job.setState(value)
+        setForegroundState(value)
     }
 
     private fun setComponentState(cls: Class<*>, value: Boolean) {
@@ -281,12 +281,8 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setWipeOnInactivityComponentsState(value: Boolean): Boolean {
-        val result = job.setState(value)
-        if (result) {
-            setForegroundServiceState(value)
-            setRestartReceiverState(value)
-        }
-        return result
+    private fun setForegroundState(value: Boolean) {
+        setForegroundServiceState(value)
+        setRestartReceiverState(value)
     }
 }

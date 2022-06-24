@@ -1,1 +1,1 @@
-Lock a device and wipe its data on danger
+Lock a device and wipe its data on emergency

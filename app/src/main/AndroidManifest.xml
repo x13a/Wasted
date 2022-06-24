@@ -42,7 +42,7 @@
         </receiver>
 
         <receiver
-            android:name=".CodeReceiver"
+            android:name=".TriggerReceiver"
             android:enabled="false"
             android:exported="true"
             tools:ignore="ExportedReceiver">

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wasted</string>
-    <string name="description">Turn on Wasted to lock a device on danger. You can use PanicKit, tile, shortcut or send a message with this authentication code.</string>
+    <string name="description">Turn on Wasted to lock a device on emergency. You can use PanicKit, tile, shortcut or send a message with this authentication code.</string>
     <string name="device_admin_label">Wasted</string>
-    <string name="device_admin_description">Allow Wasted to lock a device and optionally wipe its data on danger</string>
+    <string name="device_admin_description">Allow Wasted to lock a device and optionally wipe its data on emergency</string>
     <string name="service_unavailable_popup">Device admin unavailable</string>
     <string name="wipe_data_check_box">Wipe data</string>
     <string name="wipe_esim_check_box">Wipe eSIM</string>
@@ -13,8 +13,6 @@
     <string name="allow">Allow</string>
     <string name="tile_label">Airplane mode</string>
     <string name="shortcut_label">Panic</string>
-    <string name="max_failed_password_attempts_description">Maximum number of failed password attempts.</string>
-    <string name="max_failed_password_attempts_content_description">Count</string>
     <string name="wipe_on_inactivity_switch">Wipe on inactivity</string>
     <string name="wipe_on_inactivity_description">Wipe a device when it was not unlocked for N days.</string>
     <string name="wipe_on_inactivity_days">Days</string>
@@ -22,10 +20,7 @@
     <string name="wipe_job_description">Wipe a device on inactivity</string>
     <string name="wipe_job_schedule_failed_popup">Failed to schedule a wipe job</string>
     <string name="foreground_service_description">Receive events which require foreground service</string>
-    <string name="foreground_service_notification_title">Sentry</string>
-    <string name="dialog_confirm_panic_title">Activate panic\?</string>
-    <string name="dialog_confirm_panic_message">This will lock a device and optionally wipe its data.</string>
-    <string name="yes">Yes</string>
+    <string name="foreground_service_notification_title">Guard</string>
     <string name="triggers_array_panic_kit">PanicKit</string>
     <string name="triggers_array_tile">Tile</string>
     <string name="triggers_array_shortcut">Shortcut</string>
@@ -34,4 +29,5 @@
     <string name="notification_listener_service_label">Viper</string>
     <string name="notification_listener_service_description">Scan notifications for the authentication code</string>
     <string name="triggers">Triggers</string>
+    <string name="copied_popup">Copied</string>
 </resources>

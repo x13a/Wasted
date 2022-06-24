@@ -32,14 +32,14 @@ class TileService : TileService() {
     override fun onStartListening() {
         super.onStartListening()
         update(
-            if (prefs.isServiceEnabled && admin.isActive()) Tile.STATE_INACTIVE
+            if (prefs.isEnabled && admin.isActive()) Tile.STATE_INACTIVE
             else Tile.STATE_UNAVAILABLE
         )
     }
 
     override fun onClick() {
         super.onClick()
-        if (!prefs.isServiceEnabled || prefs.triggers.and(Trigger.TILE.value) == 0) return
+        if (!prefs.isEnabled || prefs.triggers.and(Trigger.TILE.value) == 0) return
         if (!prefs.isWipeData) {
             try {
                 admin.lockNow()

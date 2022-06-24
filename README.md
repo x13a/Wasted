@@ -1,6 +1,6 @@
 # Wasted
 
-Lock a device and wipe its data on danger.
+Lock a device and wipe its data on emergency.
 
 [<img 
      src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
@@ -22,8 +22,8 @@ message with authentication code. On trigger, using
 locks a device and optionally runs wipe.
 
 Also you can:
-* limit the maximum number of failed password attempts
 * wipe a device when it was not unlocked for N days
+* wipe a device using a duress password (companion app: [Duress](https://github.com/x13a/Duress))
 
 The app works in `Work Profile` too. Use [Shelter](https://github.com/PeterCxy/Shelter) to install 
 risky apps and `Wasted` in it. Then you can wipe this profile data with one click without wiping 
@@ -43,7 +43,7 @@ Broadcast:
 ```sh
 $ adb shell am broadcast \
     -a me.lucky.wasted.action.TRIGGER \
-    -n me.lucky.wasted/.CodeReceiver \
+    -n me.lucky.wasted/.TriggerReceiver \
     -e code "b49a6576-0c27-4f03-b96b-da53501022ba"
 ```
 

@@ -20,9 +20,9 @@ class ShortcutManager(private val ctx: Context) {
                 .setShortLabel(ctx.getString(R.string.shortcut_label))
                 .setIcon(IconCompat.createWithResource(ctx, android.R.drawable.ic_delete))
                 .setIntent(
-                    Intent(CodeReceiver.ACTION)
+                    Intent(TriggerReceiver.ACTION)
                         .setClass(ctx, ShortcutActivity::class.java)
-                        .putExtra(CodeReceiver.KEY, prefs.code)
+                        .putExtra(TriggerReceiver.KEY, prefs.authenticationCode)
                 )
                 .build(),
         )

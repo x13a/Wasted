@@ -7,26 +7,18 @@ import androidx.security.crypto.MasterKeys
 
 class Preferences(ctx: Context) {
     companion object {
-        const val DEFAULT_WIPE_ON_INACTIVITY_DAYS = 7
+        const val DEFAULT_WIPE_ON_INACTIVITY_COUNT = 7 * 24 * 60
 
-        private const val SERVICE_ENABLED = "service_enabled"
-        private const val CODE = "code"
+        private const val ENABLED = "enabled"
+        private const val AUTHENTICATION_CODE = "authentication_code"
         private const val WIPE_DATA = "wipe_data"
-        private const val WIPE_ESIM = "wipe_esim"
-        private const val MAX_FAILED_PASSWORD_ATTEMPTS = "max_failed_password_attempts"
+        private const val WIPE_EMBEDDED_SIM = "wipe_embedded_sim"
         private const val WIPE_ON_INACTIVITY = "wipe_on_inactivity"
 
         private const val TRIGGERS = "triggers"
-        private const val WIPE_ON_INACTIVITY_DAYS = "wipe_on_inactivity_days"
+        private const val WIPE_ON_INACTIVITY_COUNT = "wipe_on_inactivity_count"
 
         private const val FILE_NAME = "sec_shared_prefs"
-
-        // migration
-        private const val DO_WIPE = "do_wipe"
-        private const val CODE_ENABLED = "code_enabled"
-        private const val WIPE_ON_INACTIVE = "wipe_on_inactive"
-        private const val WIPE_ON_INACTIVE_DAYS = "wipe_on_inactive_days"
-        private const val LAUNCHERS = "launchers"
     }
 
     private val mk = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
@@ -38,49 +30,33 @@ class Preferences(ctx: Context) {
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
     )
 
-    var isServiceEnabled: Boolean
-        get() = prefs.getBoolean(SERVICE_ENABLED, false)
-        set(value) = prefs.edit { putBoolean(SERVICE_ENABLED, value) }
+    var isEnabled: Boolean
+        get() = prefs.getBoolean(ENABLED, false)
+        set(value) = prefs.edit { putBoolean(ENABLED, value) }
 
     var triggers: Int
-        get() = prefs.getInt(
-            TRIGGERS,
-            prefs.getInt(
-                LAUNCHERS,
-                if (prefs.getBoolean(CODE_ENABLED, false)) Trigger.BROADCAST.value else 0
-            ),
-        )
+        get() = prefs.getInt(TRIGGERS, 0)
         set(value) = prefs.edit { putInt(TRIGGERS, value) }
 
-    var code: String
-        get() = prefs.getString(CODE, "") ?: ""
-        set(value) = prefs.edit { putString(CODE, value) }
+    var authenticationCode: String
+        get() = prefs.getString(AUTHENTICATION_CODE, "") ?: ""
+        set(value) = prefs.edit { putString(AUTHENTICATION_CODE, value) }
 
     var isWipeData: Boolean
-        get() = prefs.getBoolean(WIPE_DATA, prefs.getBoolean(DO_WIPE, false))
+        get() = prefs.getBoolean(WIPE_DATA, false)
         set(value) = prefs.edit { putBoolean(WIPE_DATA, value) }
 
-    var isWipeESIM: Boolean
-        get() = prefs.getBoolean(WIPE_ESIM, false)
-        set(value) = prefs.edit { putBoolean(WIPE_ESIM, value) }
-
-    var maxFailedPasswordAttempts: Int
-        get() = prefs.getInt(MAX_FAILED_PASSWORD_ATTEMPTS, 0)
-        set(value) = prefs.edit { putInt(MAX_FAILED_PASSWORD_ATTEMPTS, value) }
+    var isWipeEmbeddedSim: Boolean
+        get() = prefs.getBoolean(WIPE_EMBEDDED_SIM, false)
+        set(value) = prefs.edit { putBoolean(WIPE_EMBEDDED_SIM, value) }
 
     var isWipeOnInactivity: Boolean
-        get() = prefs.getBoolean(
-            WIPE_ON_INACTIVITY,
-            prefs.getBoolean(WIPE_ON_INACTIVE, false),
-        )
+        get() = prefs.getBoolean(WIPE_ON_INACTIVITY, false)
         set(value) = prefs.edit { putBoolean(WIPE_ON_INACTIVITY, value) }
 
-    var wipeOnInactivityDays: Int
-        get() = prefs.getInt(
-            WIPE_ON_INACTIVITY_DAYS,
-            prefs.getInt(WIPE_ON_INACTIVE_DAYS, DEFAULT_WIPE_ON_INACTIVITY_DAYS),
-        )
-        set(value) = prefs.edit { putInt(WIPE_ON_INACTIVITY_DAYS, value) }
+    var wipeOnInactivityCount: Int
+        get() = prefs.getInt(WIPE_ON_INACTIVITY_COUNT, DEFAULT_WIPE_ON_INACTIVITY_COUNT)
+        set(value) = prefs.edit { putInt(WIPE_ON_INACTIVITY_COUNT, value) }
 }
 
 enum class Trigger(val value: Int) {
