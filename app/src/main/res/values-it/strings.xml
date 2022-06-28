@@ -15,7 +15,6 @@
     <string name="shortcut_label">Panico</string>
     <string name="wipe_on_inactivity_switch">Cancella in caso di inattività</string>
     <string name="wipe_on_inactivity_description">Cancella i dati quando il dispositivo non viene sbloccato per N giorni.</string>
-    <string name="wipe_on_inactivity_days">Giorni</string>
     <string name="notification_channel_default_name">Predefinito</string>
     <string name="wipe_job_description">Cancella i dati in caso di inattività</string>
     <string name="wipe_job_schedule_failed_popup">Impossibile pianificare un processo di cancellazione</string>

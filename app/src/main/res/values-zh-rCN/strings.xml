@@ -15,7 +15,6 @@
     <string name="shortcut_label">紧急</string>
     <string name="wipe_on_inactivity_switch">在不使用时擦除</string>
     <string name="wipe_on_inactivity_description">当设备在N天内没被解锁时擦除</string>
-    <string name="wipe_on_inactivity_days">天数</string>
     <string name="notification_channel_default_name">默认设置</string>
     <string name="wipe_job_description">擦除不使用的设备</string>
     <string name="wipe_job_schedule_failed_popup">无法制定擦除计划</string>

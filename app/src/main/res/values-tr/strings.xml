@@ -15,7 +15,6 @@
     <string name="shortcut_label">Panik</string>
     <string name="wipe_on_inactivity_switch">Kullanılmadığında sil</string>
     <string name="wipe_on_inactivity_description">N gün boyunca kilidi açılmamış bir cihazı silin.</string>
-    <string name="wipe_on_inactivity_days">Gün</string>
     <string name="notification_channel_default_name">Varsayılan</string>
     <string name="wipe_job_description">Cihaz kullanılmadığında siler</string>
     <string name="wipe_job_schedule_failed_popup">Silme işi zamanlanamadı</string>

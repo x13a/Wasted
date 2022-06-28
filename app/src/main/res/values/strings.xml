@@ -14,8 +14,10 @@
     <string name="tile_label">Airplane mode</string>
     <string name="shortcut_label">Panic</string>
     <string name="wipe_on_inactivity_switch">Wipe on inactivity</string>
-    <string name="wipe_on_inactivity_description">Wipe a device when it was not unlocked for N days.</string>
-    <string name="wipe_on_inactivity_days">Days</string>
+    <string name="wipe_on_inactivity_description">Wipe a device when it was not unlocked for N time.</string>
+    <string name="wipe_on_inactivity_time_hint">time</string>
+    <string name="wipe_on_inactivity_time_error">7d / 48h / 120m</string>
+    <string name="wipe_on_inactivity_time_helper_text">[d]ays [h]ours [m]inutes</string>
     <string name="notification_channel_default_name">Default</string>
     <string name="wipe_job_description">Wipe a device on inactivity</string>
     <string name="wipe_job_schedule_failed_popup">Failed to schedule a wipe job</string>

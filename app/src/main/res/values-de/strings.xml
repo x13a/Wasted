@@ -15,7 +15,6 @@
     <string name="shortcut_label">Panik</string>
     <string name="wipe_on_inactivity_switch">Bei Inaktivität löschen</string>
     <string name="wipe_on_inactivity_description">Den Speicher des Geräts löschen, wenn es für N Tage nicht entsperrt wurde.</string>
-    <string name="wipe_on_inactivity_days">Tage</string>
     <string name="notification_channel_default_name">Standard</string>
     <string name="wipe_job_description">Den Speicher bei Inaktivität löschen</string>
     <string name="wipe_job_schedule_failed_popup">Fehler bei der Durchführung des Wipes</string>

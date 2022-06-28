@@ -12,9 +12,11 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
+import java.util.regex.Pattern
 import kotlin.concurrent.timerTask
 
 import me.lucky.wasted.databinding.ActivityMainBinding
@@ -22,6 +24,9 @@ import me.lucky.wasted.databinding.ActivityMainBinding
 open class MainActivity : AppCompatActivity() {
     companion object {
         private const val CLIPBOARD_CLEAR_DELAY = 30_000L
+        private const val MODIFIER_DAYS = 'd'
+        private const val MODIFIER_HOURS = 'h'
+        private const val MODIFIER_MINUTES = 'm'
     }
 
     private lateinit var binding: ActivityMainBinding
@@ -29,6 +34,8 @@ open class MainActivity : AppCompatActivity() {
     private lateinit var admin: DeviceAdminManager
     private val shortcut by lazy { ShortcutManager(this) }
     private val job by lazy { WipeJobManager(this) }
+    private val wipeOnInactivityTimeRegex by lazy {
+        Pattern.compile("^[1-9]\\d*[$MODIFIER_DAYS$MODIFIER_HOURS$MODIFIER_MINUTES]$") }
     private var clipboardManager: ClipboardManager? = null
     private var clipboardClearTask: Timer? = null
 
@@ -81,6 +88,7 @@ open class MainActivity : AppCompatActivity() {
             wipeOnInactivitySwitch.isChecked = prefs.isWipeOnInactivity
             toggle.isChecked = prefs.isEnabled
         }
+        initWipeOnInactivityTime()
     }
 
     private fun hideEmbeddedSim() {
@@ -96,22 +104,23 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun initWipeOnInactivityTime() {
+        val count = prefs.wipeOnInactivityCount
+        val time = when {
+            count % (24 * 60) == 0 -> "${count / 24 / 60}$MODIFIER_DAYS"
+            count % 60 == 0 -> "${count / 60}$MODIFIER_HOURS"
+            else -> "$count$MODIFIER_MINUTES"
+        }
+        binding.wipeOnInactivityTime.editText?.setText(time)
+    }
+
     private fun setup() {
         binding.apply {
             authenticationCode.setOnClickListener {
                 showTriggersSettings()
             }
             authenticationCode.setOnLongClickListener {
-                clipboardManager
-                    ?.setPrimaryClip(ClipData.newPlainText("", prefs.authenticationCode))
-                if (clipboardManager != null) {
-                    scheduleClipboardClear()
-                    Snackbar.make(
-                        authenticationCode,
-                        R.string.copied_popup,
-                        Snackbar.LENGTH_SHORT,
-                    ).show()
-                }
+                copyAuthenticationCode()
                 true
             }
             wipeData.setOnCheckedChangeListener { _, isChecked ->
@@ -125,13 +134,48 @@ open class MainActivity : AppCompatActivity() {
                 setWipeOnInactivityState(prefs.isEnabled && isChecked)
                 prefs.isWipeOnInactivity = isChecked
             }
-            wipeOnInactivitySwitch.setOnLongClickListener {
-                showWipeOnInactivitySettings()
-                true
+            wipeOnInactivityTime.editText?.doAfterTextChanged {
+                if (wipeOnInactivityTimeRegex.matcher(it?.toString() ?: "").matches()) {
+                    wipeOnInactivityTime.error = null
+                } else {
+                    wipeOnInactivityTime.error = getString(R.string.wipe_on_inactivity_time_error)
+                }
+            }
+            wipeOnInactivityTime.setEndIconOnClickListener {
+                if (wipeOnInactivityTime.error != null) return@setEndIconOnClickListener
+                val time = wipeOnInactivityTime.editText?.text?.toString() ?: ""
+                if (time.length < 2) return@setEndIconOnClickListener
+                val modifier = time.last()
+                val i: Int
+                try {
+                    i = time.dropLast(1).toInt()
+                } catch (exc: NumberFormatException) { return@setEndIconOnClickListener }
+                prefs.wipeOnInactivityCount = when (modifier) {
+                    MODIFIER_DAYS -> i * 24 * 60
+                    MODIFIER_HOURS -> i * 60
+                    MODIFIER_MINUTES -> i
+                    else -> return@setEndIconOnClickListener
+                }
+                if (prefs.isEnabled && prefs.isWipeOnInactivity) {
+                    if (job.schedule() == JobScheduler.RESULT_FAILURE)
+                        showWipeJobScheduleFailedPopup()
+                }
             }
             toggle.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) requestAdmin() else setOff()
             }
+        }
+    }
+
+    private fun copyAuthenticationCode() {
+        clipboardManager?.setPrimaryClip(ClipData.newPlainText("", prefs.authenticationCode))
+        if (clipboardManager != null) {
+            scheduleClipboardClear()
+            Snackbar.make(
+                binding.authenticationCode,
+                R.string.copied_popup,
+                Snackbar.LENGTH_SHORT,
+            ).show()
         }
     }
 
@@ -170,27 +214,6 @@ open class MainActivity : AppCompatActivity() {
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 prefs.triggers = triggers
                 setTriggersState(prefs.isEnabled)
-            }
-            .show()
-    }
-
-    private fun showWipeOnInactivitySettings() {
-        val items = resources.getStringArray(R.array.wipe_on_inactivity_days)
-        var days = prefs.wipeOnInactivityCount / 24 / 60
-        var checked = items.indexOf(days.toString())
-        if (checked == -1) checked = items
-            .indexOf((Preferences.DEFAULT_WIPE_ON_INACTIVITY_COUNT / 24 / 60).toString())
-        MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.wipe_on_inactivity_days)
-            .setSingleChoiceItems(items, checked) { _, which ->
-                days = items[which].toInt()
-            }
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                prefs.wipeOnInactivityCount = days * 24 * 60
-                if (prefs.isEnabled && prefs.isWipeOnInactivity) {
-                    if (job.schedule() == JobScheduler.RESULT_FAILURE)
-                        showWipeJobScheduleFailedPopup()
-                }
             }
             .show()
     }

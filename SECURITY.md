@@ -9,4 +9,4 @@
 
 ## Reporting a Vulnerability
 
-Contact: mailto:44uaanjm0@relay.firefox.com
+Contact: 44uaanjm0@relay.firefox.com

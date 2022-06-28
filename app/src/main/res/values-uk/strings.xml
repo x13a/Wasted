@@ -15,7 +15,6 @@
     <string name="shortcut_label">Тривога</string>
     <string name="wipe_on_inactivity_switch">Wipe on inactivity</string>
     <string name="wipe_on_inactivity_description">Видалення пристрою, коли його не було розблоковано протягом N днів.</string>
-    <string name="wipe_on_inactivity_days">Днів</string>
     <string name="notification_channel_default_name">За замовчуванням</string>
     <string name="wipe_job_description">Wipe a device on inactivity</string>
     <string name="wipe_job_schedule_failed_popup">Failed to schedule a wipe job</string>

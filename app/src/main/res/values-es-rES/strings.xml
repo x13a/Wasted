@@ -15,7 +15,6 @@
     <string name="shortcut_label">Pánico</string>
     <string name="wipe_on_inactivity_switch">Borrar por inactividad</string>
     <string name="wipe_on_inactivity_description">Limpia un dispositivo cuando no fue desbloqueado por N días.</string>
-    <string name="wipe_on_inactivity_days">Días</string>
     <string name="notification_channel_default_name">Predeterminado</string>
     <string name="wipe_job_description">Borrar un dispositivo por inactividad</string>
     <string name="wipe_job_schedule_failed_popup">Error al programar un trabajo de borrado</string>
