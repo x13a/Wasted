@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">自毁</string>
-    <string name="description">开启自毁，在紧急状况下锁定设备。您可以使用触发器、追踪器、快捷方式或者发送验证码信息。</string>
-    <string name="device_admin_label">自毁</string>
-    <string name="device_admin_description">允许自毁锁定设备以及可选择在紧急状况下擦除数据</string>
     <string name="service_unavailable_popup">设备管理员不可用</string>
     <string name="wipe_data_check_box">擦除数据</string>
-    <string name="wipe_esim_check_box">擦除eSIM</string>
+    <string name="wipe_embedded_sim_check_box">擦除eSIM</string>
     <string name="panic_app_dialog_title">确认需要使用的紧急应用程序</string>
     <string name="panic_app_dialog_message">你是否确定允许%1$s触发紧急自毁行为？</string>
     <string name="panic_app_unknown_app">未知应用</string>
@@ -16,17 +13,12 @@
     <string name="wipe_on_inactivity_switch">在不使用时擦除</string>
     <string name="wipe_on_inactivity_description">当设备在N天内没被解锁时擦除</string>
     <string name="notification_channel_default_name">默认设置</string>
-    <string name="wipe_job_description">擦除不使用的设备</string>
-    <string name="wipe_job_schedule_failed_popup">无法制定擦除计划</string>
-    <string name="foreground_service_description">接收需要前台服务的事件</string>
     <string name="foreground_service_notification_title">守卫</string>
     <string name="triggers_array_panic_kit">恐慌触发器</string>
     <string name="triggers_array_tile">追踪器</string>
     <string name="triggers_array_shortcut">快捷方式</string>
     <string name="triggers_array_broadcast">广播</string>
     <string name="triggers_array_notification">通知</string>
-    <string name="notification_listener_service_label">哨兵</string>
-    <string name="notification_listener_service_description">扫描通知中的验证码</string>
     <string name="triggers">触发器</string>
     <string name="copied_popup">复制成功</string>
 </resources>

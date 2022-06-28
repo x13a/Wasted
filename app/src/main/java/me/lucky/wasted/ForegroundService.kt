@@ -15,7 +15,7 @@ class ForegroundService : Service() {
         private const val NOTIFICATION_ID = 1000
     }
 
-    private val unlockReceiver = UnlockReceiver()
+    private val lockReceiver = LockReceiver()
 
     override fun onCreate() {
         super.onCreate()
@@ -28,11 +28,14 @@ class ForegroundService : Service() {
     }
 
     private fun init() {
-        registerReceiver(unlockReceiver, IntentFilter(Intent.ACTION_USER_PRESENT))
+        registerReceiver(lockReceiver, IntentFilter().apply {
+            addAction(Intent.ACTION_USER_PRESENT)
+            addAction(Intent.ACTION_SCREEN_OFF)
+        })
     }
 
     private fun deinit() {
-        unregisterReceiver(unlockReceiver)
+        unregisterReceiver(lockReceiver)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -52,12 +55,24 @@ class ForegroundService : Service() {
         return null
     }
 
-    private class UnlockReceiver : BroadcastReceiver() {
+    private class LockReceiver : BroadcastReceiver() {
+        private var unlocked = false
+
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action != Intent.ACTION_USER_PRESENT ||
-                context?.getSystemService(KeyguardManager::class.java)?.isDeviceSecure != true ||
-                !Preferences(context).isWipeOnInactivity) return
-            Thread(Runner(context, goAsync())).start()
+            if (!Preferences(context ?: return).isWipeOnInactivity) return
+            when (intent?.action) {
+                Intent.ACTION_USER_PRESENT -> {
+                    if (context.getSystemService(KeyguardManager::class.java)
+                            ?.isDeviceSecure != true) return
+                    unlocked = true
+                    WipeJobManager(context).cancel()
+                }
+                Intent.ACTION_SCREEN_OFF -> {
+                    if (!unlocked) return
+                    unlocked = false
+                    Thread(Runner(context, goAsync())).start()
+                }
+            }
         }
 
         private class Runner(

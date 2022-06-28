@@ -1,6 +1,5 @@
 package me.lucky.wasted
 
-import android.app.job.JobScheduler
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.ComponentName
@@ -8,6 +7,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -53,6 +54,16 @@ open class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         init()
         setup()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.triggers) showTriggers()
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onStart() {
@@ -116,9 +127,6 @@ open class MainActivity : AppCompatActivity() {
 
     private fun setup() {
         binding.apply {
-            authenticationCode.setOnClickListener {
-                showTriggersSettings()
-            }
             authenticationCode.setOnLongClickListener {
                 copyAuthenticationCode()
                 true
@@ -156,10 +164,6 @@ open class MainActivity : AppCompatActivity() {
                     MODIFIER_MINUTES -> i
                     else -> return@setEndIconOnClickListener
                 }
-                if (prefs.isEnabled && prefs.isWipeOnInactivity) {
-                    if (job.schedule() == JobScheduler.RESULT_FAILURE)
-                        showWipeJobScheduleFailedPopup()
-                }
             }
             toggle.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) requestAdmin() else setOff()
@@ -191,7 +195,7 @@ open class MainActivity : AppCompatActivity() {
         }, CLIPBOARD_CLEAR_DELAY)
     }
 
-    private fun showTriggersSettings() {
+    private fun showTriggers() {
         var triggers = prefs.triggers
         val values = Trigger.values().toMutableList()
         val strings = resources.getStringArray(R.array.triggers).toMutableList()
@@ -248,14 +252,6 @@ open class MainActivity : AppCompatActivity() {
         updateCodeColorState()
     }
 
-    private fun showWipeJobScheduleFailedPopup() {
-        Snackbar.make(
-            binding.toggle,
-            R.string.wipe_job_schedule_failed_popup,
-            Snackbar.LENGTH_LONG,
-        ).show()
-    }
-
     private fun setOff() {
         prefs.isEnabled = false
         setWipeOnInactivityState(false)
@@ -284,7 +280,7 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun setWipeOnInactivityState(value: Boolean) {
-        job.setState(value)
+        if (!value) job.cancel()
         setForegroundState(value)
     }
 

@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wasted</string>
-    <string name="description">Aktiviere Wasted, um dein Gerät im Notfall zu sperren. Du kannst hierfür PanicKit, Tile und Shortcut verwenden, oder eine Nachricht mit diesem Authentifizierungscode auf dein Gerät senden.</string>
-    <string name="device_admin_label">Wasted</string>
-    <string name="device_admin_description">Wasted erlauben das Gerät zu sperren und optional die Daten in einem Notfall zu löschen</string>
     <string name="service_unavailable_popup">Geräteadministrator nicht verfügbar</string>
     <string name="wipe_data_check_box">Daten löschen</string>
-    <string name="wipe_esim_check_box">eSim löschen</string>
+    <string name="wipe_embedded_sim_check_box">eSim löschen</string>
     <string name="panic_app_dialog_title">Bestätige Panik App</string>
     <string name="panic_app_dialog_message">Bist du sicher, dass du %1$s erlauben willst, destruktive Aktionen auslösen zu lassen\?</string>
     <string name="panic_app_unknown_app">eine unbekannte App</string>
@@ -16,17 +13,12 @@
     <string name="wipe_on_inactivity_switch">Bei Inaktivität löschen</string>
     <string name="wipe_on_inactivity_description">Den Speicher des Geräts löschen, wenn es für N Tage nicht entsperrt wurde.</string>
     <string name="notification_channel_default_name">Standard</string>
-    <string name="wipe_job_description">Den Speicher bei Inaktivität löschen</string>
-    <string name="wipe_job_schedule_failed_popup">Fehler bei der Durchführung des Wipes</string>
-    <string name="foreground_service_description">Receive events which require foreground service</string>
     <string name="foreground_service_notification_title">Guard</string>
     <string name="triggers_array_panic_kit">PanicKit</string>
     <string name="triggers_array_tile">Tile</string>
     <string name="triggers_array_shortcut">Shortcut</string>
     <string name="triggers_array_broadcast">Broadcast</string>
     <string name="triggers_array_notification">Benachrichtigung</string>
-    <string name="notification_listener_service_label">Viper</string>
-    <string name="notification_listener_service_description">Benachrichtigungen nach dem Authentifizierungscode absuchen</string>
     <string name="triggers">Auslöser</string>
     <string name="copied_popup">Kopiert</string>
 </resources>

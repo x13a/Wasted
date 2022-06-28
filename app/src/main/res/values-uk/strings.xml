@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wasted</string>
-    <string name="description">Turn on Wasted to lock a device on emergency. You can use PanicKit, tile, shortcut or send a message with this authentication code.</string>
-    <string name="device_admin_label">Wasted</string>
-    <string name="device_admin_description">Allow Wasted to lock a device and optionally wipe its data on emergency</string>
     <string name="service_unavailable_popup">Адміністратор пристрою недоступний</string>
     <string name="wipe_data_check_box">Стерти дані</string>
-    <string name="wipe_esim_check_box">Стерти дані eSIM</string>
+    <string name="wipe_embedded_sim_check_box">Стерти дані eSIM</string>
     <string name="panic_app_dialog_title">Confirm panic app</string>
     <string name="panic_app_dialog_message">Are you sure that you want to allow %1$s to trigger destructive panic actions\?</string>
     <string name="panic_app_unknown_app">невідомий додаток</string>
@@ -16,17 +13,12 @@
     <string name="wipe_on_inactivity_switch">Wipe on inactivity</string>
     <string name="wipe_on_inactivity_description">Видалення пристрою, коли його не було розблоковано протягом N днів.</string>
     <string name="notification_channel_default_name">За замовчуванням</string>
-    <string name="wipe_job_description">Wipe a device on inactivity</string>
-    <string name="wipe_job_schedule_failed_popup">Failed to schedule a wipe job</string>
-    <string name="foreground_service_description">Receive events which require foreground service</string>
     <string name="foreground_service_notification_title">Захисник</string>
     <string name="triggers_array_panic_kit">PanicKit</string>
     <string name="triggers_array_tile">Tile</string>
     <string name="triggers_array_shortcut">Гарячі клавіші</string>
     <string name="triggers_array_broadcast">Трансляція</string>
     <string name="triggers_array_notification">Сповіщення</string>
-    <string name="notification_listener_service_label">Знищувач</string>
-    <string name="notification_listener_service_description">Сканувати сповіщення для коду автентифікації</string>
     <string name="triggers">Тріггери</string>
     <string name="copied_popup">Скопійовано</string>
 </resources>

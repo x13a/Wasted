@@ -30,8 +30,6 @@
 
         <receiver
             android:name=".DeviceAdminReceiver"
-            android:label="@string/device_admin_label"
-            android:description="@string/device_admin_description"
             android:permission="android.permission.BIND_DEVICE_ADMIN"
             android:exported="true">
             <meta-data android:name="android.app.device_admin"
@@ -104,14 +102,12 @@
         <service
             android:name=".WipeJobService"
             android:exported="true"
-            android:description="@string/wipe_job_description"
             android:permission="android.permission.BIND_JOB_SERVICE">
         </service>
 
         <service
             android:name=".ForegroundService"
-            android:exported="false"
-            android:description="@string/foreground_service_description">
+            android:exported="false">
         </service>
 
         <receiver
@@ -126,8 +122,6 @@
 
         <service
             android:name=".NotificationListenerService"
-            android:label="@string/notification_listener_service_label"
-            android:description="@string/notification_listener_service_description"
             android:enabled="false"
             android:exported="true"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">

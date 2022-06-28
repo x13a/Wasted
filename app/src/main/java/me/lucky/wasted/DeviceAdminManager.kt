@@ -42,8 +42,4 @@ class DeviceAdminManager(private val ctx: Context) {
     fun makeRequestIntent() =
         Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
             .putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, deviceAdmin)
-            .putExtra(
-                DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-                ctx.getString(R.string.device_admin_description),
-            )
 }

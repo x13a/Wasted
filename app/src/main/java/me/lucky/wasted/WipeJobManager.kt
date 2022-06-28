@@ -23,10 +23,5 @@ class WipeJobManager(private val ctx: Context) {
         ) ?: JobScheduler.RESULT_FAILURE
     }
 
-    fun setState(value: Boolean): Boolean {
-        if (value) {
-            if (schedule() == JobScheduler.RESULT_FAILURE) return false
-        } else { scheduler?.cancel(JOB_ID) }
-        return true
-    }
+    fun cancel() = scheduler?.cancel(JOB_ID)
 }

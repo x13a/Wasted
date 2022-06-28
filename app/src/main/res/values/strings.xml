@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wasted</string>
-    <string name="description">Turn on Wasted to lock a device on emergency. You can use PanicKit, tile, shortcut or send a message with this authentication code.</string>
-    <string name="device_admin_label">Wasted</string>
-    <string name="device_admin_description">Allow Wasted to lock a device and optionally wipe its data on emergency</string>
     <string name="service_unavailable_popup">Device admin unavailable</string>
     <string name="wipe_data_check_box">Wipe data</string>
-    <string name="wipe_esim_check_box">Wipe eSIM</string>
+    <string name="wipe_embedded_sim_check_box">Wipe eSIM</string>
     <string name="panic_app_dialog_title">Confirm panic app</string>
     <string name="panic_app_dialog_message">Are you sure that you want to allow %1$s to trigger destructive panic actions\?</string>
     <string name="panic_app_unknown_app">an unknown app</string>
@@ -19,17 +16,12 @@
     <string name="wipe_on_inactivity_time_error">7d / 48h / 120m</string>
     <string name="wipe_on_inactivity_time_helper_text">[d]ays [h]ours [m]inutes</string>
     <string name="notification_channel_default_name">Default</string>
-    <string name="wipe_job_description">Wipe a device on inactivity</string>
-    <string name="wipe_job_schedule_failed_popup">Failed to schedule a wipe job</string>
-    <string name="foreground_service_description">Receive events which require foreground service</string>
     <string name="foreground_service_notification_title">Guard</string>
     <string name="triggers_array_panic_kit">PanicKit</string>
     <string name="triggers_array_tile">Tile</string>
     <string name="triggers_array_shortcut">Shortcut</string>
     <string name="triggers_array_broadcast">Broadcast</string>
     <string name="triggers_array_notification">Notification</string>
-    <string name="notification_listener_service_label">Viper</string>
-    <string name="notification_listener_service_description">Scan notifications for the authentication code</string>
     <string name="triggers">Triggers</string>
     <string name="copied_popup">Copied</string>
 </resources>
