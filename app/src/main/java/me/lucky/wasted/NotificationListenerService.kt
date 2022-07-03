@@ -15,7 +15,7 @@ class NotificationListenerService : NotificationListenerService() {
     }
 
     private fun init() {
-        prefs = Preferences(this)
+        prefs = Preferences.new(this)
         admin = DeviceAdminManager(this)
     }
 

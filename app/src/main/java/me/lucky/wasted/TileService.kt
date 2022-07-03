@@ -5,7 +5,6 @@ import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
 import java.util.*
-import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.timerTask
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -16,7 +15,7 @@ class TileService : TileService() {
 
     private lateinit var prefs: Preferences
     private lateinit var admin: DeviceAdminManager
-    private val counter = AtomicInteger()
+    private var counter = 0
     private var timer: Timer? = null
 
     override fun onCreate() {
@@ -25,7 +24,7 @@ class TileService : TileService() {
     }
 
     private fun init() {
-        prefs = Preferences(this)
+        prefs = Preferences.new(this)
         admin = DeviceAdminManager(this)
     }
 
@@ -46,7 +45,9 @@ class TileService : TileService() {
             } catch (exc: SecurityException) {}
             return
         }
-        when (counter.getAndIncrement()) {
+        val v = counter
+        counter++
+        when (v) {
             0 -> {
                 update(Tile.STATE_ACTIVE)
                 timer?.cancel()
@@ -61,7 +62,7 @@ class TileService : TileService() {
             else -> {
                 timer?.cancel()
                 update(Tile.STATE_INACTIVE)
-                counter.set(0)
+                counter = 0
             }
         }
     }

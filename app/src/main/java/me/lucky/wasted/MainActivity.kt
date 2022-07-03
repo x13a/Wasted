@@ -1,9 +1,6 @@
 package me.lucky.wasted
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.ComponentName
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -32,6 +29,7 @@ open class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: Preferences
+    private lateinit var prefsdb: Preferences
     private lateinit var admin: DeviceAdminManager
     private val shortcut by lazy { ShortcutManager(this) }
     private val job by lazy { WipeJobManager(this) }
@@ -39,6 +37,10 @@ open class MainActivity : AppCompatActivity() {
         Pattern.compile("^[1-9]\\d*[$MODIFIER_DAYS$MODIFIER_HOURS$MODIFIER_MINUTES]$") }
     private var clipboardManager: ClipboardManager? = null
     private var clipboardClearTask: Timer? = null
+
+    private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        prefs.copyTo(prefsdb, key)
+    }
 
     private val registerForDeviceAdmin =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -68,7 +70,13 @@ open class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        prefs.registerListener(prefsListener)
         update()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        prefs.unregisterListener(prefsListener)
     }
 
     private fun update() {
@@ -82,6 +90,8 @@ open class MainActivity : AppCompatActivity() {
 
     private fun init() {
         prefs = Preferences(this)
+        prefsdb = Preferences(this, encrypted = false)
+        prefs.copyTo(prefsdb)
         admin = DeviceAdminManager(this)
         clipboardManager = getSystemService(ClipboardManager::class.java)
         NotificationManager(this).createNotificationChannels()

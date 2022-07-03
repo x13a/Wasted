@@ -24,6 +24,7 @@ locks a device and optionally runs wipe.
 Also you can:
 * wipe a device when it was not unlocked for N time
 * wipe a device using a duress password (companion app: [Duress](https://github.com/x13a/Duress))
+* wipe a device on USB connection event (companion app: [USBKill](https://github.com/x13a/USBKill))
 
 The app works in `Work Profile` too. Use [Shelter](https://github.com/PeterCxy/Shelter) to install 
 risky apps and `Wasted` in it. Then you can wipe this profile data with one click without wiping 

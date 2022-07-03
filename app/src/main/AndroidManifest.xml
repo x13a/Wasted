@@ -41,6 +41,7 @@
 
         <receiver
             android:name=".TriggerReceiver"
+            android:directBootAware="true"
             android:enabled="false"
             android:exported="true"
             tools:ignore="ExportedReceiver">
@@ -51,6 +52,7 @@
 
         <activity
             android:name=".PanicResponderActivity"
+            android:directBootAware="true"
             android:noHistory="true"
             android:enabled="false"
             android:exported="true"
@@ -86,6 +88,7 @@
 
         <service
             android:name=".TileService"
+            android:directBootAware="true"
             android:icon="@drawable/ic_baseline_airplanemode_active_24"
             android:label="@string/tile_label"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
@@ -101,20 +104,24 @@
 
         <service
             android:name=".WipeJobService"
+            android:directBootAware="true"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE">
         </service>
 
         <service
             android:name=".ForegroundService"
+            android:directBootAware="true"
             android:exported="false">
         </service>
 
         <receiver
             android:name=".RestartReceiver"
+            android:directBootAware="true"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
@@ -122,6 +129,7 @@
 
         <service
             android:name=".NotificationListenerService"
+            android:directBootAware="true"
             android:enabled="false"
             android:exported="true"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">

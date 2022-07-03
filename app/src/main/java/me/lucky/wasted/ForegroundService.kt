@@ -59,7 +59,7 @@ class ForegroundService : Service() {
         private var unlocked = false
 
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (!Preferences(context ?: return).isWipeOnInactivity) return
+            if (!Preferences.new(context ?: return).isWipeOnInactivity) return
             when (intent?.action) {
                 Intent.ACTION_USER_PRESENT -> {
                     if (context.getSystemService(KeyguardManager::class.java)

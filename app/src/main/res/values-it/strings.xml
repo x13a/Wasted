@@ -11,7 +11,10 @@
     <string name="tile_label">Modalità aereo</string>
     <string name="shortcut_label">Panico</string>
     <string name="wipe_on_inactivity_switch">Cancella in caso di inattività</string>
-    <string name="wipe_on_inactivity_description">Cancella i dati quando il dispositivo non viene sbloccato per N giorni.</string>
+    <string name="wipe_on_inactivity_description">Cancella i dati quando il dispositivo non viene sbloccato per N tempo.</string>
+    <string name="wipe_on_inactivity_time_hint">tempo</string>
+    <string name="wipe_on_inactivity_time_error">7d / 48h / 120m</string>
+    <string name="wipe_on_inactivity_time_helper_text">[d]giorni [h]ore [m]minuti</string>
     <string name="notification_channel_default_name">Predefinito</string>
     <string name="foreground_service_notification_title">Guardia</string>
     <string name="triggers_array_panic_kit">PanicKit</string>

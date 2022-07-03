@@ -7,9 +7,10 @@ import androidx.core.content.ContextCompat
 
 class RestartReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (intent?.action != Intent.ACTION_BOOT_COMPLETED &&
+        if (intent?.action != Intent.ACTION_LOCKED_BOOT_COMPLETED &&
+            intent?.action != Intent.ACTION_BOOT_COMPLETED &&
             intent?.action != Intent.ACTION_MY_PACKAGE_REPLACED) return
-        val prefs = Preferences(context ?: return)
+        val prefs = Preferences.new(context ?: return)
         if (!prefs.isEnabled || !prefs.isWipeOnInactivity) return
         ContextCompat.startForegroundService(
             context.applicationContext,

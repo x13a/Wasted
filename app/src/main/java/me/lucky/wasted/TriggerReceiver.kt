@@ -11,7 +11,7 @@ class TriggerReceiver : BroadcastReceiver() {
 
         fun panic(context: Context, intent: Intent?) {
             if (intent?.action != ACTION) return
-            val prefs = Preferences(context)
+            val prefs = Preferences.new(context)
             if (!prefs.isEnabled) return
             val code = prefs.authenticationCode
             assert(code.isNotEmpty())
@@ -25,7 +25,8 @@ class TriggerReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (Preferences(context ?: return).triggers.and(Trigger.BROADCAST.value) == 0) return
+        if (Preferences.new(context ?: return).triggers.and(Trigger.BROADCAST.value) == 0)
+            return
         panic(context, intent)
     }
 }

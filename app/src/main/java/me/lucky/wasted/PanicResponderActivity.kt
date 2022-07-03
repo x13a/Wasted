@@ -7,7 +7,7 @@ import info.guardianproject.panic.Panic
 import info.guardianproject.panic.PanicResponder
 
 class PanicResponderActivity : AppCompatActivity() {
-    private val prefs by lazy { Preferences(this) }
+    private val prefs by lazy { Preferences.new(this) }
     private val admin by lazy { DeviceAdminManager(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {

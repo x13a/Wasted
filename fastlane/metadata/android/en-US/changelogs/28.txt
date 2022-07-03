@@ -1,0 +1,2 @@
+direct boot aware
+update Italian translation, thanks to Giovanni Donisi (@gdonisi + @giovannidonisi)
