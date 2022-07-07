@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,8 +24,13 @@ class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private lateinit var ctx: Context
     private lateinit var prefs: Preferences
+    private lateinit var prefsdb: Preferences
     private val clipboardManager by lazy { ctx.getSystemService(ClipboardManager::class.java) }
     private val admin by lazy { DeviceAdminManager(ctx) }
+
+    private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        prefs.copyTo(prefsdb, key)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,15 +45,24 @@ class MainFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        updateSecretColor()
+        prefs.registerListener(prefsListener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        prefs.unregisterListener(prefsListener)
     }
 
     private fun init() {
         ctx = requireContext()
         prefs = Preferences(ctx)
+        prefsdb = Preferences(ctx, encrypted = false)
         if (prefs.secret.isEmpty()) prefs.secret = makeSecret()
         binding.apply {
             secret.text = prefs.secret
+            secret.setBackgroundColor(ctx.getColor(
+                if (prefs.triggers != 0) R.color.secret_1 else R.color.secret_0
+            ))
             wipeData.isChecked = prefs.isWipeData
             wipeEmbeddedSim.isChecked = prefs.isWipeEmbeddedSim
             wipeEmbeddedSim.isEnabled = wipeData.isChecked
@@ -76,10 +91,6 @@ class MainFragment : Fragment() {
         clipboardManager.setPrimaryClip(ClipData.newPlainText("", prefs.secret))
         Snackbar.make(binding.secret, R.string.copied_popup, Snackbar.LENGTH_SHORT).show()
     }
-
-    private fun updateSecretColor() = binding.secret.setBackgroundColor(ctx.getColor(
-        if (prefs.triggers != 0) R.color.secret_1 else R.color.secret_0
-    ))
 
     private fun setOn() {
         prefs.isEnabled = true

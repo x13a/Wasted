@@ -1,6 +1,7 @@
 package me.lucky.wasted.fragment
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +18,12 @@ class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
     private lateinit var ctx: Context
     private lateinit var prefs: Preferences
+    private lateinit var prefsdb: Preferences
     private val utils by lazy { Utils(ctx) }
+
+    private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        prefs.copyTo(prefsdb, key)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,9 +36,20 @@ class SettingsFragment : Fragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        prefs.registerListener(prefsListener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        prefs.unregisterListener(prefsListener)
+    }
+
     private fun init() {
         ctx = requireContext()
         prefs = Preferences(ctx)
+        prefsdb = Preferences(ctx, encrypted = false)
         binding.apply {
             val triggers = prefs.triggers
             panicKit.isChecked = triggers.and(Trigger.PANIC_KIT.value) != 0
