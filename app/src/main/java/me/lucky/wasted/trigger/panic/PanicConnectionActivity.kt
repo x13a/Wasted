@@ -1,10 +1,12 @@
-package me.lucky.wasted
+package me.lucky.wasted.trigger.panic
 
 import android.content.pm.PackageManager
 import android.os.Bundle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import info.guardianproject.panic.PanicResponder
+import me.lucky.wasted.MainActivity
+import me.lucky.wasted.R
 
 class PanicConnectionActivity : MainActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

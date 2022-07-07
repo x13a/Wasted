@@ -1,8 +1,10 @@
-package me.lucky.wasted
+package me.lucky.wasted.trigger.shared
 
 import android.content.Context
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
+
+import me.lucky.wasted.R
 
 class NotificationManager(private val ctx: Context) {
     companion object {

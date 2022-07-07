@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">自毁</string>
-    <string name="service_unavailable_popup">设备管理员不可用</string>
-    <string name="wipe_data_check_box">擦除数据</string>
-    <string name="wipe_embedded_sim_check_box">擦除eSIM</string>
+    <string name="wipe_data_checkbox">擦除数据</string>
+    <string name="wipe_embedded_sim_checkbox">擦除eSIM</string>
     <string name="panic_app_dialog_title">确认需要使用的紧急应用程序</string>
     <string name="panic_app_dialog_message">你是否确定允许%1$s触发紧急自毁行为？</string>
     <string name="panic_app_unknown_app">未知应用</string>
     <string name="allow">允许</string>
     <string name="tile_label">飞行模式</string>
     <string name="shortcut_label">紧急</string>
-    <string name="wipe_on_inactivity_switch">在不使用时擦除</string>
-    <string name="wipe_on_inactivity_description">当设备在N天内没被解锁时擦除</string>
+    <string name="trigger_lock_description">当设备在N天内没被解锁时擦除</string>
     <string name="notification_channel_default_name">默认设置</string>
     <string name="foreground_service_notification_title">守卫</string>
-    <string name="triggers_array_panic_kit">恐慌触发器</string>
-    <string name="triggers_array_tile">追踪器</string>
-    <string name="triggers_array_shortcut">快捷方式</string>
-    <string name="triggers_array_broadcast">广播</string>
-    <string name="triggers_array_notification">通知</string>
-    <string name="triggers">触发器</string>
+    <string name="trigger_panic_kit">恐慌触发器</string>
+    <string name="trigger_tile">追踪器</string>
+    <string name="trigger_shortcut">快捷方式</string>
+    <string name="trigger_broadcast">广播</string>
+    <string name="trigger_notification">通知</string>
     <string name="copied_popup">复制成功</string>
 </resources>

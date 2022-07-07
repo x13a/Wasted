@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wasted</string>
-    <string name="service_unavailable_popup">Cihaz yöneticisi mevcut değil</string>
-    <string name="wipe_data_check_box">Verileri sil</string>
-    <string name="wipe_embedded_sim_check_box">eSIM\'i sil</string>
+    <string name="wipe_data_checkbox">Verileri sil</string>
+    <string name="wipe_embedded_sim_checkbox">eSIM\'i sil</string>
     <string name="panic_app_dialog_title">Panik uygulamasını onayla</string>
     <string name="panic_app_dialog_message">Yıkıcı panik eylemlerini tetiklemek için %1$s\'e izin vermek istediğinizden emin misiniz\?</string>
     <string name="panic_app_unknown_app">bilinmeyen bir uygulama</string>
     <string name="allow">İzin ver</string>
     <string name="tile_label">Uçak modu</string>
     <string name="shortcut_label">Panik</string>
-    <string name="wipe_on_inactivity_switch">Kullanılmadığında sil</string>
-    <string name="wipe_on_inactivity_description">N gün boyunca kilidi açılmamış bir cihazı silin.</string>
+    <string name="trigger_lock_description">N gün boyunca kilidi açılmamış bir cihazı silin.</string>
     <string name="notification_channel_default_name">Varsayılan</string>
     <string name="foreground_service_notification_title">Guard</string>
-    <string name="triggers_array_panic_kit">PanicKit</string>
-    <string name="triggers_array_tile">Tile</string>
-    <string name="triggers_array_shortcut">Kısayol</string>
-    <string name="triggers_array_broadcast">Yayın</string>
-    <string name="triggers_array_notification">Bildirim</string>
-    <string name="triggers">Tetikleyiciler</string>
+    <string name="trigger_panic_kit">PanicKit</string>
+    <string name="trigger_tile">Tile</string>
+    <string name="trigger_shortcut">Kısayol</string>
+    <string name="trigger_broadcast">Yayın</string>
+    <string name="trigger_notification">Bildirim</string>
     <string name="copied_popup">Kopyalandı</string>
 </resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_main"
+        android:title="@string/main"
+        android:checkable="true"
+        android:checked="true" />
+
+    <group
+        android:id="@+id/nav_group_options"
+        android:checkableBehavior="all">
+
+        <item
+            android:id="@+id/nav_trigger_lock"
+            android:title="@string/trigger_lock" />
+
+    </group>
+
+</menu>

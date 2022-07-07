@@ -17,14 +17,14 @@ Lock a device and wipe its data on emergency.
      height="30%">
 
 You can use [PanicKit](https://guardianproject.info/code/panickit/), tile, shortcut or send a 
-message with authentication code. On trigger, using 
+message with a secret code. On trigger, using 
 [Device Administration API](https://developer.android.com/guide/topics/admin/device-admin), it 
 locks a device and optionally runs wipe.
 
 Also you can:
-* wipe a device when it was not unlocked for N time
-* wipe a device using a duress password (companion app: [Duress](https://github.com/x13a/Duress))
-* wipe a device on USB connection event (companion app: [USBKill](https://github.com/x13a/USBKill))
+* fire when a device was not unlocked for N time
+* fire when a USB data connection is made while a device is locked
+* fire when a duress password is entered (companion app: [Duress](https://github.com/x13a/Duress))
 
 The app works in `Work Profile` too. Use [Shelter](https://github.com/PeterCxy/Shelter) to install 
 risky apps and `Wasted` in it. Then you can wipe this profile data with one click without wiping 
@@ -34,9 +34,9 @@ Only encrypted device may guarantee that the data will not be recoverable.
 
 ## Permissions
 
-* DEVICE_ADMIN           - lock and optionally wipe a device
-* FOREGROUND_SERVICE     - receive unlock events
-* RECEIVE_BOOT_COMPLETED - persist wipe job across reboots
+* DEVICE_ADMIN - lock and optionally wipe a device
+* FOREGROUND_SERVICE - receive lock and USB state events
+* RECEIVE_BOOT_COMPLETED - persist lock job and foreground service across reboots
 
 ## Example
 

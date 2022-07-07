@@ -6,6 +6,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="code_on">#FFD600</color>
-    <color name="code_off">#E13741</color>
+    <color name="secret_1">#FFD600</color>
+    <color name="secret_0">#E13741</color>
 </resources>

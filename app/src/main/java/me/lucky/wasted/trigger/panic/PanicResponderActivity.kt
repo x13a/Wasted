@@ -1,10 +1,13 @@
-package me.lucky.wasted
+package me.lucky.wasted.trigger.panic
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
 import info.guardianproject.panic.Panic
 import info.guardianproject.panic.PanicResponder
+import me.lucky.wasted.admin.DeviceAdminManager
+import me.lucky.wasted.Preferences
+import me.lucky.wasted.Trigger
 
 class PanicResponderActivity : AppCompatActivity() {
     private val prefs by lazy { Preferences.new(this) }

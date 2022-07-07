@@ -1,0 +1,5 @@
+refresh ui
+"Wipe on inactivity" is now a trigger named "Lock", it will respect "Wipe data/eSIM" checkboxes, you have to re-enable it if you used "Wipe on inactivity" before
+merge USBKill to Wasted
+
+there were many internal changes, if you will find bugs please let me know, thx

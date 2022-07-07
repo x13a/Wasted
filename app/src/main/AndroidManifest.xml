@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-feature android:name="android.software.device_admin" android:required="true" />
+    <uses-feature android:name="android.hardware.usb.host" android:required="false" />
+    <uses-feature android:name="android.hardware.usb.accessory" android:required="false" />
 
     <application
         android:allowBackup="false"
@@ -29,7 +31,7 @@
         </activity>
 
         <receiver
-            android:name=".DeviceAdminReceiver"
+            android:name=".admin.DeviceAdminReceiver"
             android:permission="android.permission.BIND_DEVICE_ADMIN"
             android:exported="true">
             <meta-data android:name="android.app.device_admin"
@@ -39,32 +41,8 @@
             </intent-filter>
         </receiver>
 
-        <receiver
-            android:name=".TriggerReceiver"
-            android:directBootAware="true"
-            android:enabled="false"
-            android:exported="true"
-            tools:ignore="ExportedReceiver">
-            <intent-filter>
-                <action android:name="me.lucky.wasted.action.TRIGGER" />
-            </intent-filter>
-        </receiver>
-
         <activity
-            android:name=".PanicResponderActivity"
-            android:directBootAware="true"
-            android:noHistory="true"
-            android:enabled="false"
-            android:exported="true"
-            android:theme="@android:style/Theme.NoDisplay">
-            <intent-filter>
-                <action android:name="info.guardianproject.panic.action.TRIGGER" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".PanicConnectionActivity"
+            android:name=".trigger.panic.PanicConnectionActivity"
             android:noHistory="true"
             android:enabled="false"
             android:exported="true">
@@ -76,18 +54,20 @@
         </activity>
 
         <activity
-            android:name=".ShortcutActivity"
+            android:name=".trigger.panic.PanicResponderActivity"
+            android:directBootAware="true"
             android:noHistory="true"
+            android:enabled="false"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
-                <action android:name="me.lucky.wasted.action.TRIGGER" />
+                <action android:name="info.guardianproject.panic.action.TRIGGER" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <service
-            android:name=".TileService"
+            android:name=".trigger.tile.TileService"
             android:directBootAware="true"
             android:icon="@drawable/ic_baseline_airplanemode_active_24"
             android:label="@string/tile_label"
@@ -102,21 +82,70 @@
                 android:value="true" />
         </service>
 
+        <activity
+            android:name=".trigger.shortcut.ShortcutActivity"
+            android:noHistory="true"
+            android:enabled="false"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="me.lucky.wasted.action.TRIGGER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".TriggerReceiver"
+            android:directBootAware="true"
+            android:enabled="false"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="me.lucky.wasted.action.TRIGGER" />
+            </intent-filter>
+        </receiver>
+
         <service
-            android:name=".WipeJobService"
+            android:name=".trigger.notification.NotificationListenerService"
+            android:directBootAware="true"
+            android:enabled="false"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".trigger.lock.LockJobService"
             android:directBootAware="true"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE">
         </service>
 
+        <receiver
+            android:name=".trigger.usb.UsbReceiver"
+            android:directBootAware="true"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+                <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" />
+            </intent-filter>
+            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+            <meta-data android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
+                android:resource="@xml/accessory_filter" />
+        </receiver>
+
         <service
-            android:name=".ForegroundService"
+            android:name=".trigger.shared.ForegroundService"
             android:directBootAware="true"
             android:exported="false">
         </service>
 
         <receiver
-            android:name=".RestartReceiver"
+            android:name=".trigger.shared.RestartReceiver"
             android:directBootAware="true"
             android:enabled="false"
             android:exported="true">
@@ -126,17 +155,6 @@
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
-
-        <service
-            android:name=".NotificationListenerService"
-            android:directBootAware="true"
-            android:enabled="false"
-            android:exported="true"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-            <intent-filter>
-                <action android:name="android.service.notification.NotificationListenerService" />
-            </intent-filter>
-        </service>
 
     </application>
 </manifest>

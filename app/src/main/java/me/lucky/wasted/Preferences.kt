@@ -11,18 +11,21 @@ import androidx.security.crypto.MasterKeys
 
 class Preferences(ctx: Context, encrypted: Boolean = true) {
     companion object {
-        private const val DEFAULT_WIPE_ON_INACTIVITY_COUNT = 7 * 24 * 60
+        private const val DEFAULT_TRIGGER_LOCK_COUNT = 7 * 24 * 60
 
         private const val ENABLED = "enabled"
-        private const val AUTHENTICATION_CODE = "authentication_code"
+        private const val SECRET = "secret"
         private const val WIPE_DATA = "wipe_data"
         private const val WIPE_EMBEDDED_SIM = "wipe_embedded_sim"
-        private const val WIPE_ON_INACTIVITY = "wipe_on_inactivity"
 
         private const val TRIGGERS = "triggers"
-        private const val WIPE_ON_INACTIVITY_COUNT = "wipe_on_inactivity_count"
+        private const val TRIGGER_LOCK_COUNT = "trigger_lock_count"
 
         private const val FILE_NAME = "sec_shared_prefs"
+
+        // migration
+        private const val AUTHENTICATION_CODE = "authentication_code"
+        private const val WIPE_ON_INACTIVITY_COUNT = "wipe_on_inactivity_count"
 
         fun new(ctx: Context) = Preferences(
             ctx,
@@ -54,9 +57,12 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
         get() = prefs.getInt(TRIGGERS, 0)
         set(value) = prefs.edit { putInt(TRIGGERS, value) }
 
-    var authenticationCode: String
-        get() = prefs.getString(AUTHENTICATION_CODE, "") ?: ""
-        set(value) = prefs.edit { putString(AUTHENTICATION_CODE, value) }
+    var secret: String
+        get() = prefs.getString(
+            SECRET,
+            prefs.getString(AUTHENTICATION_CODE, "") ?: "",
+        ) ?: ""
+        set(value) = prefs.edit { putString(SECRET, value) }
 
     var isWipeData: Boolean
         get() = prefs.getBoolean(WIPE_DATA, false)
@@ -66,13 +72,12 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
         get() = prefs.getBoolean(WIPE_EMBEDDED_SIM, false)
         set(value) = prefs.edit { putBoolean(WIPE_EMBEDDED_SIM, value) }
 
-    var isWipeOnInactivity: Boolean
-        get() = prefs.getBoolean(WIPE_ON_INACTIVITY, false)
-        set(value) = prefs.edit { putBoolean(WIPE_ON_INACTIVITY, value) }
-
-    var wipeOnInactivityCount: Int
-        get() = prefs.getInt(WIPE_ON_INACTIVITY_COUNT, DEFAULT_WIPE_ON_INACTIVITY_COUNT)
-        set(value) = prefs.edit { putInt(WIPE_ON_INACTIVITY_COUNT, value) }
+    var triggerLockCount: Int
+        get() = prefs.getInt(
+            TRIGGER_LOCK_COUNT,
+            prefs.getInt(WIPE_ON_INACTIVITY_COUNT, DEFAULT_TRIGGER_LOCK_COUNT),
+        )
+        set(value) = prefs.edit { putInt(TRIGGER_LOCK_COUNT, value) }
 
     fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) =
         prefs.registerOnSharedPreferenceChangeListener(listener)
@@ -100,4 +105,6 @@ enum class Trigger(val value: Int) {
     SHORTCUT(1 shl 2),
     BROADCAST(1 shl 3),
     NOTIFICATION(1 shl 4),
+    LOCK(1 shl 5),
+    USB(1 shl 6),
 }

@@ -1,4 +1,4 @@
-package me.lucky.wasted
+package me.lucky.wasted.trigger.tile
 
 import android.os.Build
 import android.service.quicksettings.Tile
@@ -6,6 +6,10 @@ import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
 import java.util.*
 import kotlin.concurrent.timerTask
+
+import me.lucky.wasted.admin.DeviceAdminManager
+import me.lucky.wasted.Preferences
+import me.lucky.wasted.Trigger
 
 @RequiresApi(Build.VERSION_CODES.N)
 class TileService : TileService() {

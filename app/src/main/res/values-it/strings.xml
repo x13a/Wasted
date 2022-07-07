@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wasted</string>
-    <string name="service_unavailable_popup">Amministrazione dispositivo non disponibile</string>
-    <string name="wipe_data_check_box">Cancella i dati</string>
-    <string name="wipe_embedded_sim_check_box">Cancella eSIM</string>
+    <string name="wipe_data_checkbox">Cancella i dati</string>
+    <string name="wipe_embedded_sim_checkbox">Cancella eSIM</string>
     <string name="panic_app_dialog_title">Conferma app di panico</string>
     <string name="panic_app_dialog_message">Sei sicuro di voler consentire a %1$s di attivare azioni di panico distruttive\?</string>
     <string name="panic_app_unknown_app">un\'app sconosciuta</string>
     <string name="allow">Consenti</string>
     <string name="tile_label">Modalità aereo</string>
     <string name="shortcut_label">Panico</string>
-    <string name="wipe_on_inactivity_switch">Cancella in caso di inattività</string>
-    <string name="wipe_on_inactivity_description">Cancella i dati quando il dispositivo non viene sbloccato per N tempo.</string>
-    <string name="wipe_on_inactivity_time_hint">tempo</string>
-    <string name="wipe_on_inactivity_time_error">7d / 48h / 120m</string>
-    <string name="wipe_on_inactivity_time_helper_text">[d]giorni [h]ore [m]minuti</string>
+    <string name="trigger_lock_description">Cancella i dati quando il dispositivo non viene sbloccato per N tempo.</string>
+    <string name="trigger_lock_time_hint">tempo</string>
+    <string name="trigger_lock_time_error">7d / 48h / 120m</string>
+    <string name="trigger_lock_time_helper_text">[d]giorni [h]ore [m]minuti</string>
     <string name="notification_channel_default_name">Predefinito</string>
     <string name="foreground_service_notification_title">Guardia</string>
-    <string name="triggers_array_panic_kit">PanicKit</string>
-    <string name="triggers_array_tile">Toggle</string>
-    <string name="triggers_array_shortcut">Scorciatoia</string>
-    <string name="triggers_array_broadcast">Broadcast</string>
-    <string name="triggers_array_notification">Notifica</string>
-    <string name="triggers">Attivatori</string>
+    <string name="trigger_panic_kit">PanicKit</string>
+    <string name="trigger_tile">Toggle</string>
+    <string name="trigger_shortcut">Scorciatoia</string>
+    <string name="trigger_broadcast">Broadcast</string>
+    <string name="trigger_notification">Notifica</string>
     <string name="copied_popup">Copiato</string>
 </resources>
