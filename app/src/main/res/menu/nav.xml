@@ -12,6 +12,10 @@
         android:checkableBehavior="all">
 
         <item
+            android:id="@+id/nav_trigger_tile"
+            android:title="@string/trigger_tile" />
+
+        <item
             android:id="@+id/nav_trigger_lock"
             android:title="@string/trigger_lock" />
 

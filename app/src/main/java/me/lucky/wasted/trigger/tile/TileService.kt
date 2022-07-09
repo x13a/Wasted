@@ -13,10 +13,6 @@ import me.lucky.wasted.Trigger
 
 @RequiresApi(Build.VERSION_CODES.N)
 class TileService : TileService() {
-    companion object {
-        private const val SAFE_DELAY = 2000L
-    }
-
     private lateinit var prefs: Preferences
     private lateinit var admin: DeviceAdminManager
     private var counter = 0
@@ -61,7 +57,7 @@ class TileService : TileService() {
                         admin.lockNow()
                         admin.wipeData()
                     } catch (exc: SecurityException) {}
-                }, SAFE_DELAY)
+                }, prefs.triggerTileDelay)
             }
             else -> {
                 timer?.cancel()

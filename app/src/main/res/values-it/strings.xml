@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wasted</string>
-    <string name="wipe_data_checkbox">Cancella i dati</string>
+    <string name="wipe_data_checkbox">Cancella dati</string>
     <string name="wipe_embedded_sim_checkbox">Cancella eSIM</string>
     <string name="panic_app_dialog_title">Conferma app di panico</string>
-    <string name="panic_app_dialog_message">Sei sicuro di voler consentire a %1$s di attivare azioni di panico distruttive\?</string>
+    <string name="panic_app_dialog_message">Sei sicuro di voler consentire a %1$s di attivare azioni di panico distruttive\\?</string>
     <string name="panic_app_unknown_app">un\'app sconosciuta</string>
     <string name="allow">Consenti</string>
     <string name="tile_label">Modalità aereo</string>
     <string name="shortcut_label">Panico</string>
-    <string name="trigger_lock_description">Cancella i dati quando il dispositivo non viene sbloccato per N tempo.</string>
     <string name="trigger_lock_time_hint">tempo</string>
     <string name="trigger_lock_time_error">7d / 48h / 120m</string>
-    <string name="trigger_lock_time_helper_text">[d]giorni [h]ore [m]minuti</string>
+    <string name="trigger_lock_time_helper_text">Quanto tempo aspettare. Modificatori: [d]giorni [h]ore [m]minuti</string>
     <string name="notification_channel_default_name">Predefinito</string>
     <string name="foreground_service_notification_title">Guardia</string>
     <string name="trigger_panic_kit">PanicKit</string>
@@ -20,5 +19,16 @@
     <string name="trigger_shortcut">Scorciatoia</string>
     <string name="trigger_broadcast">Broadcast</string>
     <string name="trigger_notification">Notifica</string>
+    <string name="trigger_lock">Blocca</string>
+    <string name="trigger_usb">USB</string>
     <string name="copied_popup">Copiato</string>
+    <string name="main">Principale</string>
+    <string name="settings">Impostazioni</string>
+    <string name="trigger_panic_kit_description">Abilita il panic responder. PanicKit è una raccolta di strumenti per la creazione di \"pulsanti di panico\" che possono attivare una risposta a livello di sistema quando l\'utente si trova in una situazione di ansia o di pericolo. Consente alle app trigger e alle app responder di connettersi tra loro in modo sicuro e semplice. L\'utente si collega all\'app trigger quando si trova in una situazione di panico. Le app di risposta ricevono il segnale di attivazione ed eseguono individualmente le operazioni per le quali sono state configurate.</string>
+    <string name="trigger_tile_description">Abilita il servizio toggle. Si tratta di un pulsante nel pannello delle impostazioni rapide quando scorri il dito dalla parte superiore dello schermo. Questo pulsante simula la modalità aereo. Ha un ritardo di due secondi se lo si tocca accidentalmente.</string>
+    <string name="trigger_shortcut_description">Abilita la scorciatoia dell\'icona. È un pulsante che viene visualizzato quando si tocca a lungo l\'icona di Wasted.</string>
+    <string name="trigger_broadcast_description">Abilita il ricevitore broadcast. È utile per comunicare con altre applicazioni Android. Ad esempio, è possibile avviare Wasted da Tasker.</string>
+    <string name="trigger_notification_description">Abilita l\'ascoltatore di notifiche del dispositivo. Esaminerà tutte le notifiche a cui ha accesso alla ricerca del codice segreto. Quando lo trova, si attiva. È necessario concedere a Wasted le autorizzazioni necessarie nelle Impostazioni &gt; Notifiche &gt; Notifiche app e dispositivi.</string>
+    <string name="trigger_lock_description">Abilita i Job Scheduler di blocco. Pianificherà un Job ogni volta che si blocca un dispositivo e lo annullerà ogni volta che si sblocca un dispositivo. Se non si sblocca un dispositivo per un periodo di tempo X, il Job verrà avviato.</string>
+    <string name="trigger_usb_description">Abilita il ricevitore di stato USB. Quando si effettua una connessione dati USB mentre un dispositivo è bloccato, il ricevitore si attiva. Non deve attivarsi sul caricatore, ma solo su dispositivi e accessori.</string>
 </resources>

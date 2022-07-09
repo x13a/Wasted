@@ -12,6 +12,7 @@
     <string name="trigger_lock_time_hint">time</string>
     <string name="trigger_lock_time_error">7d / 48h / 120m</string>
     <string name="trigger_lock_time_helper_text">How much time to wait. Modifiers: [d]ays [h]ours [m]inutes</string>
+    <string name="trigger_tile_delay_description">Safe delay before it will fire. Gives you some time to cancel fire if you will tap a tile accidentally.</string>
     <string name="notification_channel_default_name">Default</string>
     <string name="foreground_service_notification_title">Guard</string>
     <string name="trigger_panic_kit">PanicKit</string>
@@ -25,7 +26,7 @@
     <string name="main">Main</string>
     <string name="settings">Settings</string>
     <string name="trigger_panic_kit_description">Enable panic responder. PanicKit is a collection of tools for creating “panic buttons” that can trigger a system-wide response when the user is in an anxious or dangerous situation. It enables trigger apps and responder apps to safely and easily connect to each other. The user engages with the trigger app when in a panic situation. The responder apps receive that trigger signal, and individually execute the steps that they were configured to do.</string>
-    <string name="trigger_tile_description">Enable tile service. It is a button in quick settings panel when you swipe from the top of the screen. This button will mimic to the airplane mode. It has 2s delay if you will tap it accidentally.</string>
+    <string name="trigger_tile_description">Enable tile service. It is a button in quick settings panel when you swipe from the top of the screen. This button will mimic to the airplane mode.</string>
     <string name="trigger_shortcut_description">Enable icon shortcut. It is a button you will see when you make a long tap on the Wasted icon.</string>
     <string name="trigger_broadcast_description">Enable broadcast receiver. It is useful to communicate with another Android apps. For example you can fire Wasted from Tasker using this.</string>
     <string name="trigger_notification_description">Enable device notification listener. It will scan all notifications it has access to for the secret code. When found it will fire. You have to give Wasted necessary permissions in Settings > Notifications > Device and app notifications.</string>

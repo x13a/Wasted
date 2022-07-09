@@ -22,7 +22,7 @@ message with a secret code. On trigger, using
 locks a device and optionally runs wipe.
 
 Also you can:
-* fire when a device was not unlocked for N time
+* fire when a device was not unlocked for X time
 * fire when a USB data connection is made while a device is locked
 * fire when a duress password is entered (companion app: [Duress](https://github.com/x13a/Duress))
 
@@ -31,6 +31,12 @@ risky apps and `Wasted` in it. Then you can wipe this profile data with one clic
 the whole device.
 
 Only encrypted device may guarantee that the data will not be recoverable.
+
+## Broadcast
+
+* action: `me.lucky.wasted.action.TRIGGER`
+* receiver: `me.lucky.wasted/.TriggerReceiver`
+* also you have to send a secret code from Wasted with the key: `code`
 
 ## Permissions
 

@@ -1,0 +1,2 @@
+tile trigger safe delay option
+update Italian translation, thanks to Giovanni Donisi (@gdonisi + @giovannidonisi)

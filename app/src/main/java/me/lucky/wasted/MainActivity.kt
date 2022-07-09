@@ -62,6 +62,7 @@ open class MainActivity : AppCompatActivity() {
 
     private fun getFragment(id: Int) = when (id) {
         R.id.nav_main -> MainFragment()
+        R.id.nav_trigger_tile -> TileFragment()
         R.id.nav_trigger_lock -> LockFragment()
         R.id.top_settings -> SettingsFragment()
         else -> MainFragment()

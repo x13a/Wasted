@@ -12,6 +12,7 @@ import androidx.security.crypto.MasterKeys
 class Preferences(ctx: Context, encrypted: Boolean = true) {
     companion object {
         private const val DEFAULT_TRIGGER_LOCK_COUNT = 7 * 24 * 60
+        private const val DEFAULT_TRIGGER_TILE_DELAY = 2000L
 
         private const val ENABLED = "enabled"
         private const val SECRET = "secret"
@@ -20,6 +21,7 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
 
         private const val TRIGGERS = "triggers"
         private const val TRIGGER_LOCK_COUNT = "trigger_lock_count"
+        private const val TRIGGER_TILE_DELAY = "trigger_tile_delay"
 
         private const val FILE_NAME = "sec_shared_prefs"
 
@@ -79,6 +81,10 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
         )
         set(value) = prefs.edit { putInt(TRIGGER_LOCK_COUNT, value) }
 
+    var triggerTileDelay: Long
+        get() = prefs.getLong(TRIGGER_TILE_DELAY, DEFAULT_TRIGGER_TILE_DELAY)
+        set(value) = prefs.edit { putLong(TRIGGER_TILE_DELAY, value) }
+
     fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) =
         prefs.registerOnSharedPreferenceChangeListener(listener)
 
@@ -93,6 +99,7 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
             when (v) {
                 is Boolean -> putBoolean(k, v)
                 is Int -> putInt(k, v)
+                is Long -> putLong(k, v)
                 is String -> putString(k, v)
             }
         }

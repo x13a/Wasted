@@ -57,13 +57,14 @@ class LockFragment : Fragment() {
         ctx = requireContext()
         prefs = Preferences(ctx)
         prefsdb = Preferences(ctx, encrypted = false)
-        val count = prefs.triggerLockCount
-        val time = when {
-            count % (24 * 60) == 0 -> "${count / 24 / 60}$MODIFIER_DAYS"
-            count % 60 == 0 -> "${count / 60}$MODIFIER_HOURS"
-            else -> "$count$MODIFIER_MINUTES"
+        binding.apply {
+            val count = prefs.triggerLockCount
+            time.editText?.setText(when {
+                count % (24 * 60) == 0 -> "${count / 24 / 60}$MODIFIER_DAYS"
+                count % 60 == 0 -> "${count / 60}$MODIFIER_HOURS"
+                else -> "$count$MODIFIER_MINUTES"
+            })
         }
-        binding.time.editText?.setText(time)
     }
 
     private fun setup() = binding.apply {
