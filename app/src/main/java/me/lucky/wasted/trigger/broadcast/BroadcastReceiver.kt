@@ -19,7 +19,7 @@ class BroadcastReceiver : BroadcastReceiver() {
             if (!prefs.isEnabled) return
             val secret = prefs.secret
             assert(secret.isNotEmpty())
-            if (intent.getStringExtra(KEY) != secret) return
+            if (intent.getStringExtra(KEY)?.trim() != secret) return
             val admin = DeviceAdminManager(context)
             try {
                 admin.lockNow()

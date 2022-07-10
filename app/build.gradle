@@ -10,8 +10,8 @@ android {
         applicationId "me.lucky.wasted"
         minSdk 23
         targetSdk 32
-        versionCode 32
-        versionName "1.5.3"
+        versionCode 33
+        versionName "1.5.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -49,6 +49,7 @@ dependencies {
 
     implementation 'androidx.security:security-crypto:1.0.0'
     implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'androidx.biometric:biometric:1.1.0'
     implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
     implementation 'info.guardianproject.panic:panic:1.0'
 }

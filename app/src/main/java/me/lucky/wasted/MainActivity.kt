@@ -2,6 +2,9 @@ package me.lucky.wasted
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
 import me.lucky.wasted.databinding.ActivityMainBinding
@@ -17,16 +20,58 @@ open class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        init()
+        init1()
+        if (initBiometric()) return
+        init2()
         setup()
     }
 
-    private fun init() {
+    private fun init1() {
         prefs = Preferences(this)
         prefsdb = Preferences(this, encrypted = false)
         prefs.copyTo(prefsdb)
         NotificationManager(this).createNotificationChannels()
+    }
+
+    private fun init2() {
         replaceFragment(MainFragment())
+    }
+
+    private fun initBiometric(): Boolean {
+        val authenticators = BiometricManager.Authenticators.BIOMETRIC_STRONG or
+                BiometricManager.Authenticators.DEVICE_CREDENTIAL
+        when (BiometricManager
+            .from(this)
+            .canAuthenticate(authenticators))
+        {
+            BiometricManager.BIOMETRIC_SUCCESS -> {}
+            else -> return false
+        }
+        val executor = ContextCompat.getMainExecutor(this)
+        val prompt = BiometricPrompt(
+            this,
+            executor,
+            object : BiometricPrompt.AuthenticationCallback()
+        {
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                super.onAuthenticationError(errorCode, errString)
+                finishAndRemoveTask()
+            }
+
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                super.onAuthenticationSucceeded(result)
+                init2()
+                setup()
+            }
+        })
+        try {
+            prompt.authenticate(BiometricPrompt.PromptInfo.Builder()
+                .setTitle(getString(R.string.authentication))
+                .setConfirmationRequired(false)
+                .setAllowedAuthenticators(authenticators)
+                .build())
+        } catch (exc: Exception) { return false }
+        return true
     }
 
     private fun setup() = binding.apply {
