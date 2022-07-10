@@ -16,6 +16,10 @@
             android:title="@string/trigger_tile" />
 
         <item
+            android:id="@+id/nav_trigger_notification"
+            android:title="@string/trigger_notification" />
+
+        <item
             android:id="@+id/nav_trigger_lock"
             android:title="@string/trigger_lock" />
 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wasted</string>
+    <string name="wipe_data_checkbox">Wyczyść dane</string>
+    <string name="wipe_embedded_sim_checkbox">Wyczyść eSIM</string>
+    <string name="panic_app_dialog_title">Potwierdź aplikację paniki</string>
+    <string name="panic_app_dialog_message">Czy na pewno chcesz zezwolić %1$s na wywoływanie destruktywnych akcji paniki\\?</string>
+    <string name="panic_app_unknown_app">nieznana aplikacja</string>
+    <string name="allow">Zezwól</string>
+    <string name="tile_label">Tryb samolotowy</string>
+    <string name="shortcut_label">Panika</string>
+    <string name="trigger_lock_time_hint">czas</string>
+    <string name="trigger_lock_time_error">7d / 48h / 120m</string>
+    <string name="trigger_lock_time_helper_text">Ile czasu czekać. Modyfikatory: [d]ni [h](godziny) [m]inuty</string>
+    <string name="trigger_tile_delay_description">Bezpieczne opóźnienie zanim się odpali. Daje Ci troche czasu na anulowanie, jeśli przypadkowo stukniesz w kafelek.</string>
+    <string name="notification_channel_default_name">Domyślny</string>
+    <string name="foreground_service_notification_title">Strażnik</string>
+    <string name="trigger_panic_kit">PanicKit</string>
+    <string name="trigger_tile">Kafelek</string>
+    <string name="trigger_shortcut">Skrót</string>
+    <string name="trigger_broadcast">Broadcast</string>
+    <string name="trigger_notification">Powiadomienie</string>
+    <string name="trigger_lock">Blokada</string>
+    <string name="trigger_usb">USB</string>
+    <string name="copied_popup">Skopiowano</string>
+    <string name="main">Główne</string>
+    <string name="settings">Ustawienia</string>
+    <string name="trigger_panic_kit_description">Włącz reagowanie na panikę. PanicKit to zbiór narzędzi do tworzenia \"przycisków paniki\", które mogą wywołać reakcję całego systemu, gdy użytkownik znajdzie się w niespokojnej lub niebezpiecznej sytuacji. Umożliwia on aplikacjom wyzwalającym oraz reagującym bezpiecznie i łatwo połączyć się ze sobą. Użytkownik uruchamia aplikację wyzwalającą podczas paniki. Aplikacja reagująca odbiera ten sygnał i indywidualnie wykonuje kroki, do których została skonfigurowana.</string>
+    <string name="trigger_tile_description">Włącz obsługę kafelków. To jest przycisk w panelu szybkich ustawień, kiedy przeciągniesz palcem od góry ekranu. Ten przycisk będzie udawał tryb samolotowy.</string>
+    <string name="trigger_shortcut_description">Włącz skrót z ikoną. To jest przycisk, który zobaczysz po długim naciśnięciu ikony Wasted.</string>
+    <string name="trigger_broadcast_description">Włącz odbiornik transmisji. Jest to przydatne do komunikacji z innymi aplikacjami Androida. Za pomocą tego możesz na przykład wyzwolić Wasted z Taskera.</string>
+    <string name="trigger_notification_description">Włącz odbiornik powiadomień urządzenia. Będzie on skanował wszystkie powiadomienia, do których ma dostęp, w poszukiwaniu sekretnego kodu. Gdy już zostanie znaleziony, wyzwoli aplikację. Musisz przyznać Wasted niezbędne uprawnienia w Ustawienia &gt; Powiadomienia &gt; Urządzenie oraz powiadomienia aplikacji.</string>
+    <string name="trigger_lock_description">Włącz harmonogram zadań blokady. Zaplanuje on zadanie za każdym razem, gdy zablokujesz urządzenie i anuluje je za każdym razem, gdy odblokujesz urządzenie. Jeśli nie odblokujesz urządzenia przez X czasu, zadanie zostanie wyzwolone.</string>
+    <string name="trigger_usb_description">Włącz odbiornik stanu USB. Po nawiązaniu połączenia danych USB, gdy urządzenie jest zablokowane, zadanie zostanie uruchomione. Nie zostanie uruchomione podczas ładowania, tylko przy akcesoriach.</string>
+</resources>

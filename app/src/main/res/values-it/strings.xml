@@ -12,6 +12,7 @@
     <string name="trigger_lock_time_hint">tempo</string>
     <string name="trigger_lock_time_error">7d / 48h / 120m</string>
     <string name="trigger_lock_time_helper_text">Quanto tempo aspettare. Modificatori: [d]giorni [h]ore [m]minuti</string>
+    <string name="trigger_tile_delay_description">Ritardo sicuro prima di attivare. Dà un po\' di tempo per annullare l\'attivazione se si tocca accidentalmente un toggle.</string>
     <string name="notification_channel_default_name">Predefinito</string>
     <string name="foreground_service_notification_title">Guardia</string>
     <string name="trigger_panic_kit">PanicKit</string>
@@ -25,7 +26,7 @@
     <string name="main">Principale</string>
     <string name="settings">Impostazioni</string>
     <string name="trigger_panic_kit_description">Abilita il panic responder. PanicKit è una raccolta di strumenti per la creazione di \"pulsanti di panico\" che possono attivare una risposta a livello di sistema quando l\'utente si trova in una situazione di ansia o di pericolo. Consente alle app trigger e alle app responder di connettersi tra loro in modo sicuro e semplice. L\'utente si collega all\'app trigger quando si trova in una situazione di panico. Le app di risposta ricevono il segnale di attivazione ed eseguono individualmente le operazioni per le quali sono state configurate.</string>
-    <string name="trigger_tile_description">Abilita il servizio toggle. Si tratta di un pulsante nel pannello delle impostazioni rapide quando scorri il dito dalla parte superiore dello schermo. Questo pulsante simula la modalità aereo. Ha un ritardo di due secondi se lo si tocca accidentalmente.</string>
+    <string name="trigger_tile_description">Abilita il servizio toggle. Si tratta di un pulsante nel pannello delle impostazioni rapide quando scorri il dito dalla parte superiore dello schermo. Questo pulsante simula la modalità aereo.</string>
     <string name="trigger_shortcut_description">Abilita la scorciatoia dell\'icona. È un pulsante che viene visualizzato quando si tocca a lungo l\'icona di Wasted.</string>
     <string name="trigger_broadcast_description">Abilita il ricevitore broadcast. È utile per comunicare con altre applicazioni Android. Ad esempio, è possibile avviare Wasted da Tasker.</string>
     <string name="trigger_notification_description">Abilita l\'ascoltatore di notifiche del dispositivo. Esaminerà tutte le notifiche a cui ha accesso alla ricerca del codice segreto. Quando lo trova, si attiva. È necessario concedere a Wasted le autorizzazioni necessarie nelle Impostazioni &gt; Notifiche &gt; Notifiche app e dispositivi.</string>
