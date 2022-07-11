@@ -10,8 +10,8 @@ android {
         applicationId "me.lucky.wasted"
         minSdk 23
         targetSdk 32
-        versionCode 33
-        versionName "1.5.4"
+        versionCode 34
+        versionName "1.5.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -8,7 +8,7 @@
         android:checked="true" />
 
     <group
-        android:id="@+id/nav_group_options"
+        android:id="@+id/nav_group_triggers"
         android:checkableBehavior="all">
 
         <item

@@ -25,8 +25,13 @@
     <string name="copied_popup">Copied</string>
     <string name="main">Main</string>
     <string name="settings">Settings</string>
+    <string name="edit">Edit</string>
+    <string name="top_copy">Copy</string>
     <string name="goto_button">GOTO</string>
     <string name="authentication">Authentication</string>
+    <string name="edit_secret_hint">secret</string>
+    <string name="edit_secret_helper_text">Use strong enough secret.</string>
+    <string name="edit_secret_error">Must not be blank!</string>
     <string name="trigger_panic_kit_description">Enable panic responder. PanicKit is a collection of tools for creating “panic buttons” that can trigger a system-wide response when the user is in an anxious or dangerous situation. It enables trigger apps and responder apps to safely and easily connect to each other. The user engages with the trigger app when in a panic situation. The responder apps receive that trigger signal, and individually execute the steps that they were configured to do.</string>
     <string name="trigger_tile_description">Enable tile service. It is a button in quick settings panel when you swipe from the top of the screen. This button will mimic to the airplane mode.</string>
     <string name="trigger_shortcut_description">Enable icon shortcut. It is a button you will see when you make a long tap on the Wasted icon.</string>

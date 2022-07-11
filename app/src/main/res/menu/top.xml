@@ -2,10 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <group
+        android:id="@+id/top_group_main">
+
+        <item
+            android:id="@+id/top_edit"
+            android:icon="@drawable/ic_baseline_edit_24"
+            android:title="@string/edit"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/top_copy"
+            android:icon="@drawable/ic_baseline_content_copy_24"
+            android:title="@string/top_copy"
+            app:showAsAction="ifRoom" />
+
+    </group>
+
     <item
         android:id="@+id/top_settings"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/settings"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 </menu>

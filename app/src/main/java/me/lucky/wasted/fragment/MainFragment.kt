@@ -1,8 +1,6 @@
 package me.lucky.wasted.fragment
 
 import android.app.Activity
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -11,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 import me.lucky.wasted.Preferences
@@ -25,7 +22,6 @@ class MainFragment : Fragment() {
     private lateinit var ctx: Context
     private lateinit var prefs: Preferences
     private lateinit var prefsdb: Preferences
-    private val clipboardManager by lazy { ctx.getSystemService(ClipboardManager::class.java) }
     private val admin by lazy { DeviceAdminManager(ctx) }
 
     private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
@@ -71,10 +67,6 @@ class MainFragment : Fragment() {
     }
 
     private fun setup() = binding.apply {
-        secret.setOnLongClickListener {
-            copySecret()
-            true
-        }
         wipeData.setOnCheckedChangeListener { _, isChecked ->
             prefs.isWipeData = isChecked
             wipeEmbeddedSim.isEnabled = isChecked
@@ -85,11 +77,6 @@ class MainFragment : Fragment() {
         toggle.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) requestAdmin() else setOff()
         }
-    }
-
-    private fun copySecret() {
-        clipboardManager.setPrimaryClip(ClipData.newPlainText("", prefs.secret))
-        Snackbar.make(binding.secret, R.string.copied_popup, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun setOn() {
