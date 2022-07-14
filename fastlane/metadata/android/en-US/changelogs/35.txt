@@ -1,0 +1,3 @@
+application trigger
+add Norwegian translation, thanks to Frederik
+update Italian translation, thanks to Giovanni Donisi (@gdonisi + @giovannidonisi)

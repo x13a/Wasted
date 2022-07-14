@@ -22,6 +22,7 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
         private const val TRIGGERS = "triggers"
         private const val TRIGGER_LOCK_COUNT = "trigger_lock_count"
         private const val TRIGGER_TILE_DELAY = "trigger_tile_delay"
+        private const val TRIGGER_APPLICATION_OPTIONS = "trigger_application_options"
 
         private const val FILE_NAME = "sec_shared_prefs"
 
@@ -85,6 +86,10 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
         get() = prefs.getLong(TRIGGER_TILE_DELAY, DEFAULT_TRIGGER_TILE_DELAY)
         set(value) = prefs.edit { putLong(TRIGGER_TILE_DELAY, value) }
 
+    var triggerApplicationOptions: Int
+        get() = prefs.getInt(TRIGGER_APPLICATION_OPTIONS, 0)
+        set(value) = prefs.edit { putInt(TRIGGER_APPLICATION_OPTIONS, value) }
+
     fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) =
         prefs.registerOnSharedPreferenceChangeListener(listener)
 
@@ -114,4 +119,12 @@ enum class Trigger(val value: Int) {
     NOTIFICATION(1 shl 4),
     LOCK(1 shl 5),
     USB(1 shl 6),
+    APPLICATION(1 shl 7),
+}
+
+enum class ApplicationOption(val value: Int) {
+    SIGNAL(1),
+    TELEGRAM(1 shl 1),
+    THREEMA(1 shl 2),
+    SESSION(1 shl 3),
 }

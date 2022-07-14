@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wasted</string>
+    <string name="wipe_data_checkbox">Tøm data</string>
+    <string name="wipe_embedded_sim_checkbox">Tøm eSIM</string>
+    <string name="panic_app_dialog_title">Bekreft panikk-app</string>
+    <string name="panic_app_dialog_message">Er du sikker på at du vil tillate %1$s å utløse destruktive handlinger\\?</string>
+    <string name="panic_app_unknown_app">en ukjent app</string>
+    <string name="allow">Tillat</string>
+    <string name="tile_label">Flymodus</string>
+    <string name="shortcut_label">Panikk</string>
+    <string name="trigger_lock_time_hint">tid</string>
+    <string name="trigger_lock_time_error">7d / 48t / 120m</string>
+    <string name="trigger_lock_time_helper_text">Hvor lenge å vente. Modifikatorer: [d]ays [h]ours [m]inutes</string>
+    <string name="trigger_tile_delay_description">Sikker forsinkelse før den utløses. Gir deg litt tid til å kansellere utløseren hvis du trykker på flisen med et uhell.</string>
+    <string name="notification_channel_default_name">Standard</string>
+    <string name="foreground_service_notification_title">Vakt</string>
+    <string name="trigger_panic_kit">PanicKit</string>
+    <string name="trigger_tile">Flis</string>
+    <string name="trigger_shortcut">Snarvei</string>
+    <string name="trigger_broadcast">Kringkasting</string>
+    <string name="trigger_notification">Varsel</string>
+    <string name="trigger_lock">Lås</string>
+    <string name="trigger_usb">USB</string>
+    <string name="copied_popup">Kopiert</string>
+    <string name="main">Primær</string>
+    <string name="settings">Innstillinger</string>
+    <string name="edit">Edit</string>
+    <string name="goto_button">GOTO</string>
+    <string name="authentication">Authentication</string>
+    <string name="edit_secret_hint">secret</string>
+    <string name="edit_secret_helper_text">Use strong enough secret.</string>
+    <string name="edit_secret_error">Must not be blank!</string>
+    <string name="trigger_panic_kit_description">Skru på panikk responder. PanicKit er en samling verktøy for å lage \"panikknapper\" som kan utløse en systemomfattende respons når brukeren er i en skummel eller farlig situasjon. Den aktiverer utløser-apper og responder-apper for å sikkert og enkelt kobles mot hverandre. Brukeren interagerer med utløserknappen når de er i en panikksituasjon. Responder-appene mottar et utløsersignal, og kjører stegene de ble konfigurert til å kjøre individuelt.</string>
+    <string name="trigger_tile_description">Aktivér flis-tjenesten. Det er en knapp i hurtiginnstillingpanelet når du sveiper ned fra toppen av skjermen. Denne knappen vil etterligne flymodusknappen.</string>
+    <string name="trigger_shortcut_description">Aktivér ikonsnarvei. Det er en knapp du vil se når du trykker og holder inne på Wasted-ikonet.</string>
+    <string name="trigger_broadcast_description">Enable broadcast receiver. It is useful to communicate with another Android apps. For example you can fire Wasted from Tasker using this.</string>
+    <string name="trigger_notification_description">Enable device notification listener. It will scan all notifications it has access to for the secret code. When found it will fire.</string>
+    <string name="trigger_lock_description">Enable lock job scheduler. It will schedule a job every time you lock a device and cancel it every time you unlock a device. When you do not unlock a device for X time a job will fire.</string>
+    <string name="trigger_usb_description">Enable USB state receiver. When you make a USB data connection while a device is locked it will fire. It must not fire on charger, only on device and accessory.</string>
+</resources>

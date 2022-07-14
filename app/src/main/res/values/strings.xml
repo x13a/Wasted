@@ -22,11 +22,11 @@
     <string name="trigger_notification">Notification</string>
     <string name="trigger_lock">Lock</string>
     <string name="trigger_usb">USB</string>
+    <string name="trigger_application">Application</string>
     <string name="copied_popup">Copied</string>
     <string name="main">Main</string>
     <string name="settings">Settings</string>
     <string name="edit">Edit</string>
-    <string name="top_copy">Copy</string>
     <string name="goto_button">GOTO</string>
     <string name="authentication">Authentication</string>
     <string name="edit_secret_hint">secret</string>
@@ -39,4 +39,9 @@
     <string name="trigger_notification_description">Enable device notification listener. It will scan all notifications it has access to for the secret code. When found it will fire.</string>
     <string name="trigger_lock_description">Enable lock job scheduler. It will schedule a job every time you lock a device and cancel it every time you unlock a device. When you do not unlock a device for X time a job will fire.</string>
     <string name="trigger_usb_description">Enable USB state receiver. When you make a USB data connection while a device is locked it will fire. It must not fire on charger, only on device and accessory.</string>
+    <string name="trigger_application_description">Enable fake application. It will add fake messenger applications. Launching them will fire Wasted.</string>
+    <string name="signal">Signal</string>
+    <string name="telegram">Telegram</string>
+    <string name="threema">Threema</string>
+    <string name="session">Session</string>
 </resources>

@@ -23,6 +23,10 @@
             android:id="@+id/nav_trigger_lock"
             android:title="@string/trigger_lock" />
 
+        <item
+            android:id="@+id/nav_trigger_application"
+            android:title="@string/trigger_application" />
+
     </group>
 
 </menu>

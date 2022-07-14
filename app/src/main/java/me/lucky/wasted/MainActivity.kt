@@ -143,6 +143,7 @@ open class MainActivity : AppCompatActivity() {
         R.id.nav_trigger_tile -> TileFragment()
         R.id.nav_trigger_notification -> NotificationFragment()
         R.id.nav_trigger_lock -> LockFragment()
+        R.id.nav_trigger_application -> ApplicationFragment()
         R.id.top_settings -> SettingsFragment()
         else -> MainFragment()
     }

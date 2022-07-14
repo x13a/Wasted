@@ -36,6 +36,7 @@ class Utils(private val ctx: Context) {
         setBroadcastEnabled(enabled && triggers.and(Trigger.BROADCAST.value) != 0)
         setNotificationEnabled(enabled && triggers.and(Trigger.NOTIFICATION.value) != 0)
         updateForegroundRequiredEnabled()
+        updateApplicationEnabled()
     }
 
     fun setPanicKitEnabled(enabled: Boolean) {
@@ -60,6 +61,29 @@ class Utils(private val ctx: Context) {
     fun setNotificationEnabled(enabled: Boolean) =
         setComponentEnabled(NotificationListenerService::class.java, enabled)
 
+    fun updateApplicationEnabled() {
+        val prefix = "${ctx.packageName}.trigger.application"
+        val prefs = Preferences(ctx)
+        val options = prefs.triggerApplicationOptions
+        val enabled = prefs.isEnabled && prefs.triggers.and(Trigger.APPLICATION.value) != 0
+        setComponentEnabled(
+            "$prefix.SignalActivity",
+            enabled && options.and(ApplicationOption.SIGNAL.value) != 0,
+        )
+        setComponentEnabled(
+            "$prefix.TelegramActivity",
+            enabled && options.and(ApplicationOption.TELEGRAM.value) != 0,
+        )
+        setComponentEnabled(
+            "$prefix.ThreemaActivity",
+            enabled && options.and(ApplicationOption.THREEMA.value) != 0,
+        )
+        setComponentEnabled(
+            "$prefix.SessionActivity",
+            enabled && options.and(ApplicationOption.SESSION.value) != 0,
+        )
+    }
+
     fun updateForegroundRequiredEnabled() {
         val prefs = Preferences(ctx)
         val enabled = prefs.isEnabled
@@ -78,8 +102,14 @@ class Utils(private val ctx: Context) {
         }
 
     private fun setComponentEnabled(cls: Class<*>, enabled: Boolean) =
+        setComponentEnabled(ComponentName(ctx, cls), enabled)
+
+    private fun setComponentEnabled(cls: String, enabled: Boolean) =
+        setComponentEnabled(ComponentName(ctx, cls), enabled)
+
+    private fun setComponentEnabled(componentName: ComponentName, enabled: Boolean) =
         ctx.packageManager.setComponentEnabledSetting(
-            ComponentName(ctx, cls),
+            componentName,
             if (enabled) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
             PackageManager.DONT_KILL_APP,

@@ -156,5 +156,77 @@
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".trigger.application.ApplicationActivity"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:enabled="false"
+            android:exported="false">
+        </activity>
+
+        <activity-alias
+            android:name=".trigger.application.SignalActivity"
+            android:targetActivity=".trigger.application.ApplicationActivity"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:label="@string/signal"
+            android:icon="@mipmap/ic_signal"
+            android:roundIcon="@mipmap/ic_signal_round"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        
+        <activity-alias
+            android:name=".trigger.application.TelegramActivity"
+            android:targetActivity=".trigger.application.ApplicationActivity"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:label="@string/telegram"
+            android:icon="@mipmap/ic_telegram"
+            android:roundIcon="@mipmap/ic_telegram_round"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".trigger.application.ThreemaActivity"
+            android:targetActivity=".trigger.application.ApplicationActivity"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:label="@string/threema"
+            android:icon="@mipmap/ic_threema"
+            android:roundIcon="@mipmap/ic_threema_round"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".trigger.application.SessionActivity"
+            android:targetActivity=".trigger.application.ApplicationActivity"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:label="@string/session"
+            android:icon="@mipmap/ic_session"
+            android:roundIcon="@mipmap/ic_session_round"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
     </application>
 </manifest>

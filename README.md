@@ -24,6 +24,7 @@ locks a device and optionally runs wipe.
 Also you can:
 * fire when a device was not unlocked for X time
 * fire when a USB data connection is made while a device is locked
+* fire when a fake messenger app is launched
 * fire when a duress password is entered (companion app: [Duress](https://github.com/x13a/Duress))
 
 The app works in `Work Profile` too. Use [Shelter](https://github.com/PeterCxy/Shelter) to install 
