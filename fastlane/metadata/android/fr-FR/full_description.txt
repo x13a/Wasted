@@ -1,0 +1,27 @@
+Verrouillez un appareil et effacez ses données en cas d'urgence.
+
+Vous pouvez utiliser PanicKit, une tuile, un raccourci ou envoyer un message avec un code secret. Sur déclenchement, en utilisant
+l'API d'administration des appareils, il verrouille un appareil et, éventuellement, exécute un effacement.
+
+Vous pouvez également:
+* déclencher lorsqu'un appareil n'a pas été déverrouillé pendant X temps
+* déclencher lorsqu'une connexion de données USB est établie alors que le dispositif est verrouillé
+* déclencher quand une fausse application de messagerie est lancée
+* Déclenchement lorsqu'un mot de passe sous contrainte est entré (application compagnon : [Duress](https://github.com/x13a/Duress))
+
+L'application fonctionne également dans le profil de travail. Utilisez Shelter pour installer des applications à risque et Wasted dans celui-ci. Vous pouvez ensuite effacer les données de ce profil en un clic sans effacer l'ensemble de l'appareil.
+
+Seul un appareil chiffré peut garantir que les données ne seront pas récupérables.
+
+Diffusion:
+* action : me.lucky.wasted.action.TRIGGER
+* récepteur : me.lucky.wasted/.TriggerReceiver
+* vous devez également envoyer un code secret de Wasted avec la clé: code
+
+Autorisations:
+* DEVICE_ADMIN - verrouiller et éventuellement effacer un appareil
+* FOREGROUND_SERVICE - reçoit les événements de verrouillage et d'état USB
+* RECEIVE_BOOT_COMPLETED - persiste le travail de verrouillage et le service de premier plan à travers les redémarrages.
+
+Ceci est un logiciel libre et gratuit.
+Licence: GPL-3
