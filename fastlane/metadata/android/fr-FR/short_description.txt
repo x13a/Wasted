@@ -1,0 +1,1 @@
+Verrouiller un appareil et effacer ses données en cas d'urgence
