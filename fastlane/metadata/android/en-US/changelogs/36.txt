@@ -1,0 +1,8 @@
+application trigger improvements, thanks to @xyz-nobody
+add French translation, thanks to @Ilithy
+update Italian, Polish, Turkish translations
+
+Thanks to:
+Giovanni Donisi (@gdonisi + @giovannidonisi)
+py3o4f4ifk5v9fko
+TolDYuThad

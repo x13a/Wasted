@@ -22,6 +22,7 @@
     <string name="trigger_notification">Notifica</string>
     <string name="trigger_lock">Blocca</string>
     <string name="trigger_usb">USB</string>
+    <string name="trigger_application">Applicazione</string>
     <string name="copied_popup">Copiato</string>
     <string name="main">Principale</string>
     <string name="settings">Impostazioni</string>
@@ -38,4 +39,9 @@
     <string name="trigger_notification_description">Abilita l\'ascoltatore di notifiche del dispositivo. Esaminerà tutte le notifiche a cui ha accesso alla ricerca del codice segreto. Quando lo trova, si attiva. È necessario concedere a Wasted le autorizzazioni necessarie nelle Impostazioni &gt; Notifiche &gt; Notifiche app e dispositivi.</string>
     <string name="trigger_lock_description">Abilita i Job Scheduler di blocco. Pianificherà un Job ogni volta che si blocca un dispositivo e lo annullerà ogni volta che si sblocca un dispositivo. Se non si sblocca un dispositivo per un periodo di tempo X, il Job verrà avviato.</string>
     <string name="trigger_usb_description">Abilita il ricevitore di stato USB. Quando si effettua una connessione dati USB mentre un dispositivo è bloccato, il ricevitore si attiva. Non deve attivarsi sul caricatore, ma solo su dispositivi e accessori.</string>
+    <string name="trigger_application_description">Abilita applicazioni false. Aggiungerà false applicazioni di messaggistica. Avviandole, Wasted si attiverà.</string>
+    <string name="signal">Signal</string>
+    <string name="telegram">Telegram</string>
+    <string name="threema">Theerma</string>
+    <string name="session">Session</string>
 </resources>

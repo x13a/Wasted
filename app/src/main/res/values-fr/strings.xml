@@ -12,7 +12,7 @@
     <string name="trigger_lock_time_hint">temps</string>
     <string name="trigger_lock_time_error">7j / 48h / 120mn</string>
     <string name="trigger_lock_time_helper_text">Combien de temps d\'attente. Modificateurs: [d]jour(s) [h]heure(s) [m]inute(s)</string>
-    <string name="trigger_tile_delay_description">Délai de sécurité avant qu'il ne se déclenche. Vous donne un peu de temps pour annuler l'action si vous touchez une tuile accidentellement.</string>
+    <string name="trigger_tile_delay_description">Délai de sécurité avant qu\'il ne se déclenche. Vous donne un peu de temps pour annuler l\'action si vous touchez une tuile accidentellement.</string>
     <string name="notification_channel_default_name">Défaut</string>
     <string name="foreground_service_notification_title">Gardien</string>
     <string name="trigger_panic_kit">PanicKit</string>
@@ -33,12 +33,12 @@
     <string name="edit_secret_helper_text">Utiliser un secret suffisamment fort.</string>
     <string name="edit_secret_error">Ne doit pas être vide!</string>
     <string name="trigger_panic_kit_description">Activer le répondeur de panique. PanicKit est une collection d\'outils permettant de créer des "boutons de panique" qui peuvent déclencher une réponse à l\'échelle du système lorsque l\'utilisateur se trouve dans une situation anxieuse ou dangereuse. Il permet aux applications de déclenchement et aux applications de réponse de se connecter facilement et en toute sécurité. L\'utilisateur s\'engage avec l\'application de déclenchement lorsqu\'il est dans une situation problématique. Les applications de réponse reçoivent ce signal de déclenchement et exécutent individuellement les étapes pour lesquelles elles ont été configurées.</string>
-    <string name="trigger_tile_description">Activer le service de tuiles rapide. Il s\'agit d'un bouton dans le panneau des paramètres rapides lorsque vous balayez depuis le haut de l\'écran. Ce bouton imitera le mode avion.</string>
+    <string name="trigger_tile_description">Activer le service de tuiles rapide. Il s\'agit d\'un bouton dans le panneau des paramètres rapides lorsque vous balayez depuis le haut de l\'écran. Ce bouton imitera le mode avion.</string>
     <string name="trigger_shortcut_description">Activer le raccourci d\'icône. Il s\'agit d\'un bouton que vous verrez lorsque vous appuyez longuement sur l\'icône de Wasted.</string>
     <string name="trigger_broadcast_description">Activez le récepteur de diffusion. Il est utile pour communiquer avec d\'autres applications Android. Par exemple, vous pouvez lancer Wasted depuis Tasker en utilisant ceci.</string>
     <string name="trigger_notification_description">Activez l\'écouteur de notification du périphérique. Il va rechercher le code secret dans toutes les notifications auxquelles il a accès. Quand il l\'aura trouvé, il déclenchera l\'action prévu.</string>
     <string name="trigger_lock_description">Activer le planificateur de tâches de verrouillage. Il planifiera une tâche chaque fois que vous verrouillerez un appareil et l\'annulera chaque fois que vous déverrouillerez un appareil. Lorsque vous ne déverrouillez pas un appareil pendant X temps, une tâche se déclenche.</string>
-    <string name="trigger_usb_description">Activez le récepteur d\'état USB. Lorsque vous établissez une connexion de données USB alors qu'\un appareil est verrouillé, il se déclenche. Il ne doit pas se déclencher sur le chargeur, mais uniquement lors de connexion à des appareil et des accessoires.</string>
+    <string name="trigger_usb_description">Activez le récepteur d\'état USB. Lorsque vous établissez une connexion de données USB alors qu\'un appareil est verrouillé, il se déclenche. Il ne doit pas se déclencher sur le chargeur, mais uniquement lors de connexion à des appareil et des accessoires.</string>
     <string name="trigger_application_description">Activer l\'application factice. Il ajoutera de fausses applications de messagerie. Les lancer déclenchera Wasted.</string>
     <string name="signal">Signal</string>
     <string name="telegram">Telegram</string>

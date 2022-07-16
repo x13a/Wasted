@@ -22,9 +22,16 @@
     <string name="trigger_notification">Powiadomienie</string>
     <string name="trigger_lock">Blokada</string>
     <string name="trigger_usb">USB</string>
+    <string name="trigger_application">Aplikacja</string>
     <string name="copied_popup">Skopiowano</string>
     <string name="main">Główne</string>
     <string name="settings">Ustawienia</string>
+    <string name="edit">Edytuj</string>
+    <string name="goto_button">GOTO</string>
+    <string name="authentication">Uwierzytelnianie</string>
+    <string name="edit_secret_hint">sekret</string>
+    <string name="edit_secret_helper_text">Użyj wystarczająco silnego sekretu.</string>
+    <string name="edit_secret_error">Nie może być pusty!</string>
     <string name="trigger_panic_kit_description">Włącz reagowanie na panikę. PanicKit to zbiór narzędzi do tworzenia \"przycisków paniki\", które mogą wywołać reakcję całego systemu, gdy użytkownik znajdzie się w niespokojnej lub niebezpiecznej sytuacji. Umożliwia on aplikacjom wyzwalającym oraz reagującym bezpiecznie i łatwo połączyć się ze sobą. Użytkownik uruchamia aplikację wyzwalającą podczas paniki. Aplikacja reagująca odbiera ten sygnał i indywidualnie wykonuje kroki, do których została skonfigurowana.</string>
     <string name="trigger_tile_description">Włącz obsługę kafelków. To jest przycisk w panelu szybkich ustawień, kiedy przeciągniesz palcem od góry ekranu. Ten przycisk będzie udawał tryb samolotowy.</string>
     <string name="trigger_shortcut_description">Włącz skrót z ikoną. To jest przycisk, który zobaczysz po długim naciśnięciu ikony Wasted.</string>
@@ -32,4 +39,9 @@
     <string name="trigger_notification_description">Włącz odbiornik powiadomień urządzenia. Będzie on skanował wszystkie powiadomienia, do których ma dostęp, w poszukiwaniu sekretnego kodu. Gdy już zostanie znaleziony, wyzwoli aplikację. Musisz przyznać Wasted niezbędne uprawnienia w Ustawienia &gt; Powiadomienia &gt; Urządzenie oraz powiadomienia aplikacji.</string>
     <string name="trigger_lock_description">Włącz harmonogram zadań blokady. Zaplanuje on zadanie za każdym razem, gdy zablokujesz urządzenie i anuluje je za każdym razem, gdy odblokujesz urządzenie. Jeśli nie odblokujesz urządzenia przez X czasu, zadanie zostanie wyzwolone.</string>
     <string name="trigger_usb_description">Włącz odbiornik stanu USB. Po nawiązaniu połączenia danych USB, gdy urządzenie jest zablokowane, zadanie zostanie uruchomione. Nie zostanie uruchomione podczas ładowania, tylko przy akcesoriach.</string>
+    <string name="trigger_application_description">Włącz fałszywą aplikację. Doda to fałszywe aplikacje komunikatora. Uruchomienie ich odpali Wasted.</string>
+    <string name="signal">Signal</string>
+    <string name="telegram">Telegram</string>
+    <string name="threema">Threema</string>
+    <string name="session">Session</string>
 </resources>

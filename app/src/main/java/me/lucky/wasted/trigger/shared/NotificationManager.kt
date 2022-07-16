@@ -17,6 +17,6 @@ class NotificationManager(private val ctx: Context) {
         manager.createNotificationChannel(NotificationChannelCompat.Builder(
             CHANNEL_DEFAULT_ID,
             NotificationManagerCompat.IMPORTANCE_LOW,
-        ).setName(ctx.getString(R.string.notification_channel_default_name)).build())
+        ).setName(ctx.getString(R.string.notification_channel_default_name)).setShowBadge(false).build())
     }
 }
