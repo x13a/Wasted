@@ -7,7 +7,7 @@ Vous pouvez également:
 * déclencher lorsqu'un appareil n'a pas été déverrouillé pendant X temps
 * déclencher lorsqu'une connexion de données USB est établie alors que le dispositif est verrouillé
 * déclencher quand une fausse application de messagerie est lancée
-* Déclenchement lorsqu'un mot de passe sous contrainte est entré (application compagnon : [Duress](https://github.com/x13a/Duress))
+* déclenchement lorsqu'un mot de passe sous contrainte est entré (application compagnon : [Duress](https://github.com/x13a/Duress))
 
 L'application fonctionne également dans le profil de travail. Utilisez Shelter pour installer des applications à risque et Wasted dans celui-ci. Vous pouvez ensuite effacer les données de ce profil en un clic sans effacer l'ensemble de l'appareil.
 

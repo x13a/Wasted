@@ -53,8 +53,8 @@ class SettingsFragment : Fragment() {
         binding.apply {
             val triggers = prefs.triggers
             panicKit.isChecked = triggers.and(Trigger.PANIC_KIT.value) != 0
-            tile.isChecked = triggers.and(Trigger.TILE.value) != 0
             tile.isEnabled = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+            tile.isChecked = triggers.and(Trigger.TILE.value) != 0
             shortcut.isChecked = triggers.and(Trigger.SHORTCUT.value) != 0
             broadcast.isChecked = triggers.and(Trigger.BROADCAST.value) != 0
             notification.isChecked = triggers.and(Trigger.NOTIFICATION.value) != 0

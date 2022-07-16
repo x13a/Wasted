@@ -50,10 +50,11 @@ class ForegroundService : Service() {
     }
 
     private fun deinit() {
-        try {
-            unregisterReceiver(lockReceiver)
-            unregisterReceiver(usbReceiver)
-        } catch (exc: IllegalArgumentException) {}
+        val unregister: (BroadcastReceiver) -> Unit = {
+            try { unregisterReceiver(it) } catch (exc: IllegalArgumentException) {}
+        }
+        unregister(lockReceiver)
+        unregister(usbReceiver)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

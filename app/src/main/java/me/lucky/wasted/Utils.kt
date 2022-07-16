@@ -88,10 +88,10 @@ class Utils(private val ctx: Context) {
         val prefs = Preferences(ctx)
         val enabled = prefs.isEnabled
         val triggers = prefs.triggers
-        val isLock = triggers.and(Trigger.LOCK.value) != 0
         val isUSB = triggers.and(Trigger.USB.value) != 0
-        setForegroundEnabled(enabled && (isLock || isUSB))
-        setComponentEnabled(RestartReceiver::class.java, enabled && (isLock || isUSB))
+        val foregroundEnabled = enabled && (triggers.and(Trigger.LOCK.value) != 0 || isUSB)
+        setForegroundEnabled(foregroundEnabled)
+        setComponentEnabled(RestartReceiver::class.java, foregroundEnabled)
         setComponentEnabled(UsbReceiver::class.java, enabled && isUSB)
     }
 
