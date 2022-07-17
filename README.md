@@ -27,9 +27,9 @@ Also you can:
 * fire when a fake messenger app is launched
 * fire when a duress password is entered (companion app: [Duress](https://github.com/x13a/Duress))
 
-The app works in `Work Profile` too. Use [Shelter](https://github.com/PeterCxy/Shelter) to install 
-risky apps and `Wasted` in it. Then you can wipe this profile data with one click without wiping 
-the whole device.
+The app works in `Work Profile` too, but with limitations. Use 
+[Shelter](https://github.com/PeterCxy/Shelter) to install risky apps and `Wasted` in it. Then you 
+can wipe this profile data with one click without wiping the whole device.
 
 Only encrypted device may guarantee that the data will not be recoverable.
 
