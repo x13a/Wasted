@@ -37,7 +37,7 @@
     <string name="trigger_shortcut_description">Enable icon shortcut. It is a button you will see when you make a long tap on the Wasted icon.</string>
     <string name="trigger_broadcast_description">Enable broadcast receiver. It is useful to communicate with another Android apps. For example you can fire Wasted from Tasker using this.</string>
     <string name="trigger_notification_description">Enable device notification listener. It will scan all notifications it has access to for the secret code. When found it will fire.</string>
-    <string name="trigger_lock_description">Enable lock job scheduler. It will schedule a job every time you lock a device and cancel it every time you unlock a device. When you do not unlock a device for X time a job will fire.</string>
+    <string name="trigger_lock_description">Enable lock job scheduler. It will schedule a job every time you turn off a device screen and cancel it every time you unlock a device. When you do not unlock a device for X time a job will fire.</string>
     <string name="trigger_usb_description">Enable USB state receiver. When you make a USB data connection while a device is locked it will fire. It must not fire on charger, only on device and accessory.</string>
     <string name="trigger_application_description">Enable fake application. It will add fake messenger applications. Launching them will fire Wasted.</string>
     <string name="signal">Signal</string>

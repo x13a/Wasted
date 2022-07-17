@@ -8,5 +8,10 @@
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="Theme.Wasted.ToggleButton" parent="Theme.Wasted">
+        <item name="colorAccent">@color/green_500</item>
     </style>
 </resources>

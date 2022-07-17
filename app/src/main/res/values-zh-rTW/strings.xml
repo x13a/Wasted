@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wasted</string>
+    <string name="wipe_data_checkbox">抹除資料</string>
+    <string name="wipe_embedded_sim_checkbox">抹除eSIM</string>
+    <string name="panic_app_dialog_title">確認緊急按鈕APP</string>
+    <string name="panic_app_dialog_message">你確定允許由%1$s來觸發毀滅性緊急動作嗎?</string>
+    <string name="panic_app_unknown_app">一個未知的應用</string>
+    <string name="allow">允許</string>
+    <string name="tile_label">飛航模式</string>
+    <string name="shortcut_label">Panic</string>
+    <string name="trigger_lock_time_hint">時間長度</string>
+    <string name="trigger_lock_time_error">7日/48時/120分</string>
+    <string name="trigger_lock_time_helper_text">等待時長。[d]日[h]時[m]分</string>
+    <string name="trigger_tile_delay_description">觸發前延遲。若意外誤觸能有時間取消。</string>
+    <string name="notification_channel_default_name">預設值</string>
+    <string name="foreground_service_notification_title">Guard</string>
+    <string name="trigger_panic_kit">緊急按鈕工具</string>
+    <string name="trigger_tile">下拉通知欄</string>
+    <string name="trigger_shortcut">捷徑</string>
+    <string name="trigger_broadcast">系統廣播（Broadcast）</string>
+    <string name="trigger_notification">通知</string>
+    <string name="trigger_lock">鎖定裝置</string>
+    <string name="trigger_usb">USB</string>
+    <string name="trigger_application">偽裝應用程式</string>
+    <string name="copied_popup">已複製</string>
+    <string name="main">主要</string>
+    <string name="settings">設定</string>
+    <string name="edit">編輯</string>
+    <string name="goto_button">前往設置</string>
+    <string name="authentication">驗證</string>
+    <string name="edit_secret_hint">密鑰</string>
+    <string name="edit_secret_helper_text">請使用夠強密鑰</string>
+    <string name="edit_secret_error">不能空白!</string>
+    <string name="trigger_panic_kit_description">開啟恐慌回應器。PanicKit是一套用來創建\"緊急按鈕\"的工具，當使用者處於焦慮或緊急情況下，\"緊急按鈕\"能用來觸發全系統並做出回應。它讓觸發APP與回應APP之間能安全並輕易的彼此溝通。使用者在緊急情況下啟動觸發APP，回應APP接收到該觸發訊號，獨自執行預先設定好的步驟。</string>
+    <string name="trigger_tile_description">開啟tile服務。當你從螢幕頂端下滑通知欄時會有快速設定按鈕。按鈕會偽裝成飛航模式。</string>
+    <string name="trigger_shortcut_description">開啟圖示捷徑。當你長按Wasted圖示時會出現按鈕選單。</string>
+    <string name="trigger_broadcast_description">開啟系統廣播接收器。與其他Android App通訊時特別有用。例如你可以用自動化工具(如Tasker) 來觸發Wasted。</string>
+    <string name="trigger_notification_description">開啟裝置通知監聽。將會掃描能存取的所有通知，當發現指定密鑰時會觸發Wasted。</string>
+    <string name="trigger_lock_description">開啟鎖定任務排程器。將會在每次你螢幕鎖定裝置時啟動，並在每次你解鎖螢幕時取消。
+當你特定時間內未解鎖裝置時會觸發Wasted。</string>
+    <string name="trigger_usb_description">開啟USB狀態接收器。在裝置鎖定狀態下連接USB資料傳輸會觸發Wasted。只有連接其他裝置或配件時會觸發，充電器不會。</string>
+    <string name="trigger_application_description">開啟偽裝APP。會新增假的通訊APP圖示，點開APP會觸發Wasted。</string>
+    <string name="signal">Signal</string>
+    <string name="telegram">Telegram</string>
+    <string name="threema">Threema</string>
+    <string name="session">Session</string>
+</resources>

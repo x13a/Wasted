@@ -41,6 +41,12 @@ class NotificationListenerService : NotificationListenerService() {
     override fun onListenerConnected() {
         super.onListenerConnected()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            migrateNotificationFilter(0, null)
+            migrateNotificationFilter(
+                FLAG_FILTER_TYPE_CONVERSATIONS
+                    or FLAG_FILTER_TYPE_ALERTING
+                    or FLAG_FILTER_TYPE_SILENT
+                    or FLAG_FILTER_TYPE_ONGOING,
+                null,
+            )
     }
 }

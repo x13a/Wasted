@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wasted</string>
-    <string name="wipe_data_checkbox">Suppression des données</string>
-    <string name="wipe_embedded_sim_checkbox">Suppression de l\'eSIM</string>
+    <string name="wipe_data_checkbox">Effacer les données</string>
+    <string name="wipe_embedded_sim_checkbox">Effacer l\'eSIM</string>
     <string name="panic_app_dialog_title">Confirmer l\'application de panique</string>
     <string name="panic_app_dialog_message">Êtes-vous sûr de vouloir permettre à %1$s de déclencher des actions de panique destructrices.\\?</string>
     <string name="panic_app_unknown_app">une application inconnue</string>
@@ -27,12 +27,12 @@
     <string name="main">Accueil</string>
     <string name="settings">Réglages</string>
     <string name="edit">Éditer</string>
-    <string name="goto_button">GOTO</string>
+    <string name="goto_button">Aller à</string>
     <string name="authentication">Authentification</string>
     <string name="edit_secret_hint">secret</string>
     <string name="edit_secret_helper_text">Utiliser un secret suffisamment fort.</string>
     <string name="edit_secret_error">Ne doit pas être vide!</string>
-    <string name="trigger_panic_kit_description">Activer le répondeur de panique. PanicKit est une collection d\'outils permettant de créer des "boutons de panique" qui peuvent déclencher une réponse à l\'échelle du système lorsque l\'utilisateur se trouve dans une situation anxieuse ou dangereuse. Il permet aux applications de déclenchement et aux applications de réponse de se connecter facilement et en toute sécurité. L\'utilisateur s\'engage avec l\'application de déclenchement lorsqu\'il est dans une situation problématique. Les applications de réponse reçoivent ce signal de déclenchement et exécutent individuellement les étapes pour lesquelles elles ont été configurées.</string>
+    <string name="trigger_panic_kit_description">Activer le répondeur de panique. PanicKit est une collection d\'outils permettant de créer des \"boutons de panique\" qui peuvent déclencher une réponse à l\'échelle du système lorsque l\'utilisateur se trouve dans une situation anxieuse ou dangereuse. Il permet aux applications de déclenchement et aux applications de réponse de se connecter facilement et en toute sécurité. L\'utilisateur s\'engage avec l\'application de déclenchement lorsqu\'il est dans une situation problématique. Les applications de réponse reçoivent ce signal de déclenchement et exécutent individuellement les étapes pour lesquelles elles ont été configurées.</string>
     <string name="trigger_tile_description">Activer le service de tuiles rapide. Il s\'agit d\'un bouton dans le panneau des paramètres rapides lorsque vous balayez depuis le haut de l\'écran. Ce bouton imitera le mode avion.</string>
     <string name="trigger_shortcut_description">Activer le raccourci d\'icône. Il s\'agit d\'un bouton que vous verrez lorsque vous appuyez longuement sur l\'icône de Wasted.</string>
     <string name="trigger_broadcast_description">Activez le récepteur de diffusion. Il est utile pour communiquer avec d\'autres applications Android. Par exemple, vous pouvez lancer Wasted depuis Tasker en utilisant ceci.</string>

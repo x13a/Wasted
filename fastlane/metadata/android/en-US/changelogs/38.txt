@@ -1,0 +1,10 @@
+prepare Android 13
+fix Samsung Android 12 notification trigger
+add Portuguese Brazilian translation, thanks to Hermógenes Oliveira (hermogenes)
+add Chinese Traditional translation, thanks to rdol724
+update Spanish, Ukrainian, French translations
+
+Thanks to:
+Pier Gotta Perez (piegope)
+GNCanva
+Nathanaël Gagnepain (@Ilithy)

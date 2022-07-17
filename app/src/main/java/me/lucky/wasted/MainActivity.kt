@@ -43,10 +43,10 @@ open class MainActivity : AppCompatActivity() {
         prefs = Preferences(this)
         prefsdb = Preferences(this, encrypted = false)
         prefs.copyTo(prefsdb)
-        NotificationManager(this).createNotificationChannels()
     }
 
     private fun init2() {
+        NotificationManager(this).createNotificationChannels()
         replaceFragment(MainFragment())
     }
 

@@ -6,6 +6,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="green_500">#4CAF50</color>
     <color name="secret_1">#FFD600</color>
     <color name="secret_0">#E13741</color>
 </resources>
