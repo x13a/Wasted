@@ -61,7 +61,7 @@ adb shell am broadcast \
 [<img 
      height="51" 
      src="https://badges.crowdin.net/badge/dark/crowdin-on-light@2x.png" 
-     alt="Crowdin | Agile localization for tech companies">](https://crwd.in/me-lucky-wasted)
+     alt="Crowdin">](https://crwd.in/me-lucky-wasted)
 
 ## License
 
