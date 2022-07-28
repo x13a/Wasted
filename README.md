@@ -59,9 +59,9 @@ adb shell am broadcast \
 ## Localization
 
 [<img 
-      src="https://user-images.githubusercontent.com/53379023/153461055-50169c86-b187-40c7-8ec8-97d5e93660b8.png" 
-      alt="Crowdin" 
-      height="51">](https://crwd.in/me-lucky-wasted)
+     height="50" 
+     src="https://badges.crowdin.net/badge/dark/crowdin-on-light@2x.png" 
+     alt="Crowdin | Agile localization for tech companies">](https://crwd.in/me-lucky-wasted)
 
 ## License
 
