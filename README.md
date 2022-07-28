@@ -12,7 +12,7 @@ Lock a device and wipe its data on emergency.
       height="80">](https://play.google.com/store/apps/details?id=me.lucky.wasted)
 
 <img 
-     src="https://raw.githubusercontent.com/x13a/Wasted/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" 
+     src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" 
      width="30%" 
      height="30%">
 
