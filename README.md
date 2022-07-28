@@ -59,7 +59,7 @@ adb shell am broadcast \
 ## Localization
 
 [<img 
-     height="50" 
+     height="51" 
      src="https://badges.crowdin.net/badge/dark/crowdin-on-light@2x.png" 
      alt="Crowdin | Agile localization for tech companies">](https://crwd.in/me-lucky-wasted)
 
