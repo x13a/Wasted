@@ -45,17 +45,6 @@ Only encrypted device may guarantee that the data will not be recoverable.
 * FOREGROUND_SERVICE - receive lock and USB state events
 * RECEIVE_BOOT_COMPLETED - persist lock job and foreground service across reboots
 
-## Example
-
-Broadcast:
-
-```sh
-adb shell am broadcast \
-    -a me.lucky.wasted.action.TRIGGER \
-    -n me.lucky.wasted/.TriggerReceiver \
-    -e code "b49a6576-0c27-4f03-b96b-da53501022ba"
-```
-
 ## Localization
 
 [<img 
