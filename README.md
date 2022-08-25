@@ -30,6 +30,7 @@ Also you can:
 The app works in `Work Profile` too, but with limitations. Use it to install risky apps and 
 `Wasted` in it. Then you can wipe this profile data with one click without wiping the whole device.
 
+For base security take a look at: [Sentry](https://github.com/x13a/Sentry).  
 Only encrypted device may guarantee that the data will not be recoverable.
 
 ## Broadcast
