@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Wasted</string>
     <string name="wipe_data_checkbox">Borrar datos</string>
     <string name="wipe_embedded_sim_checkbox">Borrar eSIM</string>
     <string name="panic_app_dialog_title">Confirmar aplicación de pánico</string>
@@ -10,24 +9,20 @@
     <string name="tile_label">Modo avión</string>
     <string name="shortcut_label">Pánico</string>
     <string name="trigger_lock_time_hint">tiempo</string>
-    <string name="trigger_lock_time_error">7d / 48h / 120m</string>
     <string name="trigger_lock_time_helper_text">Cuánto tiempo de espera. Modificadores: [d]ías [h]oras [m]inutos</string>
     <string name="trigger_tile_delay_description">Retraso seguro antes de que se dispare. Te da algo de tiempo para cancelar el disparo si tocas el mosaico accidentalmente.</string>
     <string name="notification_channel_default_name">Predeterminado</string>
     <string name="foreground_service_notification_title">Guardián</string>
-    <string name="trigger_panic_kit">PanicKit</string>
     <string name="trigger_tile">Mosaico</string>
     <string name="trigger_shortcut">Acceso directo</string>
     <string name="trigger_broadcast">Difusión</string>
     <string name="trigger_notification">Notificación</string>
     <string name="trigger_lock">Bloqueo</string>
-    <string name="trigger_usb">USB</string>
     <string name="trigger_application">Aplicación</string>
     <string name="copied_popup">Copiado</string>
     <string name="main">Principal</string>
     <string name="settings">Ajustes</string>
     <string name="edit">Editar</string>
-    <string name="goto_button">GOTO</string>
     <string name="authentication">Autenticación</string>
     <string name="edit_secret_hint">secreto</string>
     <string name="edit_secret_helper_text">Use un secreto lo suficientemente fuerte.</string>
@@ -40,8 +35,5 @@
     <string name="trigger_lock_description">Habilite el programador de trabajos de bloqueo. Programará un trabajo cada vez que bloquee un dispositivo y lo cancelará cada vez que desbloquee un dispositivo. Cuando no desbloquea un dispositivo durante X tiempo, se activará un trabajo.</string>
     <string name="trigger_usb_description">Habilite el receptor de estado USB. Cuando realiza una conexión de datos USB mientras un dispositivo está bloqueado, se activará. No debe dispararse en el cargador, solo en el dispositivo y el accesorio.</string>
     <string name="trigger_application_description">Habilitar aplicación falsa. Agregará aplicaciones de mensajería falsas. Lanzarlos disparará Wasted.</string>
-    <string name="signal">Signal</string>
-    <string name="telegram">Telegram</string>
-    <string name="threema">Threema</string>
     <string name="session">Sesión</string>
 </resources>
