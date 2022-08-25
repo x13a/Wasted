@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Wasted</string>
     <string name="wipe_data_checkbox">抹除資料</string>
     <string name="wipe_embedded_sim_checkbox">抹除eSIM</string>
     <string name="panic_app_dialog_title">確認緊急按鈕APP</string>
@@ -8,20 +7,17 @@
     <string name="panic_app_unknown_app">一個未知的應用</string>
     <string name="allow">允許</string>
     <string name="tile_label">飛航模式</string>
-    <string name="shortcut_label">Panic</string>
     <string name="trigger_lock_time_hint">時間長度</string>
     <string name="trigger_lock_time_error">7日/48時/120分</string>
     <string name="trigger_lock_time_helper_text">等待時長。[d]日[h]時[m]分</string>
     <string name="trigger_tile_delay_description">觸發前延遲。若意外誤觸能有時間取消。</string>
     <string name="notification_channel_default_name">預設值</string>
-    <string name="foreground_service_notification_title">Guard</string>
     <string name="trigger_panic_kit">緊急按鈕工具</string>
     <string name="trigger_tile">下拉通知欄</string>
     <string name="trigger_shortcut">捷徑</string>
     <string name="trigger_broadcast">系統廣播（Broadcast）</string>
     <string name="trigger_notification">通知</string>
     <string name="trigger_lock">鎖定裝置</string>
-    <string name="trigger_usb">USB</string>
     <string name="trigger_application">偽裝應用程式</string>
     <string name="copied_popup">已複製</string>
     <string name="main">主要</string>
@@ -41,8 +37,4 @@
 當你特定時間內未解鎖裝置時會觸發Wasted。</string>
     <string name="trigger_usb_description">開啟USB狀態接收器。在裝置鎖定狀態下連接USB資料傳輸會觸發Wasted。只有連接其他裝置或配件時會觸發，充電器不會。</string>
     <string name="trigger_application_description">開啟偽裝APP。會新增假的通訊APP圖示，點開APP會觸發Wasted。</string>
-    <string name="signal">Signal</string>
-    <string name="telegram">Telegram</string>
-    <string name="threema">Threema</string>
-    <string name="session">Session</string>
 </resources>
