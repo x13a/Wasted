@@ -10,18 +10,15 @@
     <string name="tile_label">Modo avião</string>
     <string name="shortcut_label">Pânico</string>
     <string name="trigger_lock_time_hint">período</string>
-    <string name="trigger_lock_time_error">7d / 48h / 120m</string>
     <string name="trigger_lock_time_helper_text">Quanto tempo esperar. Unidades: [d]ias [h]oras [m]inutos</string>
     <string name="trigger_tile_delay_description">Atraso de precaução antes de disparar. Concede algum tempo para cancelar o disparo caso a barra seja pressionada acidentalmente.</string>
     <string name="notification_channel_default_name">Padrão</string>
     <string name="foreground_service_notification_title">Guarda</string>
-    <string name="trigger_panic_kit">PanicKit</string>
     <string name="trigger_tile">Barra</string>
     <string name="trigger_shortcut">Atalho</string>
     <string name="trigger_broadcast">Difusão</string>
     <string name="trigger_notification">Notificação</string>
     <string name="trigger_lock">Bloqueio</string>
-    <string name="trigger_usb">USB</string>
     <string name="trigger_application">Aplicativo</string>
     <string name="copied_popup">Copiado</string>
     <string name="main">Principal</string>
@@ -40,8 +37,4 @@
     <string name="trigger_lock_description">Habilitar cronômetro de bloqueio. Irá iniciar um cronômetro sempre que o dispositivo for bloqueado e cancela-lo sempre que o dispositivo for desbloqueado. Caso o dispositivo não for desbloqueado por certo período, dispara.</string>
     <string name="trigger_usb_description">Habilitar receptor de estado USB. Dispara ao fazer uma conexão USB enquanto o dispositivo está bloqueado. Não deve disparar com o mero carregamento, mas apenas ao conectar um dispositivo ou acessório.</string>
     <string name="trigger_application_description">Habilitar aplicativo falso. Irá adicionar um aplicativo de mensagens falso. Abri-lo irá disparar o Extraviado.</string>
-    <string name="signal">Signal</string>
-    <string name="telegram">Telegram</string>
-    <string name="threema">Threema</string>
-    <string name="session">Session</string>
 </resources>
