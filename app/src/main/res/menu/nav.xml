@@ -29,4 +29,9 @@
 
     </group>
 
+    <item
+        android:id="@+id/nav_recast"
+        android:title="@string/recast"
+        android:checkable="true" />
+
 </menu>

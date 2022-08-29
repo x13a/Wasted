@@ -13,7 +13,7 @@ import androidx.core.app.NotificationCompat
 import me.lucky.wasted.Preferences
 import me.lucky.wasted.R
 import me.lucky.wasted.Trigger
-import me.lucky.wasted.admin.DeviceAdminManager
+import me.lucky.wasted.Utils
 import me.lucky.wasted.trigger.lock.LockJobManager
 
 class ForegroundService : Service() {
@@ -113,17 +113,11 @@ class ForegroundService : Service() {
 
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action != ACTION_USB_STATE) return
-            val prefs = Preferences.new(context ?: return)
-            if (!prefs.isEnabled ||
-                prefs.triggers.and(Trigger.USB.value) == 0 ||
-                !context.getSystemService(KeyguardManager::class.java).isDeviceLocked) return
+            val utils = Utils(context ?: return)
+            if (!utils.isDeviceLocked()) return
             val extras = intent.extras ?: return
             if (!extras.getBoolean(KEY_1) && !extras.getBoolean(KEY_2)) return
-            val admin = DeviceAdminManager(context)
-            try {
-                admin.lockNow()
-                if (prefs.isWipeData) admin.wipeData()
-            } catch (exc: SecurityException) {}
+            utils.fire(Trigger.USB)
         }
     }
 }

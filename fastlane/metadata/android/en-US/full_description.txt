@@ -1,5 +1,6 @@
 You can use PanicKit, tile, shortcut or send a message with a secret code. On trigger, using
-Device Administration API, it locks a device and optionally runs wipe.
+Device Administration API, it locks a device and optionally runs wipe (factory reset). Also it can
+send a broadcast message instead of the wipe.
 
 Also you can:
 * fire when a device was not unlocked for X time

@@ -1,5 +1,6 @@
 package me.lucky.wasted
 
+import android.app.KeyguardManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -7,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
 
+import me.lucky.wasted.admin.DeviceAdminManager
 import me.lucky.wasted.trigger.notification.NotificationListenerService
 import me.lucky.wasted.trigger.panic.PanicConnectionActivity
 import me.lucky.wasted.trigger.panic.PanicResponderActivity
@@ -26,10 +28,10 @@ class Utils(private val ctx: Context) {
             }
     }
 
-    private val shortcut by lazy { ShortcutManager(ctx) }
+    private val prefs by lazy { Preferences.new(ctx) }
 
     fun setEnabled(enabled: Boolean) {
-        val triggers = Preferences(ctx).triggers
+        val triggers = prefs.triggers
         setPanicKitEnabled(enabled && triggers.and(Trigger.PANIC_KIT.value) != 0)
         setTileEnabled(enabled && triggers.and(Trigger.TILE.value) != 0)
         setShortcutEnabled(enabled && triggers.and(Trigger.SHORTCUT.value) != 0)
@@ -50,6 +52,7 @@ class Utils(private val ctx: Context) {
     }
 
     fun setShortcutEnabled(enabled: Boolean) {
+        val shortcut = ShortcutManager(ctx)
         if (!enabled) shortcut.remove()
         setComponentEnabled(ShortcutActivity::class.java, enabled)
         if (enabled) shortcut.push()
@@ -63,7 +66,6 @@ class Utils(private val ctx: Context) {
 
     fun updateApplicationEnabled() {
         val prefix = "${ctx.packageName}.trigger.application"
-        val prefs = Preferences(ctx)
         val options = prefs.triggerApplicationOptions
         val enabled = prefs.isEnabled && prefs.triggers.and(Trigger.APPLICATION.value) != 0
         setComponentEnabled(
@@ -85,7 +87,6 @@ class Utils(private val ctx: Context) {
     }
 
     fun updateForegroundRequiredEnabled() {
-        val prefs = Preferences(ctx)
         val enabled = prefs.isEnabled
         val triggers = prefs.triggers
         val isUSB = triggers.and(Trigger.USB.value) != 0
@@ -114,4 +115,36 @@ class Utils(private val ctx: Context) {
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
             PackageManager.DONT_KILL_APP,
         )
+
+    fun fire(trigger: Trigger, safe: Boolean = true) {
+        if (!prefs.isEnabled || prefs.triggers.and(trigger.value) == 0) return
+        val admin = DeviceAdminManager(ctx)
+        try {
+            admin.lockNow()
+            if (prefs.isWipeData && safe) admin.wipeData()
+        } catch (exc: SecurityException) {}
+        if (prefs.isRecastEnabled && safe) recast()
+    }
+
+    fun isDeviceLocked() = ctx.getSystemService(KeyguardManager::class.java).isDeviceLocked
+
+    private fun recast() {
+        val action = prefs.recastAction
+        if (action.isEmpty()) return
+        ctx.sendBroadcast(Intent(action).apply {
+            val cls = prefs.recastReceiver.split('/')
+            val packageName = cls.firstOrNull() ?: ""
+            if (packageName.isNotEmpty()) {
+                setPackage(packageName)
+                if (cls.size == 2)
+                    setClassName(
+                        packageName,
+                        "$packageName.${cls[1].trimStart('.')}",
+                    )
+            }
+            addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+            val extraKey = prefs.recastExtraKey
+            if (extraKey.isNotEmpty()) putExtra(extraKey, prefs.recastExtraValue)
+        })
+    }
 }

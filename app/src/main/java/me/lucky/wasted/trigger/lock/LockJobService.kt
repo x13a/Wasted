@@ -3,19 +3,12 @@ package me.lucky.wasted.trigger.lock
 import android.app.job.JobParameters
 import android.app.job.JobService
 
-import me.lucky.wasted.admin.DeviceAdminManager
-import me.lucky.wasted.Preferences
 import me.lucky.wasted.Trigger
+import me.lucky.wasted.Utils
 
 class LockJobService : JobService() {
     override fun onStartJob(params: JobParameters?): Boolean {
-        val prefs = Preferences.new(this)
-        if (!prefs.isEnabled || prefs.triggers.and(Trigger.LOCK.value) == 0) return false
-        val admin = DeviceAdminManager(this)
-        try {
-            admin.lockNow()
-            if (prefs.isWipeData) admin.wipeData()
-        } catch (exc: SecurityException) {}
+        Utils(this).fire(Trigger.LOCK)
         return false
     }
 

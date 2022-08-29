@@ -19,6 +19,12 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
         private const val WIPE_DATA = "wipe_data"
         private const val WIPE_EMBEDDED_SIM = "wipe_embedded_sim"
 
+        private const val RECAST_ENABLED = "recast_enabled"
+        private const val RECAST_ACTION = "recast_action"
+        private const val RECAST_RECEIVER = "recast_receiver"
+        private const val RECAST_EXTRA_KEY = "recast_extra_key"
+        private const val RECAST_EXTRA_VALUE = "recast_extra_value"
+
         private const val TRIGGERS = "triggers"
         private const val TRIGGER_LOCK_COUNT = "trigger_lock_count"
         private const val TRIGGER_TILE_DELAY = "trigger_tile_delay"
@@ -89,6 +95,26 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
     var triggerApplicationOptions: Int
         get() = prefs.getInt(TRIGGER_APPLICATION_OPTIONS, 0)
         set(value) = prefs.edit { putInt(TRIGGER_APPLICATION_OPTIONS, value) }
+
+    var isRecastEnabled: Boolean
+        get() = prefs.getBoolean(RECAST_ENABLED, false)
+        set(value) = prefs.edit { putBoolean(RECAST_ENABLED, value) }
+
+    var recastAction: String
+        get() = prefs.getString(RECAST_ACTION, "") ?: ""
+        set(value) = prefs.edit { putString(RECAST_ACTION, value) }
+
+    var recastReceiver: String
+        get() = prefs.getString(RECAST_RECEIVER, "") ?: ""
+        set(value) = prefs.edit { putString(RECAST_RECEIVER, value) }
+
+    var recastExtraKey: String
+        get() = prefs.getString(RECAST_EXTRA_KEY, "") ?: ""
+        set(value) = prefs.edit { putString(RECAST_EXTRA_KEY, value) }
+
+    var recastExtraValue: String
+        get() = prefs.getString(RECAST_EXTRA_VALUE, "") ?: ""
+        set(value) = prefs.edit { putString(RECAST_EXTRA_VALUE, value) }
 
     fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) =
         prefs.registerOnSharedPreferenceChangeListener(listener)

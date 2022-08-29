@@ -19,7 +19,8 @@ Lock a device and wipe its data on emergency.
 You can use [PanicKit](https://guardianproject.info/code/panickit/), tile, shortcut or send a 
 message with a secret code. On trigger, using 
 [Device Administration API](https://developer.android.com/guide/topics/admin/device-admin), it 
-locks a device and optionally runs wipe.
+locks a device and optionally runs wipe (factory reset). Also it can send a broadcast message 
+instead of the wipe.
 
 Also you can:
 * fire when a device was not unlocked for X time

@@ -6,30 +6,23 @@ import android.content.Intent
 
 import me.lucky.wasted.Preferences
 import me.lucky.wasted.Trigger
-import me.lucky.wasted.admin.DeviceAdminManager
+import me.lucky.wasted.Utils
 
 class BroadcastReceiver : BroadcastReceiver() {
     companion object {
         const val KEY = "code"
         const val ACTION = "me.lucky.wasted.action.TRIGGER"
 
-        fun panic(context: Context, intent: Intent?) {
+        fun panic(context: Context, intent: Intent?, trigger: Trigger) {
             if (intent?.action != ACTION) return
-            val prefs = Preferences.new(context)
-            if (!prefs.isEnabled) return
-            val secret = prefs.secret
+            val secret = Preferences.new(context).secret
             assert(secret.isNotEmpty())
             if (intent.getStringExtra(KEY)?.trim() != secret) return
-            val admin = DeviceAdminManager(context)
-            try {
-                admin.lockNow()
-                if (prefs.isWipeData) admin.wipeData()
-            } catch (exc: SecurityException) {}
+            Utils(context).fire(trigger)
         }
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (Preferences.new(context ?: return).triggers.and(Trigger.BROADCAST.value) != 0)
-            panic(context, intent)
+        panic(context ?: return, intent, Trigger.BROADCAST)
     }
 }

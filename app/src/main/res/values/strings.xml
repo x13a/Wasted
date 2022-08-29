@@ -44,4 +44,11 @@
     <string name="telegram">Telegram</string>
     <string name="threema">Threema</string>
     <string name="session">Session</string>
+    <string name="recast">Recast</string>
+    <string name="recast_description">Instead of wipe data you may want to send a broadcast message.</string>
+    <string name="enable">Enable</string>
+    <string name="action">action*</string>
+    <string name="receiver">receiver</string>
+    <string name="extra_key">extra key</string>
+    <string name="extra_value">extra value</string>
 </resources>
