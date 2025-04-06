@@ -2,8 +2,12 @@ package me.lucky.wasted
 
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.provider.Settings
+import android.text.TextUtils
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
@@ -14,7 +18,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-
 import me.lucky.wasted.databinding.ActivityMainBinding
 import me.lucky.wasted.fragment.*
 import me.lucky.wasted.trigger.shared.NotificationManager
@@ -37,6 +40,7 @@ open class MainActivity : AppCompatActivity() {
         if (initBiometric()) return
         init2()
         setup()
+        promptEnableNotificationService()
     }
 
     private fun init1() {
@@ -53,10 +57,7 @@ open class MainActivity : AppCompatActivity() {
     private fun initBiometric(): Boolean {
         val authenticators = BiometricManager.Authenticators.BIOMETRIC_STRONG or
                 BiometricManager.Authenticators.DEVICE_CREDENTIAL
-        when (BiometricManager
-            .from(this)
-            .canAuthenticate(authenticators))
-        {
+        when (BiometricManager.from(this).canAuthenticate(authenticators)) {
             BiometricManager.BIOMETRIC_SUCCESS -> {}
             else -> return false
         }
@@ -64,26 +65,29 @@ open class MainActivity : AppCompatActivity() {
         val prompt = BiometricPrompt(
             this,
             executor,
-            object : BiometricPrompt.AuthenticationCallback()
-        {
-            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                super.onAuthenticationError(errorCode, errString)
-                finishAndRemoveTask()
-            }
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    finishAndRemoveTask()
+                }
 
-            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                super.onAuthenticationSucceeded(result)
-                init2()
-                setup()
-            }
-        })
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    init2()
+                    setup()
+                }
+            })
         try {
-            prompt.authenticate(BiometricPrompt.PromptInfo.Builder()
-                .setTitle(getString(R.string.authentication))
-                .setConfirmationRequired(false)
-                .setAllowedAuthenticators(authenticators)
-                .build())
-        } catch (exc: Exception) { return false }
+            prompt.authenticate(
+                BiometricPrompt.PromptInfo.Builder()
+                    .setTitle(getString(R.string.authentication))
+                    .setConfirmationRequired(false)
+                    .setAllowedAuthenticators(authenticators)
+                    .build()
+            )
+        } catch (exc: Exception) {
+            return false
+        }
         return true
     }
 
@@ -104,11 +108,12 @@ open class MainActivity : AppCompatActivity() {
         appBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.top_settings -> {
-                    replaceFragment(when (supportFragmentManager.fragments.last()) {
-                        is SettingsFragment ->
-                            getFragment(navigation.checkedItem?.itemId ?: R.id.nav_main)
-                        else -> SettingsFragment()
-                    })
+                    replaceFragment(
+                        when (supportFragmentManager.fragments.last()) {
+                            is SettingsFragment -> getFragment(navigation.checkedItem?.itemId ?: R.id.nav_main)
+                            else -> SettingsFragment()
+                        }
+                    )
                     true
                 }
                 R.id.top_copy -> {
@@ -145,6 +150,7 @@ open class MainActivity : AppCompatActivity() {
         R.id.nav_trigger_lock -> LockFragment()
         R.id.nav_trigger_application -> ApplicationFragment()
         R.id.nav_recast -> RecastFragment()
+        R.id.nav_voice_trigger -> VoiceTriggerFragment()
         else -> MainFragment()
     }
 
@@ -173,5 +179,23 @@ open class MainActivity : AppCompatActivity() {
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isEnabled = secret.error == null
         }
         dialog.show()
+    }
+
+    // ========== NOTIFICATION LISTENER CHECK ==========
+
+    private fun isNotificationServiceEnabled(): Boolean {
+        val pkgName = packageName
+        val enabledListeners = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+        return !TextUtils.isEmpty(enabledListeners) && enabledListeners.contains(pkgName)
+    }
+
+    private fun promptEnableNotificationService() {
+        if (!isNotificationServiceEnabled()) {
+            Toast.makeText(this, "Veuillez autoriser l'accès aux notifications", Toast.LENGTH_LONG).show()
+            val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, "L'accès aux notifications est déjà activé", Toast.LENGTH_SHORT).show()
+        }
     }
 }

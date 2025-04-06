@@ -9,7 +9,7 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 
 import me.lucky.wasted.admin.DeviceAdminManager
-import me.lucky.wasted.trigger.notification.NotificationListenerService
+import me.lucky.wasted.trigger.notification.NotificationListener
 import me.lucky.wasted.trigger.panic.PanicConnectionActivity
 import me.lucky.wasted.trigger.panic.PanicResponderActivity
 import me.lucky.wasted.trigger.shared.ForegroundService
@@ -62,7 +62,8 @@ class Utils(private val ctx: Context) {
         setComponentEnabled(TriggerReceiver::class.java, enabled)
 
     fun setNotificationEnabled(enabled: Boolean) =
-        setComponentEnabled(NotificationListenerService::class.java, enabled)
+        setComponentEnabled(NotificationListener::class.java, enabled)
+
 
     fun updateApplicationEnabled() {
         val prefix = "${ctx.packageName}.trigger.application"

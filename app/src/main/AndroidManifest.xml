@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
+=======
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://schemas.android.com/apk/res/android
+http://schemas.android.com/tools ">
+
+>>>>>>> 5d684b8 (stable-version)
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
@@ -7,11 +16,32 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+<<<<<<< HEAD
 
     <!-- Features -->
     <uses-feature android:name="android.software.device_admin" android:required="true" />
     <uses-feature android:name="android.hardware.usb.host" android:required="false" />
     <uses-feature android:name="android.hardware.usb.accessory" android:required="false" />
+=======
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+
+    <uses-feature
+        android:name="android.software.device_admin"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.usb.host"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.usb.accessory"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+>>>>>>> 5d684b8 (stable-version)
 
     <application
         android:allowBackup="true"
@@ -31,23 +61,26 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <!-- Device Admin Receiver -->
         <receiver
-            android:name=".admin.DeviceAdminReceiver"
+            android:name=".admin.AdminReceiver"
             android:permission="android.permission.BIND_DEVICE_ADMIN"
             android:exported="true">
-            <meta-data android:name="android.app.device_admin"
+            <meta-data
+                android:name="android.app.device_admin"
                 android:resource="@xml/device_admin" />
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
 
+<<<<<<< HEAD
         <!-- Service en avant-plan -->
         <service
             android:name=".trigger.shared.ForegroundService"
@@ -58,6 +91,69 @@
         </service>
 
         <!-- Receiver pour les triggers -->
+=======
+        <activity
+            android:name=".trigger.panic.PanicConnectionActivity"
+            android:noHistory="true"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="info.guardianproject.panic.action.CONNECT" />
+                <action android:name="info.guardianproject.panic.action.DISCONNECT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".trigger.panic.PanicResponderActivity"
+            android:directBootAware="true"
+            android:noHistory="true"
+            android:enabled="false"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="info.guardianproject.panic.action.TRIGGER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".trigger.voice.VoiceRecognitionService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name=".trigger.tile.TileService"
+            android:directBootAware="true"
+            android:icon="@drawable/ic_baseline_airplanemode_active_24"
+            android:label="@string/tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:enabled="false"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+
+        <activity
+            android:name=".trigger.shortcut.ShortcutActivity"
+            android:noHistory="true"
+            android:enabled="false"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="me.lucky.wasted.action.TRIGGER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+>>>>>>> 5d684b8 (stable-version)
         <receiver
             android:name=".TriggerReceiver"
             android:directBootAware="true"
@@ -84,7 +180,7 @@
 
         <!-- Notification Listener Service -->
         <service
-            android:name=".trigger.notification.NotificationListenerService"
+            android:name=".trigger.notification.NotificationListener"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
@@ -99,8 +195,7 @@
             android:name=".trigger.lock.LockJobService"
             android:directBootAware="true"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE">
-        </service>
+            android:permission="android.permission.BIND_JOB_SERVICE"></service>
 
         <!-- USB Receiver -->
         <receiver
@@ -112,21 +207,131 @@
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
                 <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" />
             </intent-filter>
-            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
-            <meta-data android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
+            <meta-data
+                android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
                 android:resource="@xml/accessory_filter" />
         </receiver>
 
+<<<<<<< HEAD
         <!-- Activité pour les triggers -->
+=======
+        <service
+            android:name=".trigger.shared.ForegroundService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice" />
+
+        <receiver
+            android:name=".trigger.shared.RestartReceiver"
+            android:directBootAware="true"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+>>>>>>> 5d684b8 (stable-version)
         <activity
             android:name=".trigger.application.ApplicationActivity"
             android:taskAffinity=".trigger.application"
             android:noHistory="true"
             android:theme="@android:style/Theme.NoDisplay"
+<<<<<<< HEAD
             android:enabled="true"
             android:exported="true">
         </activity>
 
+=======
+            android:enabled="false"
+            android:exported="false"></activity>
+
+        <activity-alias
+            android:name=".trigger.application.SignalActivity"
+            android:targetActivity=".trigger.application.ApplicationActivity"
+            android:label="@string/signal"
+            android:icon="@mipmap/ic_signal"
+            android:roundIcon="@mipmap/ic_signal_round"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".trigger.application.TelegramActivity"
+            android:targetActivity=".trigger.application.ApplicationActivity"
+            android:label="@string/telegram"
+            android:icon="@mipmap/ic_telegram"
+            android:roundIcon="@mipmap/ic_telegram_round"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".trigger.application.ThreemaActivity"
+            android:targetActivity=".trigger.application.ApplicationActivity"
+            android:label="@string/threema"
+            android:icon="@mipmap/ic_threema"
+            android:roundIcon="@mipmap/ic_threema_round"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".trigger.application.SessionActivity"
+            android:targetActivity=".trigger.application.ApplicationActivity"
+            android:label="@string/session"
+            android:icon="@mipmap/ic_session"
+            android:roundIcon="@mipmap/ic_session_round"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity
+            android:name=".trigger.voice.VoiceTestActivity"
+            android:exported="true"
+            android:label="Test vocal"
+            android:theme="@android:style/Theme.DeviceDefault">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <service
+            android:name="me.lucky.wasted.SpeechService"
+            android:enabled="true"
+            android:exported="false" />
+
+
+>>>>>>> 5d684b8 (stable-version)
     </application>
 </manifest>

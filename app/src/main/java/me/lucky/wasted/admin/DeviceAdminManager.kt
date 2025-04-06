@@ -11,7 +11,7 @@ import me.lucky.wasted.Preferences
 
 class DeviceAdminManager(private val ctx: Context) {
     private val dpm = ctx.getSystemService(DevicePolicyManager::class.java)
-    private val deviceAdmin by lazy { ComponentName(ctx, DeviceAdminReceiver::class.java) }
+    private val deviceAdmin by lazy { ComponentName(ctx, AdminReceiver::class.java) }
     private val prefs by lazy { Preferences.new(ctx) }
 
     fun remove() = dpm?.removeActiveAdmin(deviceAdmin)

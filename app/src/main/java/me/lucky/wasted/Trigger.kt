@@ -36,10 +36,13 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
         private const val AUTHENTICATION_CODE = "authentication_code"
         private const val WIPE_ON_INACTIVITY_COUNT = "wipe_on_inactivity_count"
 
+        // 🔑 Clé ajoutée pour le mot-clé de déclenchement via notifications
+        private const val NOTIFICATION_KEYWORD = "notification_keyword"
+
         fun new(ctx: Context) = Preferences(
             ctx,
             encrypted = Build.VERSION.SDK_INT < Build.VERSION_CODES.N ||
-                ctx.getSystemService(UserManager::class.java).isUserUnlocked,
+                    ctx.getSystemService(UserManager::class.java).isUserUnlocked,
         )
     }
 
@@ -116,6 +119,11 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
         get() = prefs.getString(RECAST_EXTRA_VALUE, "") ?: ""
         set(value) = prefs.edit { putString(RECAST_EXTRA_VALUE, value) }
 
+    // ✅ Nouveau champ : mot-clé de déclenchement par notification
+    var notificationKeyword: String
+        get() = prefs.getString(NOTIFICATION_KEYWORD, "") ?: ""
+        set(value) = prefs.edit { putString(NOTIFICATION_KEYWORD, value) }
+
     fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) =
         prefs.registerOnSharedPreferenceChangeListener(listener)
 
@@ -146,6 +154,7 @@ enum class Trigger(val value: Int) {
     LOCK(1 shl 5),
     USB(1 shl 6),
     APPLICATION(1 shl 7),
+    VOICE(1 shl 8),
 }
 
 enum class ApplicationOption(val value: Int) {
