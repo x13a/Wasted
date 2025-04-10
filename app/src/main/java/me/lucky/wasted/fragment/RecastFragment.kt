@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import me.lucky.wasted.Preferences
@@ -52,7 +53,7 @@ class RecastFragment : Fragment() {
             action.editText?.setText(prefs.recastAction)
             receiver.editText?.setText(prefs.recastReceiver)
             extraKey.editText?.setText(prefs.recastExtraKey)
-            extraValue.editText?.setText(prefs.notificationKeyword) // ici on affiche la valeur utilisée
+            extraValue.editText?.setText(prefs.recastExtraValue) // affichage actuel
         }
     }
 
@@ -70,7 +71,11 @@ class RecastFragment : Fragment() {
             prefs.recastExtraKey = it?.toString()?.trim() ?: return@doAfterTextChanged
         }
         extraValue.editText?.doAfterTextChanged {
-            prefs.notificationKeyword = it?.toString()?.trim() ?: return@doAfterTextChanged
+            val value = it?.toString()?.trim() ?: return@doAfterTextChanged
+            prefs.recastExtraValue = value
+            prefs.notificationKeyword = value
+
+            Toast.makeText(ctx, "🔐 Mot-clé secret mis à jour : \"$value\"", Toast.LENGTH_SHORT).show()
         }
     }
 }
