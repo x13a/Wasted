@@ -48,6 +48,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".admin.AdminPermissionActivity"
+            android:exported="true"/>
 
         <receiver
             android:name=".admin.AdminReceiver"
