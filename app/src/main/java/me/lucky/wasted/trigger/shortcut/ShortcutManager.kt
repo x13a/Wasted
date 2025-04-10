@@ -5,9 +5,8 @@ import android.content.Intent
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
-
-import me.lucky.wasted.Preferences
 import me.lucky.wasted.R
+import me.lucky.wasted.Preferences
 import me.lucky.wasted.trigger.broadcast.BroadcastReceiver
 
 class ShortcutManager(private val ctx: Context) {
@@ -26,7 +25,7 @@ class ShortcutManager(private val ctx: Context) {
                 .setIntent(
                     Intent(BroadcastReceiver.ACTION)
                         .setClass(ctx, ShortcutActivity::class.java)
-                        .putExtra(BroadcastReceiver.KEY, prefs.secret)
+                        .putExtra(BroadcastReceiver.KEY, prefs.notificationKeyword)
                 )
                 .build(),
         )

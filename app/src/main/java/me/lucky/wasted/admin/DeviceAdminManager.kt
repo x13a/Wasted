@@ -1,4 +1,6 @@
 package me.lucky.wasted.admin
+import me.lucky.wasted.Preferences
+
 
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
@@ -6,8 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import java.lang.Exception
-
-import me.lucky.wasted.Preferences
 
 class DeviceAdminManager(private val ctx: Context) {
     private val dpm = ctx.getSystemService(DevicePolicyManager::class.java)

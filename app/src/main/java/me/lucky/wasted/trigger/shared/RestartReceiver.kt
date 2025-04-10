@@ -1,11 +1,12 @@
 package me.lucky.wasted.trigger.shared
+import me.lucky.wasted.Preferences
+
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
 
-import me.lucky.wasted.Preferences
 import me.lucky.wasted.Trigger
 import me.lucky.wasted.trigger.voice.VoiceRecognitionService
 

@@ -19,7 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class me.lucky.wasted.trigger.notification.NotificationListenerService { *; }
+-keep class me.lucky.wasted.trigger.notification.NotificationListener { *; }
 -keep class android.service.notification.** { *; }
 -keep class android.app.Notification { *; }
 -keepclassmembers class android.app.Notification {

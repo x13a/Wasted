@@ -1,4 +1,6 @@
 package me.lucky.wasted.util
+import me.lucky.wasted.Preferences
+
 
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName

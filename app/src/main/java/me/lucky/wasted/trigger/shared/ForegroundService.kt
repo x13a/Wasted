@@ -1,4 +1,6 @@
 package me.lucky.wasted.trigger.shared
+import me.lucky.wasted.Preferences
+
 
 import android.app.KeyguardManager
 import android.app.Service
@@ -10,7 +12,6 @@ import android.content.IntentFilter
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 
-import me.lucky.wasted.Preferences
 import me.lucky.wasted.R
 import me.lucky.wasted.Trigger
 import me.lucky.wasted.Utils

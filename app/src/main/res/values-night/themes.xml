@@ -1,17 +1,31 @@
-<resources>
-    <!-- Base application theme. -->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Thème principal de l'application -->
     <style name="Theme.Wasted" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
+        <!-- Couleurs principales -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Customize your theme here. -->
+
+        <!-- Fond -->
+        <item name="android:colorBackground">@color/white</item>
+        <item name="colorOnBackground">@color/black</item>
+
+        <!-- Surfaces et erreurs -->
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/black</item>
+        <item name="colorError">@color/red_200</item>
+        <item name="colorOnError">@color/white</item>
+
+        <!-- Barre de statut translucide (optionnel) -->
         <item name="android:windowTranslucentStatus">true</item>
+
+        <!-- Compatibilité si tu veux forcer une couleur d'accentuation pour certains composants -->
+        <item name="android:colorAccent">@color/teal_200</item> <!-- Pour compatibilité descendante -->
     </style>
 
+    <!-- Variante pour boutons personnalisés -->
     <style name="Theme.Wasted.ToggleButton" parent="Theme.Wasted">
-        <item name="colorAccent">@color/green_500</item>
+        <item name="colorSecondary">@color/green_500</item> <!-- Changement ciblé -->
     </style>
 </resources>

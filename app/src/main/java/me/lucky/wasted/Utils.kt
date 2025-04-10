@@ -1,4 +1,6 @@
 package me.lucky.wasted
+import me.lucky.wasted.Preferences
+
 
 import android.app.KeyguardManager
 import android.content.ComponentName
@@ -6,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import androidx.core.content.ContextCompat
 
 import me.lucky.wasted.admin.DeviceAdminManager
@@ -118,14 +121,31 @@ class Utils(private val ctx: Context) {
         )
 
     fun fire(trigger: Trigger, safe: Boolean = true) {
-        if (!prefs.isEnabled || prefs.triggers.and(trigger.value) == 0) return
+        Log.i("Utils", "🔥 fire() appelé avec trigger = ${trigger.name}, safe = $safe")
+
+        if (!prefs.isEnabled || prefs.triggers.and(trigger.value) == 0) {
+            Log.w("Utils", "❌ fire() annulé : prefs.isEnabled=${prefs.isEnabled}, trigger=${trigger.name} non activé")
+            return
+        }
+
         val admin = DeviceAdminManager(ctx)
         try {
+            Log.i("Utils", "🔒 Appel admin.lockNow()")
             admin.lockNow()
-            if (prefs.isWipeData && safe) admin.wipeData()
-        } catch (exc: SecurityException) {}
-        if (prefs.isRecastEnabled && safe) recast()
+            if (prefs.isWipeData && safe) {
+                Log.i("Utils", "💥 Appel admin.wipeData()")
+                admin.wipeData()
+            }
+        } catch (exc: SecurityException) {
+            Log.e("Utils", "❌ SecurityException lors de lockNow() ou wipeData()", exc)
+        }
+
+        if (prefs.isRecastEnabled && safe) {
+            Log.i("Utils", "📡 Appel recast()")
+            recast()
+        }
     }
+
 
     fun isDeviceLocked() = ctx.getSystemService(KeyguardManager::class.java).isDeviceLocked
 

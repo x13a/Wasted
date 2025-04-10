@@ -1,4 +1,6 @@
 package me.lucky.wasted
+import me.lucky.wasted.Preferences
+
 
 import android.app.Application
 import com.google.android.material.color.DynamicColors

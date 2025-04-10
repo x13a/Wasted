@@ -1,4 +1,6 @@
 package me.lucky.wasted.trigger.voice
+import me.lucky.wasted.Preferences
+
 
 import android.app.Service
 import android.content.Intent

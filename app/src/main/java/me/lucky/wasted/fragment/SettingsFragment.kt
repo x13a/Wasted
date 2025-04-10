@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-
 import me.lucky.wasted.Preferences
+
 import me.lucky.wasted.Trigger
 import me.lucky.wasted.Utils
 import me.lucky.wasted.databinding.FragmentSettingsBinding

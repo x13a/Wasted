@@ -1,4 +1,6 @@
 package me.lucky.wasted.fragment
+import me.lucky.wasted.Preferences
+
 
 import android.content.Intent
 import android.os.Bundle

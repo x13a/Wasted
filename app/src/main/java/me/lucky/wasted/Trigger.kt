@@ -1,4 +1,6 @@
 package me.lucky.wasted
+import me.lucky.wasted.Preferences
+
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -15,7 +17,6 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
         private const val DEFAULT_TRIGGER_TILE_DELAY = 2000L
 
         private const val ENABLED = "enabled"
-        private const val SECRET = "secret"
         private const val WIPE_DATA = "wipe_data"
         private const val WIPE_EMBEDDED_SIM = "wipe_embedded_sim"
 
@@ -29,7 +30,7 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
         private const val TRIGGER_LOCK_COUNT = "trigger_lock_count"
         private const val TRIGGER_TILE_DELAY = "trigger_tile_delay"
         private const val TRIGGER_APPLICATION_OPTIONS = "trigger_application_options"
-
+        private const val VOICE_KEYWORD = "voice_keyword"
         private const val FILE_NAME = "sec_shared_prefs"
 
         // migration
@@ -45,6 +46,7 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
                     ctx.getSystemService(UserManager::class.java).isUserUnlocked,
         )
     }
+
 
     private val prefs: SharedPreferences = if (encrypted) {
         val mk = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
@@ -69,12 +71,7 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
         get() = prefs.getInt(TRIGGERS, 0)
         set(value) = prefs.edit { putInt(TRIGGERS, value) }
 
-    var secret: String
-        get() = prefs.getString(
-            SECRET,
-            prefs.getString(AUTHENTICATION_CODE, "") ?: "",
-        ) ?: ""
-        set(value) = prefs.edit { putString(SECRET, value) }
+
 
     var isWipeData: Boolean
         get() = prefs.getBoolean(WIPE_DATA, false)
@@ -123,6 +120,21 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
     var notificationKeyword: String
         get() = prefs.getString(NOTIFICATION_KEYWORD, "") ?: ""
         set(value) = prefs.edit { putString(NOTIFICATION_KEYWORD, value) }
+
+    var voiceKeyword: String
+        get() = prefs.getString(VOICE_KEYWORD, "") ?: ""
+        set(value) = prefs.edit { putString(VOICE_KEYWORD, value) }
+
+    var useNotificationKeyword: Boolean
+        get() = prefs.getBoolean("use_notification_keyword", false)
+        set(value) = prefs.edit().putBoolean("use_notification_keyword", value).apply()
+
+
+    var isVoiceDetectionEnabled: Boolean
+        get() = prefs.getBoolean("voice_detection_enabled", false)
+        set(value) = prefs.edit { putBoolean("voice_detection_enabled", value) }
+
+
 
     fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) =
         prefs.registerOnSharedPreferenceChangeListener(listener)

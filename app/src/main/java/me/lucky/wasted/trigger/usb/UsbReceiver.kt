@@ -1,4 +1,6 @@
 package me.lucky.wasted.trigger.usb
+import me.lucky.wasted.Preferences
+
 
 import android.content.BroadcastReceiver
 import android.content.Context

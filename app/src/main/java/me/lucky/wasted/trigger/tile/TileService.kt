@@ -1,4 +1,6 @@
 package me.lucky.wasted.trigger.tile
+import me.lucky.wasted.Preferences
+
 
 import android.os.Build
 import android.service.quicksettings.Tile
@@ -8,7 +10,6 @@ import java.util.*
 import kotlin.concurrent.timerTask
 
 import me.lucky.wasted.admin.DeviceAdminManager
-import me.lucky.wasted.Preferences
 import me.lucky.wasted.Trigger
 import me.lucky.wasted.Utils
 

@@ -23,6 +23,7 @@ import me.lucky.wasted.fragment.*
 import me.lucky.wasted.trigger.shared.NotificationManager
 
 open class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: Preferences
     private lateinit var prefsdb: Preferences
@@ -36,8 +37,11 @@ open class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         init1()
+
         if (initBiometric()) return
+
         init2()
         setup()
         promptEnableNotificationService()
@@ -57,10 +61,12 @@ open class MainActivity : AppCompatActivity() {
     private fun initBiometric(): Boolean {
         val authenticators = BiometricManager.Authenticators.BIOMETRIC_STRONG or
                 BiometricManager.Authenticators.DEVICE_CREDENTIAL
+
         when (BiometricManager.from(this).canAuthenticate(authenticators)) {
             BiometricManager.BIOMETRIC_SUCCESS -> {}
             else -> return false
         }
+
         val executor = ContextCompat.getMainExecutor(this)
         val prompt = BiometricPrompt(
             this,
@@ -76,8 +82,10 @@ open class MainActivity : AppCompatActivity() {
                     init2()
                     setup()
                 }
-            })
-        try {
+            }
+        )
+
+        return try {
             prompt.authenticate(
                 BiometricPrompt.PromptInfo.Builder()
                     .setTitle(getString(R.string.authentication))
@@ -85,10 +93,10 @@ open class MainActivity : AppCompatActivity() {
                     .setAllowedAuthenticators(authenticators)
                     .build()
             )
+            true
         } catch (exc: Exception) {
-            return false
+            false
         }
-        return true
     }
 
     override fun onStart() {
@@ -116,14 +124,17 @@ open class MainActivity : AppCompatActivity() {
                     )
                     true
                 }
+
                 R.id.top_copy -> {
                     copySecret()
                     true
                 }
+
                 R.id.top_edit -> {
                     editSecret()
                     true
                 }
+
                 else -> false
             }
         }
@@ -149,13 +160,13 @@ open class MainActivity : AppCompatActivity() {
         R.id.nav_trigger_notification -> NotificationFragment()
         R.id.nav_trigger_lock -> LockFragment()
         R.id.nav_trigger_application -> ApplicationFragment()
-        R.id.nav_recast -> RecastFragment()
         R.id.nav_voice_trigger -> VoiceTriggerFragment()
+        R.id.nav_recast -> RecastFragment()
         else -> MainFragment()
     }
 
     private fun copySecret() {
-        clipboardManager.setPrimaryClip(ClipData.newPlainText("", prefs.secret))
+        clipboardManager.setPrimaryClip(ClipData.newPlainText("", prefs.notificationKeyword))
         Snackbar.make(binding.fragment, R.string.copied_popup, Snackbar.LENGTH_SHORT).show()
     }
 
@@ -165,37 +176,39 @@ open class MainActivity : AppCompatActivity() {
         val dialog = MaterialAlertDialogBuilder(this)
             .setTitle(R.string.edit)
             .setView(view)
-            .setPositiveButton(android.R.string.cancel) { _, _ -> }
+            .setPositiveButton(android.R.string.cancel, null)
             .setNegativeButton(android.R.string.ok) { _, _ ->
                 if (secret.error != null) return@setNegativeButton
-                prefs.secret = secret.editText?.text?.toString()?.trim() ?: return@setNegativeButton
+                prefs.notificationKeyword = secret.editText?.text?.toString()?.trim().orEmpty()
                 replaceFragment(MainFragment())
             }
             .create()
-        secret.editText?.setText(prefs.secret)
+
+        secret.editText?.setText(prefs.notificationKeyword)
         secret.editText?.doAfterTextChanged {
             secret.error = if (it?.toString()?.isBlank() == true)
                 getString(R.string.edit_secret_error) else null
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isEnabled = secret.error == null
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.isEnabled = secret.error == null
         }
         dialog.show()
     }
 
-    // ========== NOTIFICATION LISTENER CHECK ==========
-
     private fun isNotificationServiceEnabled(): Boolean {
         val pkgName = packageName
-        val enabledListeners = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+        val enabledListeners =
+            Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
         return !TextUtils.isEmpty(enabledListeners) && enabledListeners.contains(pkgName)
     }
 
     private fun promptEnableNotificationService() {
         if (!isNotificationServiceEnabled()) {
-            Toast.makeText(this, "Veuillez autoriser l'accès aux notifications", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Veuillez autoriser l'accès aux notifications", Toast.LENGTH_LONG)
+                .show()
             val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
             startActivity(intent)
         } else {
-            Toast.makeText(this, "L'accès aux notifications est déjà activé", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "L'accès aux notifications est déjà activé", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 }

@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-
 import me.lucky.wasted.Preferences
 import me.lucky.wasted.databinding.FragmentRecastBinding
 
@@ -47,12 +46,13 @@ class RecastFragment : Fragment() {
         ctx = requireContext()
         prefs = Preferences(ctx)
         prefsdb = Preferences(ctx, encrypted = false)
+
         binding.apply {
             enabled.isChecked = prefs.isRecastEnabled
             action.editText?.setText(prefs.recastAction)
             receiver.editText?.setText(prefs.recastReceiver)
             extraKey.editText?.setText(prefs.recastExtraKey)
-            extraValue.editText?.setText(prefs.recastExtraValue)
+            extraValue.editText?.setText(prefs.notificationKeyword) // ici on affiche la valeur utilisée
         }
     }
 
@@ -70,7 +70,7 @@ class RecastFragment : Fragment() {
             prefs.recastExtraKey = it?.toString()?.trim() ?: return@doAfterTextChanged
         }
         extraValue.editText?.doAfterTextChanged {
-            prefs.recastExtraValue = it?.toString()?.trim() ?: return@doAfterTextChanged
+            prefs.notificationKeyword = it?.toString()?.trim() ?: return@doAfterTextChanged
         }
     }
 }

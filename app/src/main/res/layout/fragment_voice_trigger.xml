@@ -1,15 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_voice_trigger"
+    android:id="@+id/voice_trigger_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="24dp">
 
-    <Button
-        android:id="@+id/btn_trigger_voice"
+    <Switch
+        android:id="@+id/switch_use_notification_keyword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Utiliser le mot-clé de notification"
+        android:checked="false"
+        android:layout_marginTop="16dp" />
+
+
+    <Switch
+        android:id="@+id/switch_enable_speech"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Activer commande vocale" />
+        android:text="Activer détection vocale continue" />
+
+    <Button
+        android:id="@+id/btn_record_keyword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🎙️ Enregistrer le mot-clé" />
+
+    <Button
+        android:id="@+id/btn_stop_recording"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="⏹️ Arrêter"
+        android:enabled="false" />
+
+    <TextView
+        android:id="@+id/txt_voice_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Appuyez pour enregistrer"
+        android:gravity="center"
+        android:paddingTop="16dp" />
+
 </LinearLayout>
