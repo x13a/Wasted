@@ -231,17 +231,16 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".trigger.usb.UsbReceiver"
-            android:directBootAware="true"
+        <receiver
+            android:name=".trigger.usb.UsbReceiver"
             android:enabled="true"
-            android:exported="false">
+            android:exported="true"
+            android:directBootAware="true">
             <intent-filter>
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-                <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" />
+                <action android:name="android.hardware.usb.action.USB_STATE" />
             </intent-filter>
-            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" android:resource="@xml/device_filter" />
-            <meta-data android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" android:resource="@xml/accessory_filter" />
         </receiver>
+
         <receiver android:name=".debug.DebugTriggerReceiver"
             android:enabled="true"
             android:exported="true"
