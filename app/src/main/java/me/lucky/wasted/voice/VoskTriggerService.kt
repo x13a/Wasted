@@ -134,6 +134,7 @@ class VoskTriggerService : Service() {
         } else {
             Log.e("VoskTriggerService", "❌ Admin non actif : impossible de réinitialiser")
         }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.N)

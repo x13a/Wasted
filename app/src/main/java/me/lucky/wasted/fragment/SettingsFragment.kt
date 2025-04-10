@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,7 +70,11 @@ class SettingsFragment : Fragment() {
             // Afficher l'état du droit administrateur
             adminPermission.isChecked = DeviceAdminManager(ctx).isActive()
         }
+        val voiceEnabled = prefs.isVoiceDetectionEnabled
+        Log.i("SettingsFragment", "🎙️ Détection vocale ${if (voiceEnabled) "activée" else "désactivée"}")
+
     }
+
 
     private fun setup() = binding.apply {
         panicKit.setOnCheckedChangeListener { _, isChecked ->
@@ -115,6 +120,14 @@ class SettingsFragment : Fragment() {
                 DeviceAdminManager(ctx).remove()
                 Toast.makeText(ctx, "Permission administrateur retirée", Toast.LENGTH_SHORT).show()
             }
+            if (isChecked) {
+                Log.i("SettingsFragment", "🎙️ Détection vocale activée")
+                Toast.makeText(ctx, "Détection vocale activée", Toast.LENGTH_SHORT).show()
+            } else {
+                Log.i("SettingsFragment", "🔇 Détection vocale désactivée")
+                Toast.makeText(ctx, "Détection vocale désactivée", Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 }

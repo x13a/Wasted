@@ -95,6 +95,8 @@ class VoiceTriggerFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 txtStatus.text = "✅ Enregistrement terminé"
                 convertToWav(pcmFile, outputFile, sampleRate)
+                Toast.makeText(requireContext(), "🎤 Mot-clé vocal sauvegardé. C’est enregistré, chef !", Toast.LENGTH_SHORT).show()
+
             }
         }
     }
