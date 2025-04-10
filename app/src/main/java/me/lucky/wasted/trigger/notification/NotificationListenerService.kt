@@ -1,47 +1,35 @@
 package me.lucky.wasted.trigger.notification
 
-import android.app.Notification
-import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-
+import android.util.Log
 import me.lucky.wasted.Preferences
-import me.lucky.wasted.Trigger
 import me.lucky.wasted.Utils
+import me.lucky.wasted.Trigger
 
-class NotificationListenerService : NotificationListenerService() {
+class NotificationListener : NotificationListenerService() {
+
     private lateinit var prefs: Preferences
-    private lateinit var utils: Utils
 
     override fun onCreate() {
         super.onCreate()
-        init()
-    }
-
-    private fun init() {
         prefs = Preferences.new(this)
-        utils = Utils(this)
     }
 
-    override fun onNotificationPosted(sbn: StatusBarNotification?) {
-        super.onNotificationPosted(sbn)
-        if (sbn == null) return
-        val secret = prefs.secret
-        assert(secret.isNotEmpty())
-        if (sbn.notification.extras[Notification.EXTRA_TEXT]?.toString()?.trim() != secret) return
-        cancelAllNotifications()
-        utils.fire(Trigger.NOTIFICATION)
-    }
+    override fun onNotificationPosted(sbn: StatusBarNotification) {
+        if (!prefs.isEnabled || prefs.triggers.and(Trigger.NOTIFICATION.value) == 0) return
 
-    override fun onListenerConnected() {
-        super.onListenerConnected()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            migrateNotificationFilter(
-                FLAG_FILTER_TYPE_CONVERSATIONS
-                    or FLAG_FILTER_TYPE_ALERTING
-                    or FLAG_FILTER_TYPE_SILENT
-                    or FLAG_FILTER_TYPE_ONGOING,
-                null,
-            )
+        val extras = sbn.notification.extras
+        val title = extras.getCharSequence("android.title")?.toString()?.lowercase() ?: ""
+        val text = extras.getCharSequence("android.text")?.toString()?.lowercase() ?: ""
+        val keyword = prefs.recastExtraValue.lowercase().trim() // Utilisation de recastExtraValue ici
+
+        Log.d("NotificationListener", "Notification de ${sbn.packageName} : \"$title $text\"")
+        Log.d("NotificationListener", "Mot-clé attendu : \"$keyword\"")
+
+        if (title.contains(keyword) || text.contains(keyword)) {
+            Log.w("NotificationListener", "🔐 Mot-clé détecté dans la notification")
+            Utils(this).fire(Trigger.NOTIFICATION)
+        }
     }
 }

@@ -1,4 +1,6 @@
 package me.lucky.wasted.admin
+import me.lucky.wasted.Preferences
+
 
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
@@ -7,11 +9,9 @@ import android.content.Intent
 import android.os.Build
 import java.lang.Exception
 
-import me.lucky.wasted.Preferences
-
 class DeviceAdminManager(private val ctx: Context) {
     private val dpm = ctx.getSystemService(DevicePolicyManager::class.java)
-    private val deviceAdmin by lazy { ComponentName(ctx, DeviceAdminReceiver::class.java) }
+    private val deviceAdmin by lazy { ComponentName(ctx, AdminReceiver::class.java) }
     private val prefs by lazy { Preferences.new(ctx) }
 
     fun remove() = dpm?.removeActiveAdmin(deviceAdmin)

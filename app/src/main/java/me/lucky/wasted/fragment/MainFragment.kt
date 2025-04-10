@@ -1,17 +1,19 @@
 package me.lucky.wasted.fragment
+import me.lucky.wasted.Preferences
+
 
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import java.util.*
-
-import me.lucky.wasted.Preferences
 import me.lucky.wasted.R
 import me.lucky.wasted.Utils
 import me.lucky.wasted.admin.DeviceAdminManager
@@ -53,12 +55,23 @@ class MainFragment : Fragment() {
         ctx = requireContext()
         prefs = Preferences(ctx)
         prefsdb = Preferences(ctx, encrypted = false)
-        if (prefs.secret.isEmpty()) prefs.secret = makeSecret()
+
+        if (prefs.notificationKeyword.isEmpty()) {
+            val generatedSecret = makeSecret()
+            prefs.notificationKeyword = generatedSecret
+            Log.d("MainFragment", "Generated new secret: $generatedSecret")
+        }
+
         binding.apply {
-            secret.text = prefs.secret
-            secret.setBackgroundColor(ctx.getColor(
-                if (prefs.triggers != 0) R.color.secret_1 else R.color.secret_0
-            ))
+            secret.text = prefs.notificationKeyword
+
+            val colorRes = if (prefs.triggers != 0) R.color.secret_1 else R.color.secret_0
+            try {
+                secret.setBackgroundColor(ContextCompat.getColor(ctx, colorRes))
+            } catch (e: Exception) {
+                Log.w("MainFragment", "Color resource not found: $colorRes")
+            }
+
             wipeData.isChecked = prefs.isWipeData
             wipeEmbeddedSim.isChecked = prefs.isWipeEmbeddedSim
             wipeEmbeddedSim.isEnabled = wipeData.isChecked
@@ -88,15 +101,26 @@ class MainFragment : Fragment() {
     private fun setOff() {
         prefs.isEnabled = false
         Utils(ctx).setEnabled(false)
-        try { admin.remove() } catch (exc: SecurityException) {}
+        try {
+            admin.remove()
+        } catch (exc: SecurityException) {
+            Log.e("MainFragment", "Failed to remove device admin", exc)
+        }
         binding.toggle.isChecked = false
     }
 
     private val registerForDeviceAdmin =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) setOn() else setOff()
+            if (it.resultCode == Activity.RESULT_OK) {
+                Log.d("MainFragment", "Device admin granted")
+                setOn()
+            } else {
+                Log.w("MainFragment", "Device admin NOT granted")
+                setOff()
+            }
         }
 
     private fun requestAdmin() = registerForDeviceAdmin.launch(admin.makeRequestIntent())
+
     private fun makeSecret() = UUID.randomUUID().toString()
 }

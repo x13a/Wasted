@@ -1,4 +1,6 @@
 package me.lucky.wasted.fragment
+import me.lucky.wasted.Preferences
+
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -10,7 +12,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import java.util.regex.Pattern
 
-import me.lucky.wasted.Preferences
 import me.lucky.wasted.R
 import me.lucky.wasted.databinding.FragmentLockBinding
 

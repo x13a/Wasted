@@ -1,4 +1,6 @@
 package me.lucky.wasted.trigger.shared
+import me.lucky.wasted.Preferences
+
 
 import android.content.Context
 import androidx.core.app.NotificationChannelCompat
