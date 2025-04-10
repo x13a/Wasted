@@ -1,9 +1,12 @@
 package me.lucky.wasted
 
+import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
@@ -33,6 +36,8 @@ open class MainActivity : AppCompatActivity() {
         prefs.copyTo(prefsdb, key)
     }
 
+    private val NOTIFICATION_PERMISSION_REQUEST = 100
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -40,11 +45,34 @@ open class MainActivity : AppCompatActivity() {
 
         init1()
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                NOTIFICATION_PERMISSION_REQUEST
+            )
+        }
+
+        // Correction : on ne fait return que si le prompt est effectivement lancé
         if (initBiometric()) return
 
         init2()
         setup()
         promptEnableNotificationService()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission notifications accordée ✅", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Permission notifications refusée ❌", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun init1() {
@@ -62,9 +90,9 @@ open class MainActivity : AppCompatActivity() {
         val authenticators = BiometricManager.Authenticators.BIOMETRIC_STRONG or
                 BiometricManager.Authenticators.DEVICE_CREDENTIAL
 
-        when (BiometricManager.from(this).canAuthenticate(authenticators)) {
-            BiometricManager.BIOMETRIC_SUCCESS -> {}
-            else -> return false
+        val canAuth = BiometricManager.from(this).canAuthenticate(authenticators)
+        if (canAuth != BiometricManager.BIOMETRIC_SUCCESS) {
+            return false
         }
 
         val executor = ContextCompat.getMainExecutor(this)
@@ -74,13 +102,18 @@ open class MainActivity : AppCompatActivity() {
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
-                    finishAndRemoveTask()
+                    Toast.makeText(this@MainActivity, "Erreur d'authentification : $errString", Toast.LENGTH_SHORT).show()
+                    // On continue normalement après l’échec
+                    init2()
+                    setup()
+                    promptEnableNotificationService()
                 }
 
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
                     init2()
                     setup()
+                    promptEnableNotificationService()
                 }
             }
         )
