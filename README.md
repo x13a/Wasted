@@ -24,7 +24,7 @@ Lock a device and wipe its data on emergency.
 You can use [PanicKit](https://guardianproject.info/code/panickit/), tile, shortcut or send a 
 message with a secret code. On trigger, using 
 [Device Administration API](https://developer.android.com/guide/topics/admin/device-admin), it 
-locks a device and optionally runs wipe (factory reset). Also it can send a broadcast message 
+locks a device and optionally runs wipe (factory reset). Or it can send a broadcast message 
 instead of the wipe.
 
 Also you can:
@@ -38,6 +38,8 @@ The app works in `Work Profile` too, but with limitations. Use it to install ris
 
 For base security take a look at: [Sentry](https://github.com/x13a/Sentry).  
 Only encrypted device may guarantee that the data will not be recoverable.
+
+Be aware that the app does not work in _safe mode_.
 
 ## Broadcast
 

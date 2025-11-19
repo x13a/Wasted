@@ -1,5 +1,5 @@
 You can use PanicKit, tile, shortcut or send a message with a secret code. On trigger, using
-Device Administration API, it locks a device and optionally runs wipe (factory reset). Also it can
+Device Administration API, it locks a device and optionally runs wipe (factory reset). Or it can
 send a broadcast message instead of the wipe.
 
 Also you can:
@@ -13,6 +13,8 @@ Wasted in it. Then you can wipe this profile data with one click without wiping 
 
 For base security take a look at: [Sentry](https://github.com/x13a/Sentry).
 Only encrypted device may guarantee that the data will not be recoverable.
+
+Be aware that the app does not work in safe mode.
 
 Broadcast:
 * action: me.lucky.wasted.action.TRIGGER
