@@ -1,12 +1,12 @@
 package me.lucky.wasted.trigger.lock
+import me.lucky.wasted.Preferences
+
 
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.content.ComponentName
 import android.content.Context
 import java.util.concurrent.TimeUnit
-
-import me.lucky.wasted.Preferences
 
 class LockJobManager(private val ctx: Context) {
     companion object {

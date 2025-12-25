@@ -1,4 +1,6 @@
 package me.lucky.wasted
+import me.lucky.wasted.Preferences
+
 
 import org.junit.Test
 

@@ -1,0 +1,96 @@
+package me.lucky.wasted.trigger.voice
+
+import android.app.Service
+import android.content.Intent
+import android.os.Bundle
+import android.os.IBinder
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
+import android.util.Log
+import me.lucky.wasted.Trigger
+import me.lucky.wasted.Utils
+import me.lucky.wasted.Preferences
+import java.util.*
+
+class VoiceTriggerService : Service() {
+
+    private lateinit var recognizer: SpeechRecognizer
+    private lateinit var prefs: Preferences
+    private lateinit var utils: Utils
+
+    override fun onCreate() {
+        super.onCreate()
+
+        prefs = Preferences.new(this)
+        utils = Utils(this)
+
+        recognizer = SpeechRecognizer.createSpeechRecognizer(this)
+        recognizer.setRecognitionListener(object : RecognitionListener {
+            override fun onReadyForSpeech(params: Bundle?) {
+                Log.d("VoiceTrigger", "Ready for speech")
+            }
+
+            override fun onBeginningOfSpeech() {}
+
+            override fun onRmsChanged(rmsdB: Float) {}
+
+            override fun onBufferReceived(buffer: ByteArray?) {}
+
+            override fun onEndOfSpeech() {
+                Log.d("VoiceTrigger", "End of speech")
+            }
+
+            override fun onError(error: Int) {
+                Log.e("VoiceTrigger", "Error: $error — relaunching listener")
+                restartListening()
+            }
+
+            override fun onResults(results: Bundle) {
+                val matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                Log.d("VoiceTrigger", "Results: $matches")
+                val keyword = prefs.secret.trim().lowercase(Locale.getDefault())
+
+                matches?.forEach { match ->
+                    if (match.trim().lowercase(Locale.getDefault()) == keyword) {
+                        Log.d("VoiceTrigger", "Keyword matched! Triggering...")
+                        utils.fire(Trigger.NOTIFICATION)
+                        stopSelf()
+                        return
+                    }
+                }
+
+                restartListening()
+            }
+
+            override fun onPartialResults(partialResults: Bundle?) {}
+
+            override fun onEvent(eventType: Int, params: Bundle?) {}
+        })
+
+        startListening()
+    }
+
+    private fun startListening() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
+            putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, packageName)
+        }
+        recognizer.startListening(intent)
+    }
+
+    private fun restartListening() {
+        recognizer.cancel()
+        startListening()
+    }
+
+    override fun onDestroy() {
+        recognizer.destroy()
+        super.onDestroy()
+    }
+
+    override fun onBind(intent: Intent?): IBinder? = null
+}

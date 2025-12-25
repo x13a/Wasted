@@ -7,8 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-
 import me.lucky.wasted.Preferences
+
+
 import me.lucky.wasted.databinding.FragmentTileBinding
 
 class TileFragment : Fragment() {

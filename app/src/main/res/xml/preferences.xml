@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:key="notification_keyword"
+        android:title="Mot-clé de notification"
+        android:summary="Mot ou code secret pour déclencher l'action depuis une notification"
+        android:dialogTitle="Entrez le mot-clé"
+        android:inputType="text"
+        android:defaultValue="" />
+
+</PreferenceScreen>

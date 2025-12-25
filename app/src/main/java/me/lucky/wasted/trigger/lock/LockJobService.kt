@@ -1,4 +1,6 @@
 package me.lucky.wasted.trigger.lock
+import me.lucky.wasted.Preferences
+
 
 import android.app.job.JobParameters
 import android.app.job.JobService

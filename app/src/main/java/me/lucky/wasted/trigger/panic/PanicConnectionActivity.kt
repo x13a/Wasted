@@ -1,4 +1,6 @@
 package me.lucky.wasted.trigger.panic
+import me.lucky.wasted.Preferences
+
 
 import android.content.pm.PackageManager
 import android.os.Bundle

@@ -1,0 +1,33 @@
+.
+├── LICENSE
+├── PRIVACY.md
+├── README.md
+├── app
+│   ├── build.gradle
+│   ├── local.properties
+│   ├── proguard-rules.pro
+│   └── src
+│       ├── androidTest
+│       ├── main
+│       └── test
+├── build.gradle
+├── data
+│   └── icon.svg
+├── fastlane
+│   └── metadata
+│       └── android
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradle.properties
+├── gradlew
+├── gradlew.bat
+├── hs_err_pid4234.log
+├── local.properties
+├── main
+├── project-structure.txt
+├── settings.gradle
+└── src
+
+12 directories, 19 files

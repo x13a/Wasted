@@ -1,4 +1,6 @@
 package me.lucky.wasted.fragment
+import me.lucky.wasted.Preferences
+
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -9,7 +11,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
 import me.lucky.wasted.ApplicationOption
-import me.lucky.wasted.Preferences
 import me.lucky.wasted.Utils
 import me.lucky.wasted.databinding.FragmentApplicationBinding
 

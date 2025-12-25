@@ -9,10 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <Switch
+                android:id="@+id/adminPermission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Droits administrateur"
+                android:checked="false" />
+
 
             <CheckBox
                 android:id="@+id/panicKit"

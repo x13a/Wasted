@@ -26,12 +26,17 @@
         <item
             android:id="@+id/nav_trigger_application"
             android:title="@string/trigger_application" />
-
     </group>
 
     <item
         android:id="@+id/nav_recast"
         android:title="@string/recast"
         android:checkable="true" />
+
+    <!-- Élément pour accéder à la commande vocale -->
+    <item
+        android:id="@+id/nav_voice_trigger"
+        android:icon="@drawable/ic_mic_none"
+        android:title="Commande vocale" />
 
 </menu>
