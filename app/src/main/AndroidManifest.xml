@@ -161,8 +161,7 @@
             android:name=".trigger.application.ApplicationActivity"
             android:taskAffinity=".trigger.application"
             android:noHistory="true"
-            android:theme="@android:style/Theme.NoDisplay"
-            android:enabled="false"
+            android:theme="@style/Base.Theme.AppCompat"
             android:exported="false">
         </activity>
 
@@ -181,7 +180,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        
+
         <activity-alias
             android:name=".trigger.application.TelegramActivity"
             android:targetActivity=".trigger.application.ApplicationActivity"
