@@ -51,4 +51,18 @@
     <string name="receiver">receiver</string>
     <string name="extra_key">extra key</string>
     <string name="extra_value">extra value</string>
+
+    <!-- Protection level indicator -->
+    <string name="protection_level_header">Protection Level</string>
+    <string name="protection_tier_1">🔒 Full — Factory reset on trigger</string>
+    <string name="protection_tier_2">⚡ Strong — App data cleared + TRIM on trigger</string>
+    <string name="protection_tier_3">📁 Partial — Photos and files deleted on trigger</string>
+    <string name="protection_tier_4">⚠️ Minimal — Only Wasted data cleared</string>
+
+    <!-- Setup card -->
+    <string name="setup_card_header">Enhance Protection</string>
+    <string name="files_access_hint">Also: grant All Files Access for file deletion on wipe</string>
+    <string name="files_access_action">Grant Files Access</string>
+    <string name="proceed">Proceed</string>
+    <string name="cancel">Cancel</string>
 </resources>

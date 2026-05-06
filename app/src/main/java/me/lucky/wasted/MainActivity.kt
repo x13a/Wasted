@@ -1,9 +1,12 @@
 package me.lucky.wasted
 
+import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
@@ -17,6 +20,7 @@ import com.google.android.material.textfield.TextInputLayout
 
 import me.lucky.wasted.databinding.ActivityMainBinding
 import me.lucky.wasted.fragment.*
+import me.lucky.wasted.p2p.P2PNetworkFragment
 import me.lucky.wasted.trigger.shared.NotificationManager
 
 open class MainActivity : AppCompatActivity() {
@@ -29,6 +33,16 @@ open class MainActivity : AppCompatActivity() {
         prefs.copyTo(prefsdb, key)
     }
 
+    private val requestNotificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            android.util.Log.d("PostNotifications", "POST_NOTIFICATIONS permission granted")
+        } else {
+            android.util.Log.d("PostNotifications", "POST_NOTIFICATIONS permission denied")
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -36,6 +50,7 @@ open class MainActivity : AppCompatActivity() {
         init1()
         if (initBiometric()) return
         init2()
+        requestNotificationPermissionIfNeeded()
         setup()
     }
 
@@ -43,6 +58,19 @@ open class MainActivity : AppCompatActivity() {
         prefs = Preferences(this)
         prefsdb = Preferences(this, encrypted = false)
         prefs.copyTo(prefsdb)
+    }
+
+    private fun requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val permission = Manifest.permission.POST_NOTIFICATIONS
+            val permissionStatus = ContextCompat.checkSelfPermission(this, permission)
+            if (permissionStatus != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                android.util.Log.d("PostNotifications", "Requesting POST_NOTIFICATIONS permission")
+                requestNotificationPermissionLauncher.launch(permission)
+            } else {
+                android.util.Log.d("PostNotifications", "POST_NOTIFICATIONS permission already granted")
+            }
+        }
     }
 
     private fun init2() {
@@ -74,6 +102,7 @@ open class MainActivity : AppCompatActivity() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 super.onAuthenticationSucceeded(result)
                 init2()
+                requestNotificationPermissionIfNeeded()
                 setup()
             }
         })
@@ -145,6 +174,7 @@ open class MainActivity : AppCompatActivity() {
         R.id.nav_trigger_lock -> LockFragment()
         R.id.nav_trigger_application -> ApplicationFragment()
         R.id.nav_recast -> RecastFragment()
+        R.id.nav_p2p -> P2PNetworkFragment()
         else -> MainFragment()
     }
 

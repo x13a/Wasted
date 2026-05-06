@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ServiceInfo
+import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 
@@ -14,6 +16,7 @@ import me.lucky.wasted.Preferences
 import me.lucky.wasted.R
 import me.lucky.wasted.Trigger
 import me.lucky.wasted.Utils
+import me.lucky.wasted.p2p.P2PController
 import me.lucky.wasted.trigger.lock.LockJobManager
 
 class ForegroundService : Service() {
@@ -25,6 +28,7 @@ class ForegroundService : Service() {
     private lateinit var prefs: Preferences
     private lateinit var lockReceiver: LockReceiver
     private val usbReceiver = UsbReceiver()
+    private var p2pStarted = false
 
     override fun onCreate() {
         super.onCreate()
@@ -38,6 +42,11 @@ class ForegroundService : Service() {
 
     private fun init() {
         prefs = Preferences.new(this)
+        // Start P2P network if the user has enabled it — keeps P2P alive regardless of app foreground state
+        if (prefs.p2pEnabled) {
+            P2PController.getInstance(this).start()
+            p2pStarted = true
+        }
         lockReceiver = LockReceiver(getSystemService(KeyguardManager::class.java).isDeviceLocked)
         val triggers = prefs.triggers
         if (triggers.and(Trigger.LOCK.value) != 0)
@@ -50,6 +59,11 @@ class ForegroundService : Service() {
     }
 
     private fun deinit() {
+        // Stop P2P network cleanly when service is destroyed
+        if (p2pStarted) {
+            P2PController.instanceOrNull()?.stop()
+            p2pStarted = false
+        }
         val unregister: (BroadcastReceiver) -> Unit = {
             try { unregisterReceiver(it) } catch (exc: IllegalArgumentException) {}
         }
@@ -59,14 +73,20 @@ class ForegroundService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        startForeground(
-            NOTIFICATION_ID,
-            NotificationCompat.Builder(this, NotificationManager.CHANNEL_DEFAULT_ID)
+        val notification = NotificationCompat.Builder(this, NotificationManager.CHANNEL_DEFAULT_ID)
                 .setContentTitle(getString(R.string.foreground_service_notification_title))
                 .setSmallIcon(android.R.drawable.ic_delete)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .build()
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(
+                NOTIFICATION_ID,
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE
+            )
+        } else {
+            startForeground(NOTIFICATION_ID, notification)
+        }
         return START_STICKY
     }
 

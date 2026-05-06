@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="me.lucky.wasted">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+        Override Shizuku library minSdk declaration (24) — Shizuku itself supports API 23+.
+        We guard all Shizuku calls at runtime with Build.VERSION.SDK_INT checks anyway.
+    -->
+    <uses-sdk tools:overrideLibrary="rikka.shizuku.api,rikka.shizuku.provider" />
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.software.device_admin" android:required="true" />
     <uses-feature android:name="android.hardware.usb.host" android:required="false" />
     <uses-feature android:name="android.hardware.usb.accessory" android:required="false" />
+
+    <!-- Allow Wasted to query/detect if Shizuku is installed -->
+    <queries>
+        <package android:name="moe.shizuku.privileged.api" />
+    </queries>
 
     <application
         android:allowBackup="false"
@@ -31,6 +49,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".p2p.PortraitCaptureActivity"
+            android:screenOrientation="portrait"
+            android:stateNotNeeded="true"
+            android:theme="@style/zxing_CaptureTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
         <receiver
             android:name=".admin.DeviceAdminReceiver"
             android:permission="android.permission.BIND_DEVICE_ADMIN"
@@ -39,8 +64,29 @@
                 android:resource="@xml/device_admin" />
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.PROFILE_PROVISIONING_COMPLETE" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".admin.AdminProvisioningActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.app.action.GET_PROVISIONING_MODE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.app.action.ADMIN_POLICY_COMPLIANCE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.app.action.PROVISIONING_SUCCESSFUL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".trigger.panic.PanicConnectionActivity"
@@ -142,7 +188,8 @@
         <service
             android:name=".trigger.shared.ForegroundService"
             android:directBootAware="true"
-            android:exported="false">
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice">
         </service>
 
         <receiver
@@ -229,6 +276,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
+
+        <!--
+            Shizuku ContentProvider — handles the IPC channel between the Shizuku service
+            and the app. Required by the Shizuku library. Must be exported with INTERACT_ACROSS_USERS_FULL.
+        -->
+        <provider
+            android:name="rikka.shizuku.ShizukuProvider"
+            android:authorities="${applicationId}.shizuku"
+            android:multiprocess="false"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
+
+        <!--
+            ShizukuShell UserService — Shizuku loads this class in the ADB shell process.
+            Must be in a separate process (:shizuku) and NOT exported to other apps.
+        -->
+        <service
+            android:name=".shizuku.ShizukuShell"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":shizuku" />
 
     </application>
 </manifest>

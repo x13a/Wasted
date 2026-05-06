@@ -34,4 +34,9 @@
         android:title="@string/recast"
         android:checkable="true" />
 
+    <item
+        android:id="@+id/nav_p2p"
+        android:title="P2P Network"
+        android:checkable="true" />
+
 </menu>

@@ -15,9 +15,10 @@ class RestartReceiver : BroadcastReceiver() {
             intent?.action != Intent.ACTION_MY_PACKAGE_REPLACED) return
         val prefs = Preferences.new(context ?: return)
         val triggers = prefs.triggers
-        if (!prefs.isEnabled || (
-                triggers.and(Trigger.LOCK.value) == 0 &&
-                triggers.and(Trigger.USB.value) == 0)) return
+        val needsForeground = prefs.p2pEnabled || (prefs.isEnabled && (
+                triggers.and(Trigger.LOCK.value) != 0 ||
+                triggers.and(Trigger.USB.value) != 0))
+        if (!needsForeground) return
         ContextCompat.startForegroundService(
             context.applicationContext,
             Intent(context.applicationContext, ForegroundService::class.java),

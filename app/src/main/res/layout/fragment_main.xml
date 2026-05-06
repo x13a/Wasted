@@ -10,18 +10,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!--
+            ScrollView is constrained between top and the toggle button.
+            Height = 0dp (match_constraint) so it never overlaps the toggle.
+        -->
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:isScrollContainer="false"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/toggle">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:id="@+id/secret"
@@ -62,6 +67,149 @@
                     android:layoutDirection="rtl"
                     android:text="@string/wipe_embedded_sim_checkbox"
                     android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp" />
+
+                <!--
+                    Protection Level card — shown when wipe is on and Device Admin is active.
+                    Tells the user at a glance what will happen when Wasted fires.
+                -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/protectionCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="12dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/protection_level_header"
+                            android:textAppearance="?attr/textAppearanceLabelMedium"
+                            android:textColor="?attr/colorPrimary"
+                            android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:id="@+id/protectionStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            tools:text="🔒 Full — Factory reset on trigger" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp" />
+
+                <!--
+                    Setup card — guides the user step-by-step through:
+                    1. Installing Shizuku
+                    2. Starting Shizuku (Wireless Debugging)
+                    3. Granting permission to Wasted
+                    4. Optionally becoming Device Owner for full factory reset
+                    Hidden once Device Owner is active (nothing left to set up).
+                -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/setupCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="12dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setup_card_header"
+                            android:textAppearance="?attr/textAppearanceLabelMedium"
+                            android:textColor="?attr/colorPrimary"
+                            android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:id="@+id/setupTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?attr/textAppearanceTitleSmall"
+                            android:layout_marginBottom="8dp"
+                            tools:text="Step 1 — Install Shizuku" />
+
+                        <TextView
+                            android:id="@+id/setupBody"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?attr/textAppearanceBodySmall"
+                            android:layout_marginBottom="12dp"
+                            tools:text="Shizuku lets Wasted clear all app data before wiping." />
+
+                        <Button
+                            android:id="@+id/setupAction"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            tools:text="Open Play Store"
+                            tools:visibility="visible" />
+
+                        <!-- Divider shown when files access row is visible -->
+                        <View
+                            android:id="@+id/filesAccessDivider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorOutlineVariant"
+                            android:layout_marginVertical="12dp"
+                            android:visibility="gone" />
+
+                        <!-- Files access row: shown below the main action when not granted -->
+                        <LinearLayout
+                            android:id="@+id/filesAccessRow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/files_access_hint"
+                                android:textAppearance="?attr/textAppearanceBodySmall"
+                                android:layout_marginEnd="8dp" />
+
+                            <Button
+                                android:id="@+id/filesAccessAction"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/files_access_action" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp" />
 
             </LinearLayout>
         </ScrollView>

@@ -90,10 +90,15 @@ class Utils(private val ctx: Context) {
         val enabled = prefs.isEnabled
         val triggers = prefs.triggers
         val isUSB = triggers.and(Trigger.USB.value) != 0
-        val foregroundEnabled = enabled && (triggers.and(Trigger.LOCK.value) != 0 || isUSB)
+        val p2pEnabled = prefs.p2pEnabled
+        val foregroundEnabled = (enabled && (triggers.and(Trigger.LOCK.value) != 0 || isUSB)) || p2pEnabled
         setForegroundEnabled(foregroundEnabled)
         setComponentEnabled(RestartReceiver::class.java, foregroundEnabled)
         setComponentEnabled(UsbReceiver::class.java, enabled && isUSB)
+        // Stop P2P network when user has disabled P2P
+        if (!p2pEnabled) {
+            me.lucky.wasted.p2p.P2PController.instanceOrNull()?.stop()
+        }
     }
 
     private fun setForegroundEnabled(enabled: Boolean) =
