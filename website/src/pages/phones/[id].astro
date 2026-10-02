@@ -1,0 +1,296 @@
+---
+import Base from '../../layouts/Base.astro';
+import PhoneRender from '../../components/visuals/PhoneRender.astro';
+import Icon from '../../components/ui/Icon.astro';
+import ChannelButton from '../../components/ui/ChannelButton.astro';
+import HowToGet from '../../components/sections/HowToGet.astro';
+import ContactBand from '../../components/sections/ContactBand.astro';
+import { phones, phoneIncludes, type PhoneModel } from '../../data/phones';
+import { kits } from '../../data/kits';
+import { securityFeatures } from '../../data/features';
+import { eur } from '../../lib/format';
+
+export function getStaticPaths() {
+  return phones.map((phone) => ({ params: { id: phone.id }, props: { phone } }));
+}
+
+interface Props {
+  phone: PhoneModel;
+}
+const { phone } = Astro.props;
+const kit = kits.find((k) => k.phoneId === phone.id);
+const others = phones.filter((p) => p.id !== phone.id);
+---
+
+<Base title={phone.name} description={`${phone.name} — ${phone.tagline} Secure GrapheneOS smartphone configured by SPEX. ${eur(phone.price)}.`}>
+  <section class="page-hero">
+    <div class="backdrop-grid"></div>
+    <div class="wrap page-hero__grid">
+      <div class="page-hero__copy">
+        <a href="/phones" class="crumb" data-reveal>← All SPEX Phones</a>
+        {phone.badge && <span class="pill pill--blue" data-reveal>{phone.badge}</span>}
+        <h1 class="display gradient-text" data-reveal data-reveal-delay="1">{phone.name}</h1>
+        <p class="model__tagline" data-reveal data-reveal-delay="1">{phone.tagline}</p>
+        <p class="lead" data-reveal data-reveal-delay="2">{phone.description}</p>
+        <p class="model__price" data-reveal data-reveal-delay="2">{eur(phone.price)}</p>
+        <div class="btn-row" data-reveal data-reveal-delay="3">
+          <a href="/contact" class="btn btn--primary">Contact SPEX <Icon name="arrow" /></a>
+          <ChannelButton channel="signal" text="Ask on Signal" />
+        </div>
+        <ul class="model__includes" data-reveal data-reveal-delay="4">
+          {phoneIncludes.map((i) => <li><Icon name="check" />{i}</li>)}
+        </ul>
+      </div>
+      <div class="model__visual" aria-hidden="true" data-reveal data-reveal-delay="2">
+        <div class="model__glow"></div>
+        {
+          phone.image ? (
+            <img src={phone.image} srcset={phone.imageSrcset} alt="" class="model__img" width="600" height="600" decoding="async" />
+          ) : (
+            <>
+              <div class="model__back"><PhoneRender view="back" finish={phone.finish} label={phone.name} /></div>
+              <div class="model__front"><PhoneRender view="front" finish={phone.finish} label={phone.name} /></div>
+            </>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="configured-title">
+    <div class="wrap">
+      <div class="heading" data-reveal>
+        <span class="eyebrow">Configured by SPEX</span>
+        <h2 id="configured-title" class="h2 gradient-text">What your {phone.name} can be set up with.</h2>
+        <p class="lead">Your configuration is discussed personally before delivery. Availability of individual features depends on the model and setup.</p>
+      </div>
+      <ul class="cfg">
+        {
+          securityFeatures.map((f, i) => (
+            <li class="cfg__item" data-reveal data-reveal-delay={String((i % 4) + 1)}>
+              <Icon name={f.icon} />
+              <span>{f.title}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <a href="/phones#security" class="link-arrow cfg__more">How each feature works <Icon name="arrow" /></a>
+    </div>
+  </section>
+
+  {
+    kit && (
+      <section class="section section--tight">
+        <div class="wrap">
+          <a href="/kits" class="kit-offer" data-reveal>
+            <div>
+              <span class="eyebrow">Also available as a kit</span>
+              <h2 class="h2">{kit.name}</h2>
+              <p class="muted">{phone.name} + SPEX Router + SIM + Mullvad VPN + Threema — completely set up.</p>
+            </div>
+            <div class="kit-offer__price">
+              <span>{eur(kit.price)}</span>
+              <span class="link-arrow">
+                Explore Kits <Icon name="arrow" />
+              </span>
+            </div>
+          </a>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section--tight" aria-labelledby="others-title">
+    <div class="wrap">
+      <h2 id="others-title" class="eyebrow others__title">Other SPEX models</h2>
+      <ul class="others">
+        {
+          others.map((p) => (
+            <li>
+              <a href={`/phones/${p.id}`} class="others__item">
+                <span>{p.name}</span>
+                <span class="muted">{eur(p.price)}</span>
+                <Icon name="arrow" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <HowToGet />
+  <ContactBand title={`Interested in the ${phone.name}?`} text="Ask about availability and the configuration you need. Orders are handled personally through an official SPEX channel." />
+</Base>
+
+<style>
+  .crumb {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .crumb:hover {
+    color: var(--white);
+  }
+  .model__tagline {
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    color: var(--electric-soft);
+    font-weight: 500;
+  }
+  .model__price {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--white);
+  }
+  .model__includes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.45rem;
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+  .model__includes li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .model__includes :global(svg) {
+    width: 16px;
+    height: 16px;
+    color: var(--electric-soft);
+  }
+  .model__visual {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    aspect-ratio: 1 / 1.1;
+    margin-inline: auto;
+  }
+  .model__visual > div,
+  .model__img {
+    position: absolute;
+  }
+  .model__glow {
+    inset: 8%;
+    background: radial-gradient(closest-side, rgba(47, 123, 255, 0.5), transparent);
+    filter: blur(10px);
+  }
+  .model__back {
+    width: 40%;
+    left: 14%;
+    top: 6%;
+    transform: rotate(-8deg);
+    filter: drop-shadow(0 40px 60px rgba(0, 0, 0, 0.85));
+  }
+  .model__front {
+    width: 42%;
+    left: 46%;
+    top: 2%;
+    filter: drop-shadow(0 40px 60px rgba(0, 0, 0, 0.85));
+    animation: float 9s ease-in-out infinite;
+  }
+  .model__img {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .cfg {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  }
+  .cfg__item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--white);
+    font-weight: 500;
+  }
+  .cfg__item :global(svg) {
+    width: 22px;
+    height: 22px;
+    color: var(--electric-soft);
+    flex: none;
+  }
+  .cfg__more {
+    margin-top: 1.75rem;
+  }
+  .kit-offer {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+    padding: clamp(1.75rem, 4vw, 3rem);
+    border-radius: var(--radius);
+    border: 1px solid var(--line-blue);
+    background:
+      radial-gradient(60% 100% at 100% 50%, rgba(47, 123, 255, 0.22), transparent 70%),
+      var(--navy-900);
+    transition: box-shadow 0.4s var(--ease);
+  }
+  .kit-offer:hover {
+    box-shadow: var(--glow);
+  }
+  .kit-offer > div:first-child {
+    display: grid;
+    gap: 0.75rem;
+  }
+  @media (min-width: 800px) {
+    .kit-offer {
+      grid-template-columns: 1fr auto;
+    }
+  }
+  .kit-offer__price {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+  }
+  .kit-offer__price > span:first-child {
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--white);
+  }
+  .others__title {
+    margin-bottom: 1.5rem;
+  }
+  .others {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  }
+  .others__item {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    color: var(--white);
+    font-weight: 600;
+    transition: border-color 0.3s var(--ease);
+  }
+  .others__item:hover {
+    border-color: var(--line-blue);
+  }
+  .others__item :global(svg) {
+    width: 16px;
+    height: 16px;
+    color: var(--electric-soft);
+  }
+</style>

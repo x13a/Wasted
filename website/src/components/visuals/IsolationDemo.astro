@@ -1,0 +1,151 @@
+---
+/** SMARTPHONE → BAG → SIGNAL ISOLATION */
+import PhoneRender from './PhoneRender.astro';
+import BagRender from './BagRender.astro';
+import Icon from '../ui/Icon.astro';
+---
+
+<figure class="iso" aria-label="Smartphone placed in the bag, isolated from wireless signals">
+  <ol class="iso__steps">
+    <li class="iso__step" data-reveal>
+      <div class="iso__art iso__art--phone">
+        <span class="iso__waves" aria-hidden="true"><i></i><i></i><i></i></span>
+        <PhoneRender view="front" finish="obsidian" />
+      </div>
+      <span class="iso__label">Smartphone</span>
+      <span class="iso__hint">Signals in and out</span>
+    </li>
+    <li class="iso__arrow" aria-hidden="true"><Icon name="arrow" /></li>
+    <li class="iso__step" data-reveal data-reveal-delay="1">
+      <div class="iso__art iso__art--bag"><BagRender /></div>
+      <span class="iso__label">Bag</span>
+      <span class="iso__hint">Closed completely</span>
+    </li>
+    <li class="iso__arrow" aria-hidden="true"><Icon name="arrow" /></li>
+    <li class="iso__step" data-reveal data-reveal-delay="2">
+      <div class="iso__art iso__art--quiet">
+        <span class="iso__shield"><Icon name="signal-off" /></span>
+      </div>
+      <span class="iso__label">Signal isolation</span>
+      <span class="iso__hint">Wireless signals attenuated</span>
+    </li>
+  </ol>
+</figure>
+
+<style>
+  .iso {
+    margin: 0;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border-radius: calc(var(--radius) + 6px);
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(50% 80% at 50% 50%, rgba(47, 123, 255, 0.14), transparent 70%),
+      linear-gradient(180deg, #060c1b, #020308);
+  }
+  .iso__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    justify-items: center;
+    align-items: center;
+  }
+  @media (min-width: 800px) {
+    .iso__steps {
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+    }
+  }
+  .iso__step {
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+    text-align: center;
+  }
+  .iso__art {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 220px;
+    width: 200px;
+  }
+  .iso__art :global(svg) {
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.8));
+  }
+  .iso__art--phone > :global(svg) {
+    width: 92px;
+  }
+  .iso__art--bag :global(svg) {
+    width: 140px;
+  }
+  .iso__waves {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+  .iso__waves i {
+    position: absolute;
+    width: 120px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1.5px solid rgba(106, 166, 255, 0.5);
+    animation: iso-ripple 3.6s ease-out infinite;
+    opacity: 0;
+  }
+  .iso__waves i:nth-child(2) {
+    animation-delay: 1.2s;
+  }
+  .iso__waves i:nth-child(3) {
+    animation-delay: 2.4s;
+  }
+  @keyframes iso-ripple {
+    0% {
+      transform: scale(0.7);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
+  .iso__shield {
+    display: grid;
+    place-items: center;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.04), transparent 70%);
+    color: var(--muted);
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
+  }
+  .iso__shield :global(svg) {
+    width: 48px;
+    height: 48px;
+    filter: none;
+  }
+  .iso__label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .iso__hint {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .iso__arrow {
+    color: var(--electric-soft);
+  }
+  .iso__arrow :global(svg) {
+    width: 28px;
+    height: 28px;
+  }
+  @media (max-width: 799px) {
+    .iso__arrow :global(svg) {
+      transform: rotate(90deg);
+    }
+  }
+</style>

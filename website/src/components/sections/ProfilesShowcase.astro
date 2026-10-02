@@ -1,0 +1,372 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../ui/Icon.astro';
+import { profiles } from '../../data/features';
+---
+
+<section class="section section--navy profiles" id="profiles" aria-labelledby="profiles-title">
+  <div class="wrap">
+    <SectionHeading
+      id="profiles-title"
+      eyebrow="Multiple user profiles"
+      title={'Your phone.\nYour environments.'}
+      lead="One device, several separate spaces. Each profile has its own apps, files and accounts — kept apart from the others, like having more than one phone in your pocket."
+    />
+
+    <div class="profiles__layout" data-profiles>
+      <div class="profiles__stage" aria-hidden="true">
+        <div class="profiles__halo"></div>
+        {
+          profiles.map((p, i) => (
+            <div class={`layer layer--${p.tone}`} data-layer={p.id} data-pos={String(i)}>
+              <div class="layer__screen">
+                <div class="layer__status">
+                  <span>12:00</span>
+                  <span class="layer__dots">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                </div>
+                <div class="layer__profile">
+                  <span class="layer__avatar">{p.name.charAt(0)}</span>
+                  <span>
+                    <strong>{p.name}</strong>
+                    <small>Profile {i + 1}</small>
+                  </span>
+                </div>
+                <div class="layer__apps">
+                  {p.apps.map((a) => (
+                    <span class="app">
+                      <span class="app__icon">{a.charAt(0)}</span>
+                      <span class="app__label">{a}</span>
+                    </span>
+                  ))}
+                </div>
+                <div class="layer__foot">
+                  <span>Separate apps</span>
+                  <span>Separate data</span>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="profiles__list" role="group" aria-label="Choose a profile">
+        {
+          profiles.map((p, i) => (
+            <button
+              type="button"
+              class={`ptab ptab--${p.tone}`}
+              data-tab={p.id}
+              aria-pressed={i === 0 ? 'true' : 'false'}
+            >
+              <span class="ptab__dot" />
+              <span class="ptab__text">
+                <strong>{p.name}</strong>
+                <span>{p.text}</span>
+              </span>
+              <span class="ptab__num">0{i + 1}</span>
+            </button>
+          ))
+        }
+        <ul class="profiles__facts">
+          <li><Icon name="lock" /> Data stays inside its profile</li>
+          <li><Icon name="profiles" /> Switch between profiles in seconds</li>
+          <li><Icon name="power" /> End a profile session when you are done</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/profiles';
+</script>
+
+<style>
+  .profiles {
+    overflow: hidden;
+  }
+  .profiles__layout {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+  }
+  @media (min-width: 960px) {
+    .profiles__layout {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+  }
+
+  /* ---------- Stacked profile layers ---------- */
+  .profiles__stage {
+    position: relative;
+    width: min(100%, 520px);
+    height: clamp(460px, 62vw, 600px);
+    margin-inline: auto;
+    perspective: 1600px;
+  }
+  .profiles__halo {
+    position: absolute;
+    inset: 5% -5% 5% 15%;
+    background: radial-gradient(closest-side, rgba(47, 123, 255, 0.4), transparent);
+    filter: blur(10px);
+  }
+  .layer {
+    --tone: #2f7bff;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: min(64%, 290px);
+    aspect-ratio: 9 / 18.5;
+    margin-left: calc(min(64%, 290px) / -2);
+    padding: 9px;
+    border-radius: 42px;
+    background: linear-gradient(145deg, #3a4150, #11141b 40%, #05060a);
+    box-shadow:
+      0 40px 80px -20px rgba(0, 0, 0, 0.9),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    transition:
+      transform 0.9s var(--ease),
+      opacity 0.9s var(--ease),
+      filter 0.9s var(--ease);
+  }
+  .layer--blue {
+    --tone: #2f7bff;
+  }
+  .layer--cyan {
+    --tone: #22b8ff;
+  }
+  .layer--indigo {
+    --tone: #6c6cff;
+  }
+  .layer--slate {
+    --tone: #8a97b0;
+  }
+  .layer[data-pos='0'] {
+    z-index: 4;
+    transform: none;
+  }
+  .layer[data-pos='1'] {
+    z-index: 3;
+    transform: translateX(26%) translateY(4%) scale(0.9) rotateY(-14deg);
+    opacity: 0.9;
+    filter: brightness(0.75);
+  }
+  .layer[data-pos='2'] {
+    z-index: 2;
+    transform: translateX(46%) translateY(8%) scale(0.8) rotateY(-20deg);
+    opacity: 0.7;
+    filter: brightness(0.6);
+  }
+  .layer[data-pos='3'] {
+    z-index: 1;
+    transform: translateX(62%) translateY(12%) scale(0.7) rotateY(-24deg);
+    opacity: 0.5;
+    filter: brightness(0.5);
+  }
+  @media (max-width: 520px) {
+    .layer[data-pos='1'] {
+      transform: translateX(18%) translateY(4%) scale(0.9) rotateY(-14deg);
+    }
+    .layer[data-pos='2'] {
+      transform: translateX(32%) translateY(8%) scale(0.8) rotateY(-20deg);
+    }
+    .layer[data-pos='3'] {
+      transform: translateX(44%) translateY(12%) scale(0.7) rotateY(-24deg);
+    }
+  }
+  .layer__screen {
+    position: relative;
+    height: 100%;
+    border-radius: 34px;
+    padding: 1.1rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    overflow: hidden;
+    background:
+      radial-gradient(100% 60% at 80% 0%, color-mix(in srgb, var(--tone) 55%, transparent), transparent 70%),
+      linear-gradient(180deg, #08101f, #010204);
+  }
+  .layer__status {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    padding-inline: 0.4rem;
+  }
+  .layer__dots {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+  }
+  .layer__dots i {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+  }
+  .layer__profile {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.7rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .layer__profile strong {
+    display: block;
+    font-size: 0.95rem;
+    color: #fff;
+    line-height: 1.2;
+  }
+  .layer__profile small {
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0.08em;
+  }
+  .layer__avatar {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--tone);
+    font-weight: 700;
+    color: #fff;
+    box-shadow: 0 0 20px color-mix(in srgb, var(--tone) 70%, transparent);
+  }
+  .layer__apps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.9rem 0.5rem;
+    padding-inline: 0.2rem;
+  }
+  .app {
+    display: grid;
+    justify-items: center;
+    gap: 0.35rem;
+  }
+  .app__icon {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    max-width: 52px;
+    aspect-ratio: 1;
+    border-radius: 16px;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--tone) 75%, #fff 10%), color-mix(in srgb, var(--tone) 35%, #000));
+    font-size: 1rem;
+    font-weight: 650;
+    color: rgba(255, 255, 255, 0.92);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+  .app__label {
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
+  }
+  .layer__foot {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .layer__foot span {
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* ---------- Tabs ---------- */
+  .profiles__list {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .ptab {
+    --tone: #2f7bff;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1.1rem 1.25rem;
+    text-align: left;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.02);
+    cursor: pointer;
+    transition:
+      border-color 0.35s var(--ease),
+      background-color 0.35s var(--ease);
+  }
+  .ptab--cyan {
+    --tone: #22b8ff;
+  }
+  .ptab--indigo {
+    --tone: #6c6cff;
+  }
+  .ptab--slate {
+    --tone: #8a97b0;
+  }
+  .ptab:hover {
+    border-color: var(--line-strong);
+  }
+  .ptab[aria-pressed='true'] {
+    border-color: color-mix(in srgb, var(--tone) 55%, transparent);
+    background: color-mix(in srgb, var(--tone) 10%, transparent);
+  }
+  .ptab__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--tone);
+    box-shadow: 0 0 14px var(--tone);
+  }
+  .ptab__text {
+    display: grid;
+    gap: 0.15rem;
+  }
+  .ptab__text strong {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--white);
+  }
+  .ptab__text span {
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  .ptab__num {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--muted-2);
+  }
+  .profiles__facts {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+  .profiles__facts li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .profiles__facts :global(svg) {
+    width: 18px;
+    height: 18px;
+    color: var(--electric-soft);
+  }
+</style>

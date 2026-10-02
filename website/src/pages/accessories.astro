@@ -1,0 +1,144 @@
+---
+import Base from '../layouts/Base.astro';
+import BagRender from '../components/visuals/BagRender.astro';
+import IsolationDemo from '../components/visuals/IsolationDemo.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import QuantityPricing from '../components/ui/QuantityPricing.astro';
+import Icon from '../components/ui/Icon.astro';
+import HowToGet from '../components/sections/HowToGet.astro';
+import ContactBand from '../components/sections/ContactBand.astro';
+import { antiSignalBag as bag } from '../data/accessories';
+import { eur } from '../lib/format';
+
+const single = bag.pricing[0]!.price;
+---
+
+<Base title="Privacy Accessories" description={`${bag.name} — signal blocking and RFID protection for smartphones, electronics and car keys. From ${eur(single)}.`}>
+  <section class="page-hero">
+    <div class="backdrop-grid"></div>
+    <div class="wrap page-hero__grid">
+      <div class="page-hero__copy">
+        <span class="eyebrow" data-reveal>Privacy Accessories</span>
+        <h1 class="display gradient-text" data-reveal data-reveal-delay="1">{bag.name}.</h1>
+        <p class="bag__headline" data-reveal data-reveal-delay="1">{bag.headline}</p>
+        <p class="lead" data-reveal data-reveal-delay="2">{bag.description}</p>
+        <p class="bag__price" data-reveal data-reveal-delay="2">{eur(single)}</p>
+        <div class="btn-row" data-reveal data-reveal-delay="3">
+          <a href="/contact" class="btn btn--primary">Contact SPEX <Icon name="arrow" /></a>
+          <a href="#pricing" class="btn btn--ghost">Quantity pricing</a>
+        </div>
+      </div>
+      <div class="bag-hero" aria-hidden="true" data-reveal data-reveal-delay="2">
+        <div class="bag-hero__glow"></div>
+        <div class="bag-hero__art"><BagRender /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="iso-title">
+    <div class="wrap">
+      <SectionHeading id="iso-title" eyebrow="How it works" title="Put it in. Close it. Isolated." lead="Shielding layers in the bag attenuate wireless signals, so a closed device inside is cut off from most networks." />
+      <IsolationDemo />
+    </div>
+  </section>
+
+  <section class="section section--navy" aria-labelledby="bagfeat-title">
+    <div class="wrap">
+      <SectionHeading id="bagfeat-title" eyebrow="Features" title="Small. Discreet. Effective." />
+      <ul class="bagfeat">
+        {
+          bag.features.map((f, i) => (
+            <li class="bagfeat__item" data-reveal data-reveal-delay={String((i % 3) + 1)}>
+              <span class="icon-tile">
+                <Icon name={f.icon} />
+              </span>
+              <h3 class="bagfeat__title">{f.title}</h3>
+              <p class="muted">{f.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="fine bagfeat__note">{bag.disclaimer}</p>
+    </div>
+  </section>
+
+  <section class="section" id="pricing" aria-labelledby="bagprice-title">
+    <div class="wrap pricing-split">
+      <div data-reveal>
+        <span class="eyebrow">Pricing</span>
+        <h2 id="bagprice-title" class="h2 gradient-text">One for you.<br />More for everyone.</h2>
+        <p class="lead">For your phone, your car keys and your cards — or for the whole team.</p>
+      </div>
+      <div class="card pricing-card" data-reveal data-reveal-delay="1">
+        <QuantityPricing tiers={bag.pricing} unit="bag" label={`${bag.name} quantity pricing`} />
+        <a href="/contact" class="btn btn--primary btn--block">Contact SPEX</a>
+      </div>
+    </div>
+  </section>
+
+  <HowToGet />
+  <ContactBand />
+</Base>
+
+<style>
+  .bag__headline {
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    color: var(--electric-soft);
+    font-weight: 500;
+  }
+  .bag__price {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--white);
+  }
+  .bag-hero {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: 1;
+    margin-inline: auto;
+    display: grid;
+    place-items: center;
+  }
+  .bag-hero__glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(closest-side, rgba(47, 123, 255, 0.35), transparent);
+    filter: blur(12px);
+  }
+  .bag-hero__art {
+    position: relative;
+    width: 56%;
+    filter: drop-shadow(0 40px 60px rgba(0, 0, 0, 0.85));
+    animation: float 10s ease-in-out infinite;
+  }
+  .bagfeat {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  }
+  .bagfeat__item {
+    display: grid;
+    gap: 0.8rem;
+    align-content: start;
+    padding: 1.75rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .bagfeat__title {
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+  }
+  .bagfeat__item p {
+    font-size: 0.93rem;
+  }
+  .bagfeat__note {
+    margin-top: 2rem;
+    max-width: 50rem;
+  }
+</style>

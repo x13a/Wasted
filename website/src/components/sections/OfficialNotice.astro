@@ -1,0 +1,111 @@
+---
+import Icon from '../ui/Icon.astro';
+import { antiImpersonation, primaryChannels } from '../../data/contact';
+
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+---
+
+<aside class:list={['notice', compact && 'notice--compact']} id="official" aria-labelledby="official-title">
+  <div class="notice__icon"><Icon name="warning" /></div>
+  <div class="notice__body">
+    <h2 id="official-title" class="notice__title">{antiImpersonation.title}</h2>
+    <p class="notice__lead">{antiImpersonation.lead} <strong>{antiImpersonation.warning}</strong></p>
+    <p class="notice__detail">{antiImpersonation.detail}</p>
+    {
+      !compact && (
+        <ul class="notice__ids">
+          {primaryChannels.map((c) => (
+            <li>
+              <Icon name={c.id} />
+              <span>{c.name}</span>
+              {c.handle && <code>{c.handle}</code>}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</aside>
+
+<style>
+  .notice {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 196, 92, 0.28);
+    background: linear-gradient(135deg, rgba(255, 186, 70, 0.08), rgba(255, 186, 70, 0.02) 60%), var(--navy-900);
+  }
+  .notice__icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(255, 186, 70, 0.12);
+    color: #ffcf7a;
+  }
+  .notice__icon :global(svg) {
+    width: 24px;
+    height: 24px;
+  }
+  .notice__body {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .notice__title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #ffd894;
+    line-height: 1.4;
+  }
+  .notice__lead {
+    color: var(--text);
+    font-size: 1.05rem;
+  }
+  .notice__lead strong {
+    color: var(--white);
+  }
+  .notice__detail {
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+  .notice__ids {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .notice__ids li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    font-size: 0.82rem;
+  }
+  .notice__ids :global(svg) {
+    width: 16px;
+    height: 16px;
+    color: var(--ice);
+  }
+  .notice__ids code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--white);
+    letter-spacing: 0.04em;
+  }
+  @media (max-width: 520px) {
+    .notice {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

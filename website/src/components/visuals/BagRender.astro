@@ -1,0 +1,38 @@
+---
+import { uid } from '../../lib/uid';
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+const id = uid('bag');
+---
+
+<svg class={className} viewBox="0 0 300 420" role="img" aria-label="SPEX Anti-Signal Bag">
+  <defs>
+    <linearGradient id={`${id}-body`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#262b36"></stop>
+      <stop offset="0.5" stop-color="#11141b"></stop>
+      <stop offset="1" stop-color="#07080b"></stop>
+    </linearGradient>
+    <linearGradient id={`${id}-flap`} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#303644"></stop>
+      <stop offset="1" stop-color="#151922"></stop>
+    </linearGradient>
+    <pattern id={`${id}-weave`} width="8" height="8" patternUnits="userSpaceOnUse">
+      <path d="M0 8L8 0" stroke="#fff" stroke-opacity="0.025"></path>
+    </pattern>
+  </defs>
+  <rect x="20" y="40" width="260" height="370" rx="26" fill={`url(#${id}-body)`} stroke="#fff" stroke-opacity="0.08"></rect>
+  <rect x="20" y="40" width="260" height="370" rx="26" fill={`url(#${id}-weave)`}></rect>
+  <rect x="34" y="54" width="232" height="342" rx="18" fill="none" stroke="#fff" stroke-opacity="0.07" stroke-dasharray="4 5"></rect>
+  <path d="M20 66a26 26 0 0126-26h208a26 26 0 0126 26v104H20z" fill={`url(#${id}-flap)`}></path>
+  <path d="M20 170h260" stroke="#000" stroke-opacity="0.6" stroke-width="2"></path>
+  <path d="M20 172h260" stroke="#fff" stroke-opacity="0.06"></path>
+  <rect x="104" y="140" width="92" height="14" rx="7" fill="#0a0c10" stroke="#fff" stroke-opacity="0.08"></rect>
+  <g transform="translate(130 230)" fill="none" stroke="#6aa6ff" stroke-opacity="0.85" stroke-width="2.2" stroke-linecap="round">
+    <path d="M2 2l36 36"></path>
+    <path d="M12 12.5a10 10 0 000 13.5M28 26a10 10 0 002.4-10"></path>
+    <path d="M6.5 7a18 18 0 000 25M33.5 32a18 18 0 003.5-19"></path>
+  </g>
+  <text x="150" y="350" text-anchor="middle" font-size="14" font-weight="600" letter-spacing="7" fill="#fff" fill-opacity="0.5">SPEX</text>
+</svg>

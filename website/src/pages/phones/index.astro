@@ -1,0 +1,155 @@
+---
+import Base from '../../layouts/Base.astro';
+import PhoneCard from '../../components/ui/PhoneCard.astro';
+import PhoneRender from '../../components/visuals/PhoneRender.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import SecurityShowcase from '../../components/sections/SecurityShowcase.astro';
+import ProfilesShowcase from '../../components/sections/ProfilesShowcase.astro';
+import HowToGet from '../../components/sections/HowToGet.astro';
+import ContactBand from '../../components/sections/ContactBand.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { phones, phoneIncludes } from '../../data/phones';
+import { kits } from '../../data/kits';
+import { eur } from '../../lib/format';
+
+const fromPrice = Math.min(...phones.map((p) => p.price));
+const kitFrom = Math.min(...kits.map((k) => k.price));
+---
+
+<Base title="SPEX Phones" description={`Secure smartphones with GrapheneOS, configured by SPEX and ready to use. Five models from ${eur(fromPrice)}.`}>
+  <section class="page-hero">
+    <div class="backdrop-grid"></div>
+    <div class="wrap page-hero__grid">
+      <div class="page-hero__copy">
+        <span class="eyebrow" data-reveal>SPEX Phones</span>
+        <h1 class="display gradient-text" data-reveal data-reveal-delay="1">Privacy.<br />Configured.</h1>
+        <p class="lead" data-reveal data-reveal-delay="2">Secure smartphones — ready to use. GrapheneOS, privacy-first settings and your profiles, prepared by SPEX before delivery.</p>
+        <ul class="phones-includes" data-reveal data-reveal-delay="2">
+          {phoneIncludes.map((i) => <li><Icon name="check" />{i}</li>)}
+        </ul>
+        <div class="btn-row" data-reveal data-reveal-delay="3">
+          <a href="#models" class="btn btn--primary">Compare models <Icon name="arrow-down" /></a>
+          <a href="/contact" class="btn btn--ghost">Contact SPEX</a>
+        </div>
+        <p class="fine" data-reveal data-reveal-delay="4">Five models from {eur(fromPrice)}.</p>
+      </div>
+      <div class="phones-hero" aria-hidden="true" data-reveal data-reveal-delay="2">
+        <div class="phones-hero__glow"></div>
+        <div class="phones-hero__a"><PhoneRender view="back" finish="titanium" /></div>
+        <div class="phones-hero__b"><PhoneRender view="front" finish="obsidian" /></div>
+        <div class="phones-hero__c"><PhoneRender view="back" finish="midnight" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" id="models" aria-labelledby="models-title">
+    <div class="wrap">
+      <SectionHeading id="models-title" eyebrow="The lineup" title="Choose your SPEX." lead="Every model receives the same SPEX configuration standard. The difference is the hardware generation — and how long you plan to keep it." />
+      <div class="models">
+        {phones.map((p, i) => <PhoneCard phone={p} delay={(i % 3) + 1} />)}
+      </div>
+      <a href="/kits" class="kit-callout" data-reveal>
+        <span class="icon-tile"><Icon name="box" /></span>
+        <span class="kit-callout__text">
+          <strong>Want the complete setup?</strong>
+          <span>Every phone is also available as a SPEX Kit with router, SIM, VPN and Threema — from {eur(kitFrom)}.</span>
+        </span>
+        <span class="link-arrow">Explore Kits <Icon name="arrow" /></span>
+      </a>
+    </div>
+  </section>
+
+  <SecurityShowcase />
+  <ProfilesShowcase />
+  <HowToGet />
+  <ContactBand title="Which SPEX is right for you?" text="Tell us how you use your phone. We will recommend a model and configuration — no checkout, no pressure." />
+</Base>
+
+<style>
+  .phones-includes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+    color: var(--text);
+  }
+  .phones-includes li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .phones-includes :global(svg) {
+    width: 18px;
+    height: 18px;
+    color: var(--electric-soft);
+  }
+  .phones-hero {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    aspect-ratio: 1;
+    margin-inline: auto;
+  }
+  .phones-hero > div {
+    position: absolute;
+  }
+  .phones-hero :global(svg) {
+    filter: drop-shadow(0 40px 60px rgba(0, 0, 0, 0.85));
+  }
+  .phones-hero__glow {
+    inset: 10%;
+    background: radial-gradient(closest-side, rgba(47, 123, 255, 0.5), transparent);
+    filter: blur(10px);
+  }
+  .phones-hero__a {
+    width: 30%;
+    left: 8%;
+    top: 14%;
+    transform: rotate(-10deg);
+    opacity: 0.9;
+  }
+  .phones-hero__b {
+    width: 36%;
+    left: 32%;
+    top: 2%;
+    z-index: 2;
+    animation: float 9s ease-in-out infinite;
+  }
+  .phones-hero__c {
+    width: 30%;
+    right: 6%;
+    top: 14%;
+    transform: rotate(10deg);
+    opacity: 0.9;
+  }
+  .models {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr));
+  }
+  .kit-callout {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem 1.75rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line-blue);
+    background: linear-gradient(90deg, rgba(47, 123, 255, 0.12), transparent);
+  }
+  .kit-callout__text {
+    display: grid;
+    flex: 1;
+    min-width: 220px;
+    gap: 0.2rem;
+  }
+  .kit-callout__text strong {
+    color: var(--white);
+    font-size: 1.1rem;
+  }
+  .kit-callout__text span {
+    color: var(--muted);
+  }
+</style>

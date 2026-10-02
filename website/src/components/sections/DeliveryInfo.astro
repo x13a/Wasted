@@ -1,0 +1,99 @@
+---
+/** Hamburg meetups + shipping rates. Informational only — no calculator. */
+import Icon from '../ui/Icon.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { shippingRates, shippingNotes, meetup, worldwide } from '../../data/shipping';
+import { eur } from '../../lib/format';
+
+interface Props {
+  heading?: boolean;
+}
+const { heading = true } = Astro.props;
+---
+
+<div class="delivery">
+  {heading && <SectionHeading eyebrow="Delivery" title={'Hamburg meetups.\nWorldwide shipping.'} />}
+  <div class="delivery__grid">
+    <article class="card delivery__card" id="meetups" data-reveal>
+      <span class="icon-tile"><Icon name="pin" /></span>
+      <h3 class="h3">{meetup.title}</h3>
+      <p class="muted">{meetup.text}</p>
+    </article>
+    <article class="card delivery__card" id="shipping" data-reveal data-reveal-delay="1">
+      <span class="icon-tile"><Icon name="globe" /></span>
+      <h3 class="h3">{worldwide.title}</h3>
+      <p class="muted">{worldwide.text}</p>
+      <dl class="rates">
+        {
+          shippingRates.map((r) => (
+            <div class="rates__row">
+              <dt>{r.region}</dt>
+              <dd>{eur(r.price)}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <ul class="delivery__notes">
+        {
+          shippingNotes.map((n) => (
+            <li>
+              <Icon name="check" />
+              {n}
+            </li>
+          ))
+        }
+      </ul>
+    </article>
+  </div>
+</div>
+
+<style>
+  .delivery__grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  }
+  .delivery__card {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .rates {
+    margin: 0.5rem 0 0;
+    display: grid;
+  }
+  .rates__row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .rates dt {
+    color: var(--muted);
+  }
+  .rates dd {
+    margin: 0;
+    font-weight: 600;
+    color: var(--white);
+  }
+  .delivery__notes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .delivery__notes li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .delivery__notes :global(svg) {
+    width: 16px;
+    height: 16px;
+    color: var(--electric-soft);
+  }
+</style>

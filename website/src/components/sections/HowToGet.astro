@@ -1,0 +1,74 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import { orderSteps } from '../../data/features';
+---
+
+<section class="section how" aria-labelledby="how-title">
+  <div class="wrap">
+    <SectionHeading
+      id="how-title"
+      eyebrow="No checkout. Direct contact."
+      title="How to get SPEX"
+      lead="SPEX is not sold through a shopping cart. Every order starts with a conversation, so your setup matches what you actually need."
+    />
+    <ol class="how__steps">
+      {
+        orderSteps.map((s, i) => (
+          <li class="how__step" data-reveal data-reveal-delay={String(i + 1)}>
+            <span class="how__num">STEP {s.step}</span>
+            <span class="how__line" aria-hidden="true" />
+            <h3 class="h3">{s.title}</h3>
+            <p class="muted">{s.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="how__cta" data-reveal>
+      <a href="/contact" class="btn btn--primary">
+        Contact SPEX
+      </a>
+      <span class="fine">Signal · Threema · Telegram</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .how__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+    counter-reset: step;
+  }
+  .how__step {
+    position: relative;
+    display: grid;
+    gap: 0.8rem;
+    align-content: start;
+    padding: 1.75rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(47, 123, 255, 0.06), transparent 60%), var(--navy-900);
+  }
+  .how__num {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    color: var(--electric-soft);
+  }
+  .how__line {
+    display: block;
+    height: 1px;
+    background: linear-gradient(90deg, var(--electric), transparent);
+    margin-block: 0.4rem 0.6rem;
+  }
+  .how__cta {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+  }
+</style>

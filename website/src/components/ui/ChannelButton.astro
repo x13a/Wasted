@@ -1,0 +1,26 @@
+---
+/** Button that opens an official contact channel. Links come from data/contact.ts only. */
+import Icon from './Icon.astro';
+import { channels, type ChannelId } from '../../data/contact';
+
+interface Props {
+  channel: ChannelId;
+  variant?: 'primary' | 'ghost';
+  size?: 'sm' | 'md';
+  text?: string;
+  class?: string;
+}
+const { channel, variant = 'ghost', size = 'md', text, class: className } = Astro.props;
+const c = channels[channel];
+---
+
+<a
+  class:list={['btn', `btn--${variant}`, size === 'sm' && 'btn--sm', className]}
+  href={c.url}
+  target="_blank"
+  rel="noopener noreferrer external"
+  referrerpolicy="no-referrer"
+>
+  <Icon name={c.id} />
+  {text ?? c.button}
+</a>

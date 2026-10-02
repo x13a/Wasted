@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Page not found">
+  <section class="page-hero">
+    <div class="wrap nf">
+      <span class="eyebrow">404</span>
+      <h1 class="h1 gradient-text">This page is not here.</h1>
+      <p class="lead">The page may have moved. Explore the SPEX ecosystem or get in touch directly.</p>
+      <div class="btn-row">
+        <a href="/" class="btn btn--primary">Explore SPEX</a>
+        <a href="/contact" class="btn btn--ghost">Contact SPEX</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+    min-height: 50vh;
+    align-content: center;
+  }
+</style>

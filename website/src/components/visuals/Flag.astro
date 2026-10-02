@@ -1,0 +1,75 @@
+---
+/** Simplified flags drawn as SVG so they render identically on every OS. */
+import type { EsimCountry } from '../../data/esim';
+interface Props {
+  code: EsimCountry['code'];
+  class?: string;
+}
+const { code, class: className } = Astro.props;
+---
+
+<svg class={className} viewBox="0 0 30 20" aria-hidden="true" focusable="false">
+  {
+    code === 'de' && (
+      <g>
+        <rect width="30" height="6.67" fill="#000" />
+        <rect y="6.67" width="30" height="6.67" fill="#dd0000" />
+        <rect y="13.33" width="30" height="6.67" fill="#ffce00" />
+      </g>
+    )
+  }
+  {
+    code === 'at' && (
+      <g>
+        <rect width="30" height="20" fill="#ed2939" />
+        <rect y="6.67" width="30" height="6.67" fill="#fff" />
+      </g>
+    )
+  }
+  {
+    code === 'ch' && (
+      <g>
+        <rect width="30" height="20" fill="#da291c" />
+        <rect x="13" y="4" width="4" height="12" fill="#fff" />
+        <rect x="9" y="8" width="12" height="4" fill="#fff" />
+      </g>
+    )
+  }
+  {
+    code === 'se' && (
+      <g>
+        <rect width="30" height="20" fill="#006aa7" />
+        <rect x="9" width="4" height="20" fill="#fecc00" />
+        <rect y="8" width="30" height="4" fill="#fecc00" />
+      </g>
+    )
+  }
+  {
+    code === 'rs' && (
+      <g>
+        <rect width="30" height="6.67" fill="#c6363c" />
+        <rect y="6.67" width="30" height="6.67" fill="#0c4076" />
+        <rect y="13.33" width="30" height="6.67" fill="#fff" />
+        <path d="M7 4.5h5v6.5c0 1.8-1.2 3-2.5 3.5C8.2 14 7 12.8 7 11z" fill="#c6363c" stroke="#edb92e" stroke-width="0.6" />
+      </g>
+    )
+  }
+  {
+    code === 'es' && (
+      <g>
+        <rect width="30" height="20" fill="#aa151b" />
+        <rect y="5" width="30" height="10" fill="#f1bf00" />
+      </g>
+    )
+  }
+  {
+    code === 'tr' && (
+      <g>
+        <rect width="30" height="20" fill="#e30a17" />
+        <circle cx="11" cy="10" r="5" fill="#fff" />
+        <circle cx="12.3" cy="10" r="4" fill="#e30a17" />
+        <polygon points="14.10,10.00 15.66,9.46 15.69,7.81 16.68,9.13 18.26,8.65 17.32,10.00 18.26,11.35 16.68,10.87 15.69,12.19 15.66,10.54" fill="#fff" />
+      </g>
+    )
+  }
+</svg>

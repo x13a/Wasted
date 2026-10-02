@@ -1,0 +1,23 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  center?: boolean;
+  as?: 'h1' | 'h2';
+  size?: 'h1' | 'h2';
+  /** id for the heading element, for aria-labelledby on the parent section. */
+  id?: string;
+}
+const { eyebrow, title, lead, center = false, as: Tag = 'h2', size = 'h2', id } = Astro.props;
+const lines = title.split('\n');
+---
+
+<div class:list={['heading', center && 'heading--center']} data-reveal>
+  {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+  <Tag id={id} class:list={[size, 'gradient-text']}>
+    {lines.map((line, i) => (i < lines.length - 1 ? <>{line}<br /></> : line))}
+  </Tag>
+  {lead && <p class="lead">{lead}</p>}
+  <slot />
+</div>

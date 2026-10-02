@@ -1,0 +1,100 @@
+---
+/** Compact lineup of all phone models (homepage). */
+import SectionHeading from '../ui/SectionHeading.astro';
+import PhoneRender from '../visuals/PhoneRender.astro';
+import Icon from '../ui/Icon.astro';
+import { phones } from '../../data/phones';
+import { eur } from '../../lib/format';
+---
+
+<section class="section lineup" aria-labelledby="lineup-title">
+  <div class="wrap">
+    <SectionHeading id="lineup-title" eyebrow="SPEX Phones" title={'Privacy.\nConfigured.'} lead="Five models. One configuration standard. Compare the lineup and pick the device that fits you.">
+      <div class="btn-row">
+        <a href="/phones" class="btn btn--ghost">Compare all models <Icon name="arrow" /></a>
+      </div>
+    </SectionHeading>
+    <ul class="lineup__row">
+      {
+        phones.map((p, i) => (
+          <li data-reveal data-reveal-delay={String((i % 4) + 1)}>
+            <a href={`/phones/${p.id}`} class="lineup__item">
+              <div class="lineup__device">
+                {p.image ? <img class="lineup__photo" src={p.image} srcset={p.imageSrcset} alt="" width="600" height="600" loading="lazy" decoding="async" /> : <PhoneRender view="back" finish={p.finish} label={p.name} />}
+              </div>
+              <span class="lineup__name">{p.name}</span>
+              <span class="lineup__price">{eur(p.price)}</span>
+              {p.badge && <span class="pill pill--blue">{p.badge}</span>}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .lineup__row {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(150px, 1fr));
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 1rem;
+    scrollbar-width: thin;
+  }
+  .lineup__row > li {
+    scroll-snap-align: start;
+  }
+  .lineup__item {
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+    padding: 2rem 1rem 1.5rem;
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    background: radial-gradient(70% 50% at 50% 30%, rgba(47, 123, 255, 0.16), transparent 70%);
+    transition:
+      border-color 0.4s var(--ease),
+      background-color 0.4s var(--ease);
+  }
+  .lineup__item:hover {
+    border-color: var(--line-blue);
+    background-color: rgba(47, 123, 255, 0.04);
+  }
+  .lineup__device {
+    width: 62%;
+    max-width: 120px;
+    margin-bottom: 1rem;
+    transition: transform 0.6s var(--ease);
+  }
+  .lineup__device :global(svg),
+  .lineup__device img {
+    filter: drop-shadow(0 24px 30px rgba(0, 0, 0, 0.8));
+  }
+  .lineup__photo {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .lineup__device:has(.lineup__photo) {
+    width: 100%;
+    max-width: 200px;
+    margin-block: -1.25rem 0.25rem;
+  }
+  .lineup__item:hover .lineup__device {
+    transform: translateY(-8px);
+  }
+  .lineup__name {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+  .lineup__price {
+    color: var(--muted);
+  }
+</style>

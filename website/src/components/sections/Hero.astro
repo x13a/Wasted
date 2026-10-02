@@ -1,0 +1,121 @@
+---
+import HeroStage from '../visuals/HeroStage.astro';
+import Icon from '../ui/Icon.astro';
+import { brand, trustPoints } from '../../data/site';
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="backdrop-grid"></div>
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <span class="eyebrow" data-reveal>SPEX by SIMPLUGELITE</span>
+      <h1 id="hero-title" class="display hero__title" data-reveal data-reveal-delay="1">
+        <span>{brand.tagline[0]}</span>
+        <span>{brand.tagline[1]}</span>
+        <span class="hero__accent">{brand.tagline[2]}</span>
+      </h1>
+      <p class="hero__subtitle" data-reveal data-reveal-delay="2">{brand.subtitle}</p>
+      <p class="lead" data-reveal data-reveal-delay="2">{brand.heroCopy}</p>
+      <div class="btn-row" data-reveal data-reveal-delay="3">
+        <a href="#ecosystem" class="btn btn--primary">Explore SPEX <Icon name="arrow-down" /></a>
+        <a href="/contact" class="btn btn--ghost">Contact SPEX</a>
+      </div>
+      <ul class="hero__trust" data-reveal data-reveal-delay="4">
+        {
+          trustPoints.map((t) => (
+            <li>
+              <Icon name="check" />
+              {t}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <div class="hero__visual" data-reveal data-reveal-delay="2">
+      <HeroStage />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-top: calc(var(--header-h) + clamp(2rem, 6vw, 4rem));
+    padding-bottom: clamp(3rem, 8vw, 6rem);
+    background:
+      radial-gradient(60% 50% at 75% 35%, rgba(28, 79, 216, 0.25), transparent 70%),
+      radial-gradient(40% 40% at 0% 100%, rgba(15, 42, 102, 0.35), transparent 70%),
+      var(--black);
+  }
+  .hero__grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 3rem);
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .hero {
+      min-height: min(100vh, 980px);
+      display: flex;
+      align-items: center;
+    }
+    .hero__grid {
+      grid-template-columns: 1.2fr 0.8fr;
+    }
+  }
+  .hero__copy {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+  }
+  .hero__title {
+    display: grid;
+    font-size: clamp(2.75rem, 12vw, 6.75rem);
+  }
+  @media (min-width: 1024px) {
+    .hero__title {
+      font-size: min(7.2vw, 6.75rem);
+    }
+  }
+  .hero__title span {
+    display: block;
+    white-space: nowrap;
+  }
+  .hero__accent {
+    background: linear-gradient(90deg, #ffffff 0%, #8fb8ff 45%, #2f7bff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    padding-bottom: 0.06em;
+  }
+  .hero__subtitle {
+    font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: -0.01em;
+  }
+  .hero__trust {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .hero__trust li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .hero__trust :global(svg) {
+    width: 15px;
+    height: 15px;
+    color: var(--electric-soft);
+  }
+</style>

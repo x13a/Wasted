@@ -1,0 +1,179 @@
+---
+import Base from '../layouts/Base.astro';
+import RouterRender from '../components/visuals/RouterRender.astro';
+import RouterFlow from '../components/visuals/RouterFlow.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import QuantityPricing from '../components/ui/QuantityPricing.astro';
+import Icon from '../components/ui/Icon.astro';
+import HowToGet from '../components/sections/HowToGet.astro';
+import ContactBand from '../components/sections/ContactBand.astro';
+import { router } from '../data/router';
+import { eur } from '../lib/format';
+
+const single = router.pricing[0]!;
+---
+
+<Base title="SPEX Router" description={`${router.name} — secure mobile connectivity with Mullvad VPN. Pre-configured, SIM ready, portable. From ${eur(single.price)}.`}>
+  <section class="page-hero">
+    <div class="backdrop-grid"></div>
+    <div class="wrap page-hero__grid">
+      <div class="page-hero__copy">
+        <span class="eyebrow" data-reveal>{router.name}</span>
+        <h1 class="display gradient-text" data-reveal data-reveal-delay="1">Secure mobile<br />connectivity.</h1>
+        <p class="lead" data-reveal data-reveal-delay="2">{router.description}</p>
+        <p class="router__price" data-reveal data-reveal-delay="2">{eur(single.price)} <span>incl. Mullvad VPN — 1 year</span></p>
+        <div class="btn-row" data-reveal data-reveal-delay="3">
+          <a href="/contact" class="btn btn--primary">Contact SPEX <Icon name="arrow" /></a>
+          <a href="#pricing" class="btn btn--ghost">Quantity pricing</a>
+        </div>
+      </div>
+      <div class="router-hero" aria-hidden="true" data-reveal data-reveal-delay="2">
+        <div class="router-hero__glow"></div>
+        <div class="router-hero__waves"><span></span><span></span><span></span></div>
+        <div class="router-hero__device"><RouterRender /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="flow-title">
+    <div class="wrap">
+      <SectionHeading id="flow-title" eyebrow="How it works" title="One tunnel for everything." lead="Insert a SIM. The SPEX Router turns mobile data into private Wi-Fi and sends your devices’ traffic through the configured VPN." />
+      <RouterFlow />
+    </div>
+  </section>
+
+  <section class="section section--navy" aria-labelledby="rfeat-title">
+    <div class="wrap">
+      <SectionHeading id="rfeat-title" eyebrow="Included" title="Ready when you are." />
+      <ul class="rfeat">
+        {
+          router.features.map((f, i) => (
+            <li class="rfeat__item" data-reveal data-reveal-delay={String((i % 4) + 1)}>
+              <span class="icon-tile">
+                <Icon name={f.icon} />
+              </span>
+              <h3 class="rfeat__title">{f.title}</h3>
+              <p class="muted">{f.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="fine rfeat__note">{router.note}</p>
+    </div>
+  </section>
+
+  <section class="section" id="pricing" aria-labelledby="rprice-title">
+    <div class="wrap pricing-split">
+      <div data-reveal>
+        <span class="eyebrow">Pricing</span>
+        <h2 id="rprice-title" class="h2 gradient-text">One router or a fleet.</h2>
+        <p class="lead">Every router is configured individually. Multi-unit pricing for teams, families and travel setups.</p>
+        <p class="fine">Bulk orders available · Hamburg Meetups · Worldwide Shipping</p>
+      </div>
+      <div class="card pricing-card" data-reveal data-reveal-delay="1">
+        <QuantityPricing tiers={router.pricing} unit="router" label="SPEX Router quantity pricing" />
+        <a href="/contact" class="btn btn--primary btn--block">Contact SPEX</a>
+      </div>
+    </div>
+  </section>
+
+  <HowToGet />
+  <ContactBand title="Get connected privately." />
+</Base>
+
+<style>
+  .router__price {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--white);
+  }
+  .router__price span {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .router-hero {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    aspect-ratio: 1 / 0.85;
+    margin-inline: auto;
+    display: grid;
+    place-items: center;
+  }
+  .router-hero__glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(closest-side, rgba(47, 123, 255, 0.45), transparent);
+    filter: blur(12px);
+  }
+  .router-hero__waves {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+  .router-hero__waves span {
+    position: absolute;
+    width: 60%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(106, 166, 255, 0.35);
+    animation: ripple 6s var(--ease) infinite;
+    opacity: 0;
+  }
+  .router-hero__waves span:nth-child(2) {
+    animation-delay: 2s;
+  }
+  .router-hero__waves span:nth-child(3) {
+    animation-delay: 4s;
+  }
+  @keyframes ripple {
+    0% {
+      transform: scale(0.6);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+  .router-hero__device {
+    position: relative;
+    width: 100%;
+    filter: drop-shadow(0 40px 60px rgba(0, 0, 0, 0.85));
+    animation: float 10s ease-in-out infinite;
+  }
+  .rfeat {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  }
+  .rfeat__item {
+    display: grid;
+    gap: 0.8rem;
+    align-content: start;
+    padding: 1.75rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .rfeat__title {
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+  .rfeat__item p {
+    font-size: 0.93rem;
+  }
+  .rfeat__note {
+    margin-top: 2rem;
+    max-width: 50rem;
+  }
+</style>

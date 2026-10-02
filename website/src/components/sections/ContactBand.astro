@@ -1,0 +1,73 @@
+---
+/** Closing call-to-action used at the bottom of product pages. */
+import ChannelButton from '../ui/ChannelButton.astro';
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = 'Talk to SPEX.',
+  text = 'Questions, availability and orders are handled directly — personally, through an official SPEX channel.',
+} = Astro.props;
+---
+
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="band" data-reveal>
+      <div class="band__glow" aria-hidden="true"></div>
+      <div class="band__copy">
+        <span class="eyebrow">Contact SPEX</span>
+        <h2 class="h2">{title}</h2>
+        <p class="lead">{text}</p>
+      </div>
+      <div class="band__actions">
+        <ChannelButton channel="signal" variant="primary" />
+        <ChannelButton channel="threema" />
+        <ChannelButton channel="telegram" />
+        <a href="/contact" class="link-arrow band__all">All official contacts <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .band {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+    padding: clamp(2rem, 5vw, 4rem);
+    border-radius: calc(var(--radius) + 8px);
+    border: 1px solid var(--line-blue);
+    background: linear-gradient(135deg, #0a1734, #040812 70%);
+  }
+  @media (min-width: 900px) {
+    .band {
+      grid-template-columns: 1.3fr 1fr;
+    }
+  }
+  .band__glow {
+    position: absolute;
+    inset: -40% -20% auto auto;
+    width: 70%;
+    aspect-ratio: 1;
+    background: radial-gradient(closest-side, rgba(47, 123, 255, 0.45), transparent);
+    z-index: -1;
+  }
+  .band__copy {
+    display: grid;
+    gap: 1rem;
+  }
+  .band__actions {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .band__all {
+    justify-self: center;
+    margin-top: 0.5rem;
+  }
+</style>

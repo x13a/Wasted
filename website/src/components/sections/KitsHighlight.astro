@@ -1,0 +1,68 @@
+---
+/** Homepage feature for the flagship offering. */
+import KitFormula from '../visuals/KitFormula.astro';
+import Icon from '../ui/Icon.astro';
+import { kits } from '../../data/kits';
+import { brand } from '../../data/site';
+import { eur } from '../../lib/format';
+
+const from = Math.min(...kits.map((k) => k.price));
+---
+
+<section class="section kits-hl" aria-labelledby="kits-hl-title">
+  <div class="kits-hl__glow" aria-hidden="true"></div>
+  <div class="wrap kits-hl__inner">
+    <span class="eyebrow" data-reveal>SPEX Kits — the flagship offering</span>
+    <h2 id="kits-hl-title" class="h1 gradient-text" data-reveal>One setup.<br />One ecosystem.</h2>
+    <p class="lead" data-reveal>Phone, router, SIM, VPN and messenger — configured together by SPEX and delivered as one complete setup.</p>
+    <KitFormula />
+    <div class="kits-hl__foot" data-reveal>
+      <p class="kits-hl__price">Complete kits from <strong>{eur(from)}</strong></p>
+      <div class="btn-row">
+        <a href="/kits" class="btn btn--primary">Explore SPEX Kits <Icon name="arrow" /></a>
+        <a href="/contact" class="btn btn--ghost">Contact SPEX</a>
+      </div>
+      <p class="fine">{brand.configured} {brand.outOfBox}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .kits-hl {
+    overflow: hidden;
+    isolation: isolate;
+    text-align: center;
+    background: linear-gradient(180deg, var(--black), #040a1a 50%, var(--black));
+  }
+  .kits-hl__glow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(1100px, 140vw);
+    aspect-ratio: 2 / 1;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(closest-side, rgba(47, 123, 255, 0.22), transparent);
+    z-index: -1;
+  }
+  .kits-hl__inner {
+    display: grid;
+    justify-items: center;
+    gap: 1.75rem;
+  }
+  .kits-hl__inner .lead {
+    margin-inline: auto;
+  }
+  .kits-hl__foot {
+    display: grid;
+    justify-items: center;
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
+  .kits-hl__price {
+    color: var(--muted);
+  }
+  .kits-hl__price strong {
+    color: var(--white);
+    font-size: 1.3rem;
+  }
+</style>

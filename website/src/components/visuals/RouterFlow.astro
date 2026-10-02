@@ -1,0 +1,177 @@
+---
+/** SIM → SPEX ROUTER → VPN → YOUR DEVICES */
+import Icon from '../ui/Icon.astro';
+import RouterRender from './RouterRender.astro';
+import SimRender from './SimRender.astro';
+---
+
+<figure class="flow" aria-label="How the SPEX Router connects your devices">
+  <ol class="flow__steps">
+    <li class="flow__node" data-reveal>
+      <div class="flow__art flow__art--sim"><SimRender /></div>
+      <span class="flow__label">SIM</span>
+      <span class="flow__hint">Mobile data</span>
+    </li>
+    <li class="flow__link" aria-hidden="true"><span></span></li>
+    <li class="flow__node flow__node--main" data-reveal data-reveal-delay="1">
+      <div class="flow__art flow__art--router"><RouterRender /></div>
+      <span class="flow__label">SPEX Router</span>
+      <span class="flow__hint">Pre-configured</span>
+    </li>
+    <li class="flow__link" aria-hidden="true"><span></span></li>
+    <li class="flow__node" data-reveal data-reveal-delay="2">
+      <div class="flow__badge"><Icon name="shield" /></div>
+      <span class="flow__label">VPN</span>
+      <span class="flow__hint">Encrypted tunnel</span>
+    </li>
+    <li class="flow__link" aria-hidden="true"><span></span></li>
+    <li class="flow__node" data-reveal data-reveal-delay="3">
+      <div class="flow__devices">
+        <span><Icon name="phone" /><small>Phone</small></span>
+        <span><Icon name="laptop" /><small>Laptop</small></span>
+        <span><Icon name="tablet" /><small>Tablet</small></span>
+      </div>
+      <span class="flow__label">Your devices</span>
+      <span class="flow__hint">Connected via Wi-Fi</span>
+    </li>
+  </ol>
+</figure>
+
+<style>
+  .flow {
+    margin: 0;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border-radius: calc(var(--radius) + 6px);
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(50% 80% at 40% 50%, rgba(47, 123, 255, 0.16), transparent 70%),
+      linear-gradient(180deg, #060c1b, #020308);
+  }
+  .flow__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+    justify-items: center;
+  }
+  @media (min-width: 900px) {
+    .flow__steps {
+      grid-template-columns: 1fr 0.5fr 1.4fr 0.5fr 1fr 0.5fr 1.2fr;
+      align-items: center;
+    }
+  }
+  .flow__node {
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+    text-align: center;
+  }
+  .flow__art {
+    display: grid;
+    place-items: center;
+    height: 130px;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.8));
+  }
+  .flow__art--sim :global(svg) {
+    width: 140px;
+    transform: rotate(-8deg);
+  }
+  .flow__art--router :global(svg) {
+    width: 220px;
+  }
+  .flow__badge {
+    display: grid;
+    place-items: center;
+    width: 96px;
+    height: 96px;
+    margin-block: 17px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #4b8dff, #1640b8);
+    box-shadow:
+      0 0 0 10px rgba(47, 123, 255, 0.1),
+      0 0 0 22px rgba(47, 123, 255, 0.05),
+      0 20px 50px -10px rgba(47, 123, 255, 0.9);
+    color: #fff;
+  }
+  .flow__badge :global(svg) {
+    width: 40px;
+    height: 40px;
+  }
+  .flow__devices {
+    display: flex;
+    gap: 0.6rem;
+    height: 130px;
+    align-items: center;
+  }
+  .flow__devices span {
+    display: grid;
+    justify-items: center;
+    gap: 0.35rem;
+    padding: 0.8rem 0.7rem;
+    border-radius: 16px;
+    border: 1px solid var(--line-strong);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--ice);
+  }
+  .flow__devices :global(svg) {
+    width: 28px;
+    height: 28px;
+  }
+  .flow__devices small {
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .flow__label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .flow__hint {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .flow__link {
+    width: 2px;
+    height: 48px;
+    position: relative;
+    overflow: hidden;
+    background: rgba(47, 123, 255, 0.15);
+  }
+  .flow__link span {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent, var(--electric), transparent);
+    animation: flow-y 2.4s linear infinite;
+  }
+  @media (min-width: 900px) {
+    .flow__link {
+      width: 100%;
+      height: 2px;
+    }
+    .flow__link span {
+      background: linear-gradient(90deg, transparent, var(--electric), transparent);
+      animation-name: flow-x;
+    }
+  }
+  @keyframes flow-y {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes flow-x {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+</style>

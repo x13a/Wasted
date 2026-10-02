@@ -1,0 +1,90 @@
+---
+/** PHONE + ROUTER + SIM + VPN + THREEMA + CONFIGURATION */
+import Icon from '../ui/Icon.astro';
+import { kitFormula } from '../../data/kits';
+
+const icons: Record<string, string> = {
+  Phone: 'phone',
+  Router: 'router',
+  SIM: 'sim',
+  VPN: 'vpn',
+  Threema: 'threema',
+  Configuration: 'check',
+};
+---
+
+<ol class="formula" aria-label="What a SPEX Kit combines">
+  {
+    kitFormula.map((part, i) => (
+      <li class="formula__item" data-reveal data-reveal-delay={String((i % 4) + 1)}>
+        {i > 0 && (
+          <span class="formula__plus" aria-hidden="true">
+            +
+          </span>
+        )}
+        <span class="formula__tile">
+          <Icon name={icons[part] ?? 'check'} />
+          <span>{part}</span>
+        </span>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .formula {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .formula__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .formula__plus {
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--electric-soft);
+  }
+  .formula__tile {
+    display: grid;
+    justify-items: center;
+    gap: 0.55rem;
+    min-width: 112px;
+    padding: 1.1rem 1rem;
+    border-radius: 20px;
+    border: 1px solid var(--line-blue);
+    background: linear-gradient(180deg, rgba(47, 123, 255, 0.14), rgba(47, 123, 255, 0.03)), var(--navy-900);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .formula__tile :global(svg) {
+    width: 26px;
+    height: 26px;
+    color: var(--ice);
+  }
+  .formula__item:last-child .formula__tile {
+    background: linear-gradient(160deg, #3b82ff, #1640b8);
+    border-color: transparent;
+    box-shadow: 0 14px 40px -12px rgba(47, 123, 255, 0.9);
+  }
+  .formula__item:last-child .formula__tile :global(svg) {
+    color: #fff;
+  }
+  @media (max-width: 560px) {
+    .formula__tile {
+      min-width: 92px;
+      padding: 0.9rem 0.7rem;
+      font-size: 0.64rem;
+    }
+  }
+</style>

@@ -1,0 +1,37 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { operator, legalPlaceholder } from '../data/legal';
+---
+
+<Legal title="Privacy Policy" description="How SIMPLUGELITE.COM handles personal data: no cookies, no tracking, no forms.">
+  <p>
+    <strong>Short version:</strong> this website does not use cookies, analytics, tracking pixels, advertising networks, contact forms
+    or customer accounts. Fonts and images are served from this website itself — no third-party requests are made while you browse.
+  </p>
+
+  <h2>Controller</h2>
+  <p>
+    {operator.name || <span class="placeholder">{legalPlaceholder}</span>}{operator.city && `, ${operator.city}`}
+    — see the <a href="/imprint">Imprint</a> for contact details.
+  </p>
+
+  <h2>Hosting and server logs</h2>
+  <p>
+    This website is delivered by {operator.host}. When you visit, the hosting provider technically processes your IP address, the
+    requested page, date and time, and browser information, in order to deliver the website and protect it against attacks
+    (Art. 6 (1) (f) GDPR). We do not use these data to identify visitors.
+  </p>
+
+  <h2>Contact via messengers</h2>
+  <p>
+    If you contact us via Signal, Threema, Telegram, Instagram or Viber, the data you send (for example your username and message
+    content) is processed to answer your request and handle any order (Art. 6 (1) (b) GDPR). The privacy policy of the respective
+    messenger provider also applies. Links to these services are only followed when you click them.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>
+    You have the right to access, rectification, erasure, restriction of processing, data portability and objection, as well as the
+    right to lodge a complaint with a data protection supervisory authority.
+  </p>
+</Legal>

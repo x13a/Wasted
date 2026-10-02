@@ -1,0 +1,305 @@
+---
+import Base from '../layouts/Base.astro';
+import KitFormula from '../components/visuals/KitFormula.astro';
+import PhoneRender from '../components/visuals/PhoneRender.astro';
+import RouterRender from '../components/visuals/RouterRender.astro';
+import SimRender from '../components/visuals/SimRender.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import Icon from '../components/ui/Icon.astro';
+import HowToGet from '../components/sections/HowToGet.astro';
+import ContactBand from '../components/sections/ContactBand.astro';
+import { kits, kitIncluded } from '../data/kits';
+import { router } from '../data/router';
+import { brand } from '../data/site';
+import { eur } from '../lib/format';
+
+const kitFrom = Math.min(...kits.map((k) => k.price));
+const routerSingle = router.pricing[0]!.price;
+---
+
+<Base title="SPEX Kits" description={`The complete SPEX setup: smartphone, secure router, SIM, GrapheneOS, Mullvad VPN and Threema — configured by SPEX. From ${eur(kitFrom)}.`}>
+  <section class="page-hero kits-hero">
+    <div class="backdrop-grid"></div>
+    <div class="wrap kits-hero__inner">
+      <span class="eyebrow" data-reveal>SPEX Kits</span>
+      <h1 class="display gradient-text" data-reveal data-reveal-delay="1">The complete<br />SPEX setup.</h1>
+      <p class="lead" data-reveal data-reveal-delay="2">One setup. One ecosystem. A SPEX phone and SPEX Router configured together, with SIM, VPN and Threema prepared before delivery.</p>
+      <div class="kits-stage" aria-hidden="true" data-reveal data-reveal-delay="2">
+        <div class="kits-stage__glow"></div>
+        <div class="kits-stage__router"><RouterRender /></div>
+        <div class="kits-stage__phone"><PhoneRender view="front" finish="midnight" /></div>
+        <div class="kits-stage__phone2"><PhoneRender view="back" finish="titanium" /></div>
+        <div class="kits-stage__sim"><SimRender /></div>
+      </div>
+      <div class="btn-row" data-reveal data-reveal-delay="3">
+        <a href="#kits" class="btn btn--primary">Compare kits <Icon name="arrow-down" /></a>
+        <a href="/contact" class="btn btn--ghost">Contact SPEX</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <KitFormula />
+      <p class="kits-sign" data-reveal>{brand.configured} {brand.outOfBox}</p>
+    </div>
+  </section>
+
+  <section class="section section--navy" id="kits" aria-labelledby="kits-title">
+    <div class="wrap">
+      <SectionHeading id="kits-title" eyebrow="Choose your kit" title="One setup. One ecosystem." lead="Pick the phone that suits you — everything else is included and configured to work together." />
+      <ul class="kits">
+        {
+          kits.map((k, i) => (
+            <li class:list={['kit', k.featured && 'kit--featured']} data-reveal data-reveal-delay={String((i % 3) + 1)}>
+              <div class="kit__visual" aria-hidden="true">
+                <div class:list={['kit__phone', k.phone.image && 'kit__phone--photo']}>
+                  {k.phone.image ? (
+                    <img src={k.phone.image} srcset={k.phone.imageSrcset} alt="" width="600" height="600" loading="lazy" decoding="async" />
+                  ) : (
+                    <PhoneRender view="back" finish={k.phone.finish} label={k.phone.name} />
+                  )}
+                </div>
+                <div class="kit__router">
+                  <RouterRender />
+                </div>
+              </div>
+              {k.featured && <span class="kit__flag">Recommended</span>}
+              <h3 class="kit__name">{k.name}</h3>
+              <p class="kit__price">{eur(k.price)}</p>
+              <p class="fine">
+                {k.phone.name} {eur(k.phone.price)} + SPEX Router {eur(routerSingle)} — combined and configured as one setup.
+              </p>
+              <ul class="kit__list">
+                {kitIncluded.map((inc) => (
+                  <li>
+                    <Icon name="check" />
+                    {inc.title === 'SPEX Smartphone' ? k.phone.name : inc.title}
+                  </li>
+                ))}
+              </ul>
+              <a href="/contact" class:list={['btn', 'btn--block', k.featured ? 'btn--primary' : 'btn--ghost']}>
+                Contact SPEX
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="incl-title">
+    <div class="wrap">
+      <SectionHeading id="incl-title" eyebrow="Included in every kit" title="Everything. Configured." center />
+      <ul class="incl">
+        {
+          kitIncluded.map((inc, i) => (
+            <li class="incl__item" data-reveal data-reveal-delay={String((i % 4) + 1)}>
+              <span class="icon-tile">
+                <Icon name={inc.icon} />
+              </span>
+              <span>{inc.title}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <HowToGet />
+  <ContactBand title="Your complete SPEX setup starts with a message." />
+</Base>
+
+<style>
+  .kits-hero__inner {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  .kits-hero__inner .lead {
+    margin-inline: auto;
+  }
+  .kits-stage {
+    position: relative;
+    width: min(100%, 760px);
+    aspect-ratio: 2 / 1;
+    margin-block: 1rem;
+  }
+  .kits-stage > div {
+    position: absolute;
+    filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.85));
+  }
+  .kits-stage__glow {
+    inset: 0;
+    background: radial-gradient(closest-side, rgba(47, 123, 255, 0.45), transparent);
+    filter: blur(14px) !important;
+  }
+  .kits-stage__router {
+    width: 44%;
+    left: 6%;
+    bottom: 4%;
+  }
+  .kits-stage__phone {
+    width: 20%;
+    left: 44%;
+    top: 0;
+    z-index: 2;
+    animation: float 9s ease-in-out infinite;
+  }
+  .kits-stage__phone2 {
+    width: 18%;
+    left: 60%;
+    top: 6%;
+    transform: rotate(8deg);
+  }
+  .kits-stage__sim {
+    width: 22%;
+    right: 2%;
+    bottom: 6%;
+    transform: rotate(-12deg);
+  }
+  .kits-sign {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--electric-soft);
+  }
+  .kits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  }
+  @media (min-width: 1200px) {
+    .kits {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+    .kit {
+      padding: 1.5rem 1.25rem;
+    }
+    .kit__name {
+      font-size: 1.3rem;
+    }
+    .kit__price {
+      font-size: 1.9rem;
+    }
+  }
+  .kit {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, #0a1328, #03050b);
+  }
+  .kit--featured {
+    border-color: var(--line-blue);
+    box-shadow: var(--glow);
+    background:
+      radial-gradient(80% 50% at 50% 0%, rgba(47, 123, 255, 0.25), transparent 70%),
+      linear-gradient(180deg, #0b1733, #03050b);
+  }
+  .kit > .btn {
+    margin-top: auto;
+  }
+  .kit__flag {
+    align-self: flex-start;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: var(--electric);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .kit__visual {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    max-width: 260px;
+    margin-bottom: 0.5rem;
+  }
+  .kit__visual > div {
+    position: absolute;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.8));
+  }
+  .kit__phone {
+    width: 28%;
+    left: 52%;
+    top: 0;
+    z-index: 2;
+  }
+  .kit__phone--photo {
+    width: 56%;
+    left: 42%;
+    top: -8%;
+  }
+  .kit__phone--photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .kit__router {
+    width: 62%;
+    left: 4%;
+    bottom: 0;
+  }
+  .kit__name {
+    font-size: 1.6rem;
+    letter-spacing: -0.035em;
+  }
+  .kit__price {
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .kit__list {
+    list-style: none;
+    margin: 0.5rem 0 1rem;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+    font-size: 0.92rem;
+    color: var(--text);
+  }
+  .kit__list li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .kit__list :global(svg) {
+    width: 16px;
+    height: 16px;
+    color: var(--electric-soft);
+    flex: none;
+  }
+  .incl {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr));
+  }
+  .incl__item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.02);
+    font-weight: 600;
+    color: var(--white);
+  }
+</style>

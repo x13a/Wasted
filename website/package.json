@@ -1,0 +1,22 @@
+{
+  "name": "simplugelite-website",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "SIMPLUGELITE / SPEX product showcase — static site",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "verify": "astro check && astro build && node scripts/verify-build.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "astro": "^7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,158 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../ui/Icon.astro';
+import PhoneRender from '../visuals/PhoneRender.astro';
+import { securityFeatures } from '../../data/features';
+
+const [hero, ...rest] = securityFeatures;
+---
+
+<section class="section security" id="security" aria-labelledby="security-title">
+  <div class="wrap">
+    <SectionHeading
+      id="security-title"
+      eyebrow="Phone security"
+      title="Built around privacy."
+      lead="Every SPEX phone starts from GrapheneOS and is configured with security workflows chosen for how you actually use your device."
+    />
+
+    <div class="security__grid">
+      <article class="module module--hero" data-reveal>
+        <div class="module--hero__copy">
+          <span class="icon-tile"><Icon name={hero.icon} /></span>
+          <h3 class="module__title module__title--lg">{hero.title}</h3>
+          <p class="muted">{hero.text}</p>
+        </div>
+        <div class="module--hero__visual" aria-hidden="true">
+          <div class="module__halo"></div>
+          <PhoneRender view="front" finish="obsidian" />
+        </div>
+      </article>
+
+      {
+        rest.map((f, i) => (
+          <article class="module" data-reveal data-reveal-delay={String((i % 4) + 1)}>
+            <span class="icon-tile">
+              <Icon name={f.icon} />
+            </span>
+            <h3 class="module__title">{f.title}</h3>
+            <p class="muted">{f.text}</p>
+          </article>
+        ))
+      }
+    </div>
+    <p class="fine security__note">
+      Available features depend on the device model and the selected configuration. Security is a process, not a guarantee — SPEX
+      configures strong defaults and explains them to you personally.
+    </p>
+  </div>
+</section>
+
+<style>
+  .security {
+    background:
+      radial-gradient(50% 40% at 15% 20%, rgba(28, 79, 216, 0.16), transparent 70%),
+      var(--black);
+  }
+  .security__grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  }
+  @media (min-width: 1100px) {
+    .security__grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+    .module {
+      padding: 1.5rem;
+    }
+  }
+  .module {
+    display: grid;
+    gap: 0.85rem;
+    align-content: start;
+    padding: 1.75rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.005)), var(--navy-900);
+    transition:
+      border-color 0.4s var(--ease),
+      transform 0.4s var(--ease);
+  }
+  .module:hover {
+    border-color: var(--line-blue);
+    transform: translateY(-3px);
+  }
+  .module__title {
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+  .module__title--lg {
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.045em;
+  }
+  .module p {
+    font-size: 0.93rem;
+  }
+  .module--hero {
+    grid-column: 1 / -1;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 2rem;
+    padding: clamp(1.75rem, 4vw, 3rem);
+    background:
+      radial-gradient(60% 80% at 85% 50%, rgba(47, 123, 255, 0.25), transparent 70%),
+      linear-gradient(135deg, #0b1733, #03050b 70%);
+    border-color: var(--line-blue);
+  }
+  .module--hero p {
+    font-size: 1.05rem;
+    max-width: 32rem;
+  }
+  .module--hero__copy {
+    display: grid;
+    gap: 1rem;
+  }
+  .module--hero__visual {
+    position: relative;
+    justify-self: center;
+    width: min(46%, 220px);
+  }
+  .module--hero__visual :global(svg) {
+    filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.8));
+  }
+  .module__halo {
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(closest-side, rgba(47, 123, 255, 0.45), transparent);
+    z-index: -1;
+  }
+  @media (min-width: 760px) {
+    .module--hero {
+      grid-template-columns: 1.4fr 1fr;
+    }
+    .module--hero__visual {
+      width: min(70%, 230px);
+      margin-block: -1rem -6rem;
+    }
+  }
+  @media (max-width: 599px) {
+    .module:not(.module--hero) {
+      grid-template-columns: auto 1fr;
+      column-gap: 1rem;
+      row-gap: 0.3rem;
+      padding: 1.25rem;
+    }
+    .module:not(.module--hero) .icon-tile {
+      grid-row: span 2;
+    }
+  }
+  .security__note {
+    margin-top: 2rem;
+    max-width: 48rem;
+  }
+</style>

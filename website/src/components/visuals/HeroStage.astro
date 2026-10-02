@@ -1,0 +1,79 @@
+---
+/** Cinematic product composition: phone + router + SIM under blue light. */
+import PhoneRender from './PhoneRender.astro';
+import RouterRender from './RouterRender.astro';
+import SimRender from './SimRender.astro';
+---
+
+<div class="stage" aria-hidden="true">
+  <div class="stage__light"></div>
+  <div class="stage__ring"></div>
+  <div class="stage__phone-back"><PhoneRender view="back" finish="midnight" /></div>
+  <div class="stage__phone"><PhoneRender view="front" finish="obsidian" /></div>
+  <div class="stage__router"><RouterRender /></div>
+  <div class="stage__sim"><SimRender /></div>
+  <div class="stage__floor"></div>
+</div>
+
+<style>
+  .stage {
+    position: relative;
+    width: 100%;
+    max-width: 620px;
+    aspect-ratio: 1 / 1.02;
+    margin-inline: auto;
+  }
+  .stage > div {
+    position: absolute;
+  }
+  .stage__light {
+    inset: 5% 0 10%;
+    background:
+      radial-gradient(45% 45% at 55% 45%, rgba(47, 123, 255, 0.55), transparent 70%),
+      radial-gradient(30% 30% at 30% 70%, rgba(56, 200, 255, 0.18), transparent 70%);
+    filter: blur(20px);
+    animation: pulse-glow 8s ease-in-out infinite;
+  }
+  .stage__ring {
+    inset: 12% 8% 18%;
+    border-radius: 50%;
+    border: 1px solid rgba(106, 166, 255, 0.18);
+    box-shadow: inset 0 0 80px rgba(47, 123, 255, 0.12);
+  }
+  .stage__phone-back {
+    width: 34%;
+    left: 22%;
+    top: 6%;
+    transform: rotate(-9deg);
+    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.8)) brightness(0.8);
+  }
+  .stage__phone {
+    width: 38%;
+    left: 44%;
+    top: 3%;
+    filter: drop-shadow(0 40px 70px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 40px rgba(47, 123, 255, 0.35));
+    animation: float 9s ease-in-out infinite;
+  }
+  .stage__router {
+    width: 52%;
+    left: 4%;
+    bottom: 10%;
+    filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 30px rgba(47, 123, 255, 0.2));
+    animation: float 11s ease-in-out -3s infinite;
+  }
+  .stage__sim {
+    width: 30%;
+    right: 0;
+    bottom: 22%;
+    transform: rotate(-14deg);
+    filter: drop-shadow(0 25px 40px rgba(0, 0, 0, 0.8));
+  }
+  .stage__floor {
+    left: 10%;
+    right: 10%;
+    bottom: 2%;
+    height: 10%;
+    background: radial-gradient(closest-side, rgba(47, 123, 255, 0.35), transparent);
+    filter: blur(10px);
+  }
+</style>

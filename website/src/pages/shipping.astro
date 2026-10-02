@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import DeliveryInfo from '../components/sections/DeliveryInfo.astro';
+import PaymentInfo from '../components/sections/PaymentInfo.astro';
+import HowToGet from '../components/sections/HowToGet.astro';
+import ContactBand from '../components/sections/ContactBand.astro';
+---
+
+<Base title="Shipping & Payment" description="Hamburg meetups, worldwide shipping rates and payment information for SPEX products.">
+  <section class="page-hero">
+    <div class="backdrop-grid"></div>
+    <div class="wrap">
+      <SectionHeading as="h1" size="h1" eyebrow="Delivery" title={'Hamburg meetups.\nWorldwide shipping.'} lead="Collect your configured SPEX in person in Hamburg, or receive it by tracked shipping. Delivery is arranged personally with every order." />
+      <DeliveryInfo heading={false} />
+    </div>
+  </section>
+  <section class="section section--tight">
+    <div class="wrap">
+      <PaymentInfo />
+    </div>
+  </section>
+  <HowToGet />
+  <ContactBand />
+</Base>

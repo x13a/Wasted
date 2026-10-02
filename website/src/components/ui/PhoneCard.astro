@@ -1,0 +1,125 @@
+---
+import PhoneRender from '../visuals/PhoneRender.astro';
+import Icon from './Icon.astro';
+import type { PhoneModel } from '../../data/phones';
+import { eur } from '../../lib/format';
+
+interface Props {
+  phone: PhoneModel;
+  delay?: number;
+}
+const { phone, delay = 0 } = Astro.props;
+---
+
+<article class:list={['phone-card', phone.badge === 'Flagship' && 'phone-card--flagship']} data-reveal data-reveal-delay={String(delay)}>
+  <a href={`/phones/${phone.id}`} class="phone-card__visual" tabindex="-1" aria-hidden="true">
+    <div class="phone-card__glow"></div>
+    {
+      phone.image ? (
+        <img class="phone-card__photo" src={phone.image} srcset={phone.imageSrcset} alt="" width="600" height="600" loading="lazy" decoding="async" />
+      ) : (
+        <PhoneRender finish={phone.finish} view="back" label={phone.name} />
+      )
+    }
+  </a>
+  <div class="phone-card__body">
+    <div class="phone-card__top">
+      <h3 class="phone-card__name">{phone.name}</h3>
+      {phone.badge && <span class="pill pill--blue">{phone.badge}</span>}
+    </div>
+    <p class="phone-card__tagline">{phone.tagline}</p>
+    <p class="phone-card__price">{eur(phone.price)}</p>
+    <p class="muted phone-card__desc">{phone.description}</p>
+    <div class="phone-card__actions">
+      <a href={`/phones/${phone.id}`} class="btn btn--ghost btn--sm">Explore model <Icon name="arrow" /></a>
+      <a href="/contact" class="btn btn--primary btn--sm">Contact SPEX</a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .phone-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, #08101f, #020308);
+    overflow: hidden;
+    transition:
+      border-color 0.5s var(--ease),
+      box-shadow 0.5s var(--ease);
+  }
+  .phone-card:hover {
+    border-color: var(--line-blue);
+    box-shadow: var(--glow);
+  }
+  .phone-card--flagship {
+    border-color: rgba(106, 166, 255, 0.3);
+  }
+  .phone-card__visual {
+    position: relative;
+    display: grid;
+    place-items: center;
+    padding: 2.5rem 0 1.5rem;
+    isolation: isolate;
+  }
+  .phone-card__visual :global(svg),
+  .phone-card__visual img {
+    width: 42%;
+    max-width: 170px;
+    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.8));
+    transition: transform 0.7s var(--ease);
+  }
+  .phone-card__visual .phone-card__photo {
+    width: 78%;
+    max-width: 320px;
+    height: auto;
+    margin-block: -1.5rem -0.5rem;
+  }
+  .phone-card:hover .phone-card__visual :global(svg),
+  .phone-card:hover .phone-card__visual img {
+    transform: translateY(-8px) rotate(-2deg);
+  }
+  .phone-card__glow {
+    position: absolute;
+    inset: 10% 15% 0;
+    background: radial-gradient(closest-side, rgba(47, 123, 255, 0.4), transparent);
+    z-index: -1;
+  }
+  .phone-card__body {
+    display: grid;
+    gap: 0.55rem;
+    padding: 0 1.75rem 1.75rem;
+    flex: 1;
+    align-content: start;
+  }
+  .phone-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .phone-card__name {
+    font-size: 1.9rem;
+    letter-spacing: -0.04em;
+  }
+  .phone-card__tagline {
+    color: var(--electric-soft);
+    font-weight: 500;
+  }
+  .phone-card__price {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+  .phone-card__desc {
+    font-size: 0.93rem;
+  }
+  .phone-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+</style>

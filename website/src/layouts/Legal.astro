@@ -1,0 +1,60 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  updated?: string;
+}
+const { title, description, updated } = Astro.props;
+---
+
+<Base title={title} description={description}>
+  <article class="page-hero legal">
+    <div class="wrap legal__wrap">
+      <span class="eyebrow">Information</span>
+      <h1 class="h1 gradient-text">{title}</h1>
+      {updated && <p class="fine">Last updated: {updated}</p>}
+      <div class="legal__body">
+        <slot />
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal__wrap {
+    max-width: 820px;
+    display: grid;
+    gap: 1.25rem;
+  }
+  .legal__body {
+    margin-top: 1.5rem;
+    display: grid;
+    gap: 1rem;
+    color: var(--muted);
+  }
+  .legal__body :global(h2) {
+    margin-top: 1.5rem;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+  .legal__body :global(strong) {
+    color: var(--text);
+  }
+  .legal__body :global(ul) {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: grid;
+    gap: 0.4rem;
+  }
+  .legal__body :global(a) {
+    color: var(--electric-soft);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .legal__body :global(.placeholder) {
+    color: #ffd894;
+    font-style: italic;
+  }
+</style>

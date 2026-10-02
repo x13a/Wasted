@@ -1,0 +1,129 @@
+---
+import PhoneRender from './PhoneRender.astro';
+import RouterRender from './RouterRender.astro';
+import SimRender from './SimRender.astro';
+import EsimRender from './EsimRender.astro';
+import BagRender from './BagRender.astro';
+import type { CategoryVisual } from '../../data/products';
+
+interface Props {
+  visual: CategoryVisual;
+}
+const { visual } = Astro.props;
+---
+
+<div class:list={['cv', `cv--${visual}`]} aria-hidden="true">
+  {
+    visual === 'phone' && (
+      <>
+        <div class="cv__a"><PhoneRender view="back" finish="titanium" /></div>
+        <div class="cv__b"><PhoneRender view="front" finish="obsidian" /></div>
+      </>
+    )
+  }
+  {visual === 'router' && <div class="cv__a"><RouterRender /></div>}
+  {
+    visual === 'kit' && (
+      <>
+        <div class="cv__a"><PhoneRender view="front" finish="midnight" /></div>
+        <div class="cv__b"><RouterRender /></div>
+        <div class="cv__c"><SimRender /></div>
+      </>
+    )
+  }
+  {
+    visual === 'sim' && (
+      <>
+        <div class="cv__a"><SimRender label="Ortel" /></div>
+        <div class="cv__b"><SimRender label="Ay Yildiz" tone="cyan" /></div>
+      </>
+    )
+  }
+  {visual === 'esim' && <div class="cv__a"><EsimRender /></div>}
+  {visual === 'bag' && <div class="cv__a"><BagRender /></div>}
+</div>
+
+<style>
+  .cv {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .cv > div {
+    position: absolute;
+    filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.75));
+    transition: transform 0.8s var(--ease);
+  }
+  /* phone */
+  .cv--phone .cv__a {
+    width: 30%;
+    left: 24%;
+    top: 12%;
+    transform: rotate(-8deg);
+  }
+  .cv--phone .cv__b {
+    width: 32%;
+    left: 44%;
+    top: 6%;
+  }
+  /* router */
+  .cv--router .cv__a {
+    width: 72%;
+    left: 14%;
+    top: 22%;
+  }
+  /* kit */
+  .cv--kit .cv__a {
+    width: 26%;
+    left: 52%;
+    top: 4%;
+  }
+  .cv--kit .cv__b {
+    width: 52%;
+    left: 8%;
+    top: 40%;
+  }
+  .cv--kit .cv__c {
+    width: 32%;
+    right: 6%;
+    bottom: 8%;
+    transform: rotate(-10deg);
+  }
+  /* sim */
+  .cv--sim .cv__a {
+    width: 56%;
+    left: 10%;
+    top: 16%;
+    transform: rotate(-8deg);
+  }
+  .cv--sim .cv__b {
+    width: 56%;
+    right: 8%;
+    top: 36%;
+    transform: rotate(6deg);
+  }
+  /* esim */
+  .cv--esim .cv__a {
+    width: 62%;
+    left: 19%;
+    top: 6%;
+  }
+  /* bag */
+  .cv--bag .cv__a {
+    width: 40%;
+    left: 30%;
+    top: 4%;
+  }
+  :global(a:hover) .cv--phone .cv__b,
+  :global(a:hover) .cv--router .cv__a,
+  :global(a:hover) .cv--esim .cv__a,
+  :global(a:hover) .cv--bag .cv__a {
+    transform: translateY(-8px);
+  }
+  :global(a:hover) .cv--sim .cv__b {
+    transform: rotate(2deg) translateY(-6px);
+  }
+  :global(a:hover) .cv--kit .cv__a {
+    transform: translateY(-8px);
+  }
+</style>

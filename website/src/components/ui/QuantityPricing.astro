@@ -1,0 +1,73 @@
+---
+/** Quantity tiers presented as elegant tiles, not a spreadsheet. */
+import { eur, eurEach } from '../../lib/format';
+import type { QuantityPrice } from '../../data/types';
+
+interface Props {
+  tiers: QuantityPrice[];
+  unit?: string;
+  label?: string;
+}
+const { tiers, unit = 'pc', label = 'Quantity pricing' } = Astro.props;
+---
+
+<ul class="tiers" aria-label={label}>
+  {
+    tiers.map((t, i) => (
+      <li class:list={['tier', i === 0 && 'tier--first']}>
+        <span class="tier__qty">
+          {t.qty}
+          <span>×</span>
+        </span>
+        <span class="tier__price">{eur(t.price)}</span>
+        {t.qty > 1 && <span class="tier__each">{eurEach(t.price, t.qty)} / {unit}</span>}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .tiers {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+    gap: 0.6rem;
+  }
+  .tier {
+    display: grid;
+    gap: 0.2rem;
+    padding: 1rem 1.1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.025);
+    transition:
+      border-color 0.3s var(--ease),
+      background-color 0.3s var(--ease);
+  }
+  .tier:hover {
+    border-color: var(--line-blue);
+    background: rgba(47, 123, 255, 0.07);
+  }
+  .tier__qty {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+  .tier__qty span {
+    margin-left: 0.1rem;
+    color: var(--electric-soft);
+  }
+  .tier__price {
+    font-size: 1.45rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--white);
+  }
+  .tier__each {
+    font-size: 0.72rem;
+    color: var(--muted-2);
+  }
+</style>

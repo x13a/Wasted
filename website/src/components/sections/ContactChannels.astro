@@ -1,0 +1,226 @@
+---
+import Icon from '../ui/Icon.astro';
+import { primaryChannels, secondaryChannels } from '../../data/contact';
+---
+
+<div class="channels">
+  <ul class="channels__primary">
+    {
+      primaryChannels.map((c, i) => (
+        <li class="channel" data-reveal data-reveal-delay={String(i + 1)}>
+          <div class="channel__glow" aria-hidden="true" />
+          <div class="channel__head">
+            <span class="channel__icon">
+              <Icon name={c.id} />
+            </span>
+            <span class="pill pill--blue">{c.label}</span>
+          </div>
+          <h3 class="channel__name">{c.name}</h3>
+          {c.handle ? (
+            <p class="channel__handle">
+              <span>{c.id === 'threema' ? 'ID' : 'Username'}</span>
+              <code>{c.handle}</code>
+            </p>
+          ) : (
+            <p class="channel__handle">
+              <span>Link</span>
+              <code>signal.me · SPEX</code>
+            </p>
+          )}
+          <p class="muted channel__text">{c.description}</p>
+          <a
+            class:list={['btn', i === 0 ? 'btn--primary' : 'btn--ghost', 'btn--block']}
+            href={c.url}
+            target="_blank"
+            rel="noopener noreferrer external"
+            referrerpolicy="no-referrer"
+          >
+            {c.button}
+            <Icon name="arrow" />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="channels__secondary" data-reveal>
+    <p class="channels__label">Also follow SPEX</p>
+    <ul>
+      {
+        secondaryChannels.map((c) => (
+          <li>
+            <a href={c.url} target="_blank" rel="noopener noreferrer external" referrerpolicy="no-referrer" class="secondary">
+              <span class="secondary__icon">
+                <Icon name={c.id} />
+              </span>
+              <span class="secondary__text">
+                <strong>
+                  {c.name}
+                  {c.handle && <span> {c.handle}</span>}
+                </strong>
+                <span>{c.description}</span>
+              </span>
+              <Icon name="arrow" class="secondary__arrow" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+
+<style>
+  .channels {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .channels__primary {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  }
+  .channel {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)), var(--navy-900);
+    transition:
+      border-color 0.4s var(--ease),
+      transform 0.4s var(--ease);
+  }
+  .channel:hover {
+    border-color: var(--line-blue);
+    transform: translateY(-4px);
+  }
+  .channel__glow {
+    position: absolute;
+    inset: -30% -30% auto auto;
+    width: 80%;
+    aspect-ratio: 1;
+    background: radial-gradient(closest-side, rgba(47, 123, 255, 0.28), transparent);
+    z-index: -1;
+  }
+  .channel__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .channel__icon {
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background: linear-gradient(160deg, #3b82ff, #1640b8);
+    box-shadow: 0 12px 40px -12px rgba(47, 123, 255, 0.9);
+    color: #fff;
+  }
+  .channel__icon :global(svg) {
+    width: 28px;
+    height: 28px;
+  }
+  .channel__name {
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    letter-spacing: -0.04em;
+  }
+  .channel__handle {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+  .channel__handle code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 1rem;
+    letter-spacing: 0.06em;
+    text-transform: none;
+    color: var(--white);
+  }
+  .channel__text {
+    min-height: 3.2em;
+  }
+  .channels__secondary {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .channels__label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+  .channels__secondary ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  }
+  .secondary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.02);
+    transition: border-color 0.3s var(--ease);
+  }
+  .secondary:hover {
+    border-color: var(--line-blue);
+  }
+  .secondary__icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid var(--line-strong);
+    color: var(--ice);
+    flex: none;
+  }
+  .secondary__icon :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+  .secondary__text {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+  }
+  .secondary__text strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+  .secondary__text strong span {
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .secondary__text > span {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .secondary :global(.secondary__arrow) {
+    width: 18px;
+    height: 18px;
+    color: var(--muted);
+    flex: none;
+  }
+</style>

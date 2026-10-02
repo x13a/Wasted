@@ -1,0 +1,43 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { operator, legalPlaceholder } from '../data/legal';
+import { primaryChannels } from '../data/contact';
+
+const v = (value: string) => value || null;
+---
+
+<Legal title="Imprint" description="Legal information about the operator of SIMPLUGELITE.COM.">
+  <h2>Information according to § 5 DDG</h2>
+  <p>
+    {v(operator.name) ?? <span class="placeholder">{legalPlaceholder}: name</span>}<br />
+    {v(operator.street) ?? <span class="placeholder">{legalPlaceholder}: street</span>}<br />
+    {v(operator.city) ?? <span class="placeholder">{legalPlaceholder}: postal code and city</span>}<br />
+    {operator.country}
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Email: {v(operator.email) ?? <span class="placeholder">{legalPlaceholder}: email</span>}
+  </p>
+  <ul>
+    {primaryChannels.map((c) => <li>{c.name}{c.handle ? `: ${c.handle}` : ''}</li>)}
+  </ul>
+
+  {
+    operator.vatId && (
+      <>
+        <h2>VAT ID</h2>
+        <p>{operator.vatId}</p>
+      </>
+    )
+  }
+
+  <h2>Responsible for content according to § 18 (2) MStV</h2>
+  <p>{v(operator.responsible) ?? <span class="placeholder">{legalPlaceholder}: responsible person</span>}</p>
+
+  <h2>Liability for links</h2>
+  <p>
+    This website links to external services (for example Signal, Threema, Telegram, Instagram and Viber). We have no influence on
+    their content or data processing; the respective provider is responsible for it.
+  </p>
+</Legal>

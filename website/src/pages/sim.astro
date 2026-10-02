@@ -1,0 +1,173 @@
+---
+import Base from '../layouts/Base.astro';
+import SimRender from '../components/visuals/SimRender.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import QuantityPricing from '../components/ui/QuantityPricing.astro';
+import Icon from '../components/ui/Icon.astro';
+import HowToGet from '../components/sections/HowToGet.astro';
+import ContactBand from '../components/sections/ContactBand.astro';
+import { sims, simHighlights, simNote } from '../data/sims';
+import { eur } from '../lib/format';
+
+const from = Math.min(...sims.flatMap((s) => s.pricing.map((p) => p.price)));
+const highlightIcons = ['box', 'pin', 'globe'];
+---
+
+<Base title="SIM Cards" description={`Physical SIM cards from ${eur(from)} — Ortel and Ay Yildiz, single or bulk quantities. Hamburg meetups and worldwide shipping.`}>
+  <section class="page-hero">
+    <div class="backdrop-grid"></div>
+    <div class="wrap page-hero__grid">
+      <div class="page-hero__copy">
+        <span class="eyebrow" data-reveal>SIM Cards</span>
+        <h1 class="display gradient-text" data-reveal data-reveal-delay="1">Connectivity,<br />in any quantity.</h1>
+        <p class="lead" data-reveal data-reveal-delay="2">Physical SIM cards for phones and routers — from a single card to a hundred. Clear quantity pricing, handled personally.</p>
+        <ul class="sim-highlights" data-reveal data-reveal-delay="3">
+          {simHighlights.map((h, i) => <li class="pill pill--blue"><Icon name={highlightIcons[i] ?? 'check'} />{h}</li>)}
+        </ul>
+      </div>
+      <div class="sim-hero" aria-hidden="true" data-reveal data-reveal-delay="2">
+        <div class="sim-hero__glow"></div>
+        {sims.map((s, i) => <div class={`sim-hero__card sim-hero__card--${i}`}><SimRender label={s.name} tone={s.accent} /></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="sims-title">
+    <div class="wrap">
+      <SectionHeading id="sims-title" eyebrow="Two networks" title="Choose your SIM." lead="Quantity pricing is shown per order. The per-card price drops as quantities grow." />
+      <div class="sims">
+        {
+          sims.map((s, i) => (
+            <article class:list={['sim-card', `sim-card--${s.accent}`]} data-reveal data-reveal-delay={String(i + 1)}>
+              <div class="sim-card__head">
+                <div class="sim-card__art" aria-hidden="true">
+                  <SimRender label={s.name} tone={s.accent} />
+                </div>
+                <div class="sim-card__title">
+                  <h3 class="h2">{s.name}</h3>
+                  <span class="pill">{s.credit}</span>
+                  <p class="muted">from {eur(s.pricing[0]!.price)} per card</p>
+                </div>
+              </div>
+              <QuantityPricing tiers={s.pricing} unit="card" label={`${s.name} quantity pricing`} />
+              <a href="/contact" class="btn btn--primary btn--block">Contact for availability</a>
+            </article>
+          ))
+        }
+      </div>
+      <div class="bulk" data-reveal>
+        <span class="icon-tile"><Icon name="box" /></span>
+        <div>
+          <strong>Bulk orders available</strong>
+          <p class="muted">Need more than 100 cards or a mix of networks? Contact SPEX for availability and a personal quote.</p>
+        </div>
+        <a href="/contact" class="btn btn--ghost btn--sm">Contact SPEX</a>
+      </div>
+      <p class="fine sim-note">{simNote}</p>
+    </div>
+  </section>
+
+  <HowToGet />
+  <ContactBand title="Ask for SIM availability." />
+</Base>
+
+<style>
+  .sim-highlights {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .sim-hero {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    aspect-ratio: 1 / 0.8;
+    margin-inline: auto;
+  }
+  .sim-hero > div {
+    position: absolute;
+  }
+  .sim-hero__glow {
+    inset: 0;
+    background: radial-gradient(closest-side, rgba(47, 123, 255, 0.45), transparent);
+    filter: blur(12px);
+  }
+  .sim-hero__card {
+    width: 66%;
+    filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.85));
+  }
+  .sim-hero__card--0 {
+    left: 4%;
+    top: 10%;
+    transform: rotate(-10deg);
+    animation: float 10s ease-in-out infinite;
+  }
+  .sim-hero__card--1 {
+    right: 2%;
+    bottom: 8%;
+    transform: rotate(7deg);
+  }
+  .sims {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+  }
+  .sim-card {
+    display: grid;
+    gap: 1.75rem;
+    align-content: start;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(70% 50% at 100% 0%, rgba(47, 123, 255, 0.18), transparent 70%),
+      linear-gradient(180deg, #0a1328, #03050b);
+  }
+  .sim-card--cyan {
+    background:
+      radial-gradient(70% 50% at 100% 0%, rgba(56, 200, 255, 0.16), transparent 70%),
+      linear-gradient(180deg, #08162a, #03050b);
+  }
+  .sim-card__head {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.8fr) 1fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .sim-card__art {
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.8));
+    transform: rotate(-6deg);
+  }
+  .sim-card__title {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+  }
+  .bulk {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem 1.75rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line-blue);
+    background: linear-gradient(90deg, rgba(47, 123, 255, 0.12), transparent);
+  }
+  .bulk > div {
+    flex: 1;
+    min-width: 220px;
+    display: grid;
+    gap: 0.2rem;
+  }
+  .bulk strong {
+    color: var(--white);
+    font-size: 1.1rem;
+  }
+  .sim-note {
+    margin-top: 1.5rem;
+  }
+</style>

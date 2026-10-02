@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/sections/Hero.astro';
+import Ecosystem from '../components/sections/Ecosystem.astro';
+import PhoneLineup from '../components/sections/PhoneLineup.astro';
+import SecurityShowcase from '../components/sections/SecurityShowcase.astro';
+import ProfilesShowcase from '../components/sections/ProfilesShowcase.astro';
+import KitsHighlight from '../components/sections/KitsHighlight.astro';
+import WhySpex from '../components/sections/WhySpex.astro';
+import HowToGet from '../components/sections/HowToGet.astro';
+import DeliveryInfo from '../components/sections/DeliveryInfo.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import ContactChannels from '../components/sections/ContactChannels.astro';
+import OfficialNotice from '../components/sections/OfficialNotice.astro';
+---
+
+<Base>
+  <Hero />
+  <Ecosystem />
+  <PhoneLineup />
+  <SecurityShowcase />
+  <ProfilesShowcase />
+  <KitsHighlight />
+  <WhySpex />
+  <hr class="divider" />
+  <HowToGet />
+  <section class="section section--tight">
+    <div class="wrap">
+      <DeliveryInfo />
+    </div>
+  </section>
+  <section class="section section--navy" id="contact" aria-labelledby="home-contact-title">
+    <div class="wrap">
+      <SectionHeading
+        id="home-contact-title"
+        eyebrow="Direct. Personal. Private."
+        title="Contact SPEX"
+        lead="Questions, availability and orders are handled directly."
+      />
+      <ContactChannels />
+      <div class="home-notice">
+        <OfficialNotice />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .home-notice {
+    margin-top: 2.5rem;
+  }
+</style>

@@ -1,0 +1,60 @@
+---
+import { brand } from '../../data/site';
+
+interface Props {
+  class?: string;
+  sub?: boolean;
+  /** "large" shows the full official logo on its own (footer). */
+  size?: 'default' | 'large';
+}
+const { class: className, sub = true, size = 'default' } = Astro.props;
+---
+
+{
+  size === 'large' ? (
+    <img class:list={['logo-large', className]} src={brand.logo.large} alt={brand.logo.alt} width="635" height="720" loading="lazy" decoding="async" />
+  ) : (
+    <span class:list={['logo', className]}>
+      <img class="logo__mark" src={brand.logo.small} srcset={brand.logo.smallSrcset} alt="" width="49" height="56" decoding="async" />
+      <span class="logo__text">
+        <span class="logo__name">SPEX</span>
+        {sub && <span class="logo__sub">SIMPLUGELITE</span>}
+      </span>
+    </span>
+  )
+}
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .logo__mark {
+    width: auto;
+    height: 56px;
+  }
+  .logo-large {
+    width: auto;
+    height: auto;
+    max-width: 180px;
+    filter: drop-shadow(0 10px 40px rgba(47, 123, 255, 0.3));
+  }
+  .logo__text {
+    display: grid;
+    line-height: 1;
+    gap: 0.28rem;
+  }
+  .logo__name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    color: var(--white);
+  }
+  .logo__sub {
+    font-size: 0.56rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+  }
+</style>

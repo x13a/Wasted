@@ -1,0 +1,97 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import ContactChannels from '../components/sections/ContactChannels.astro';
+import OfficialNotice from '../components/sections/OfficialNotice.astro';
+import HowToGet from '../components/sections/HowToGet.astro';
+import DeliveryInfo from '../components/sections/DeliveryInfo.astro';
+import PaymentInfo from '../components/sections/PaymentInfo.astro';
+import Icon from '../components/ui/Icon.astro';
+
+const tips = [
+  'The product or kit you are interested in',
+  'Quantity, country (for eSIM) or configuration wishes',
+  'Hamburg meetup or shipping destination',
+];
+---
+
+<Base title="Contact SPEX" description="Contact SPEX directly via Signal, Threema or Telegram. Questions, availability and orders are handled personally.">
+  <section class="page-hero contact-hero">
+    <div class="backdrop-grid"></div>
+    <div class="wrap">
+      <SectionHeading as="h1" size="h1" eyebrow="Direct. Personal. Private." title="Contact SPEX" lead="Questions, availability and orders are handled directly." id="contact-title" />
+      <ContactChannels />
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap contact-grid">
+      <OfficialNotice />
+      <div class="card tips" data-reveal>
+        <span class="icon-tile"><Icon name="contact" /></span>
+        <h2 class="h3">What to include in your first message</h2>
+        <ul>
+          {tips.map((t) => <li><Icon name="check" />{t}</li>)}
+        </ul>
+        <p class="fine">
+          There is no contact form on this website on purpose: we do not collect your details here. Your conversation stays inside the
+          messenger you choose.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <HowToGet />
+
+  <section class="section section--tight">
+    <div class="wrap contact-info">
+      <DeliveryInfo heading={false} />
+      <PaymentInfo />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact-hero {
+    padding-bottom: 0;
+  }
+  .contact-grid {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+  }
+  @media (min-width: 960px) {
+    .contact-grid {
+      grid-template-columns: 1.2fr 1fr;
+    }
+  }
+  .tips {
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .tips ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+  .tips li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    color: var(--text);
+  }
+  .tips li :global(svg) {
+    width: 18px;
+    height: 18px;
+    margin-top: 0.2rem;
+    color: var(--electric-soft);
+    flex: none;
+  }
+  .contact-info {
+    display: grid;
+    gap: 1rem;
+  }
+</style>

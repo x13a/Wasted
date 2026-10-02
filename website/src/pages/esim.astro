@@ -1,0 +1,311 @@
+---
+import Base from '../layouts/Base.astro';
+import EsimRender from '../components/visuals/EsimRender.astro';
+import Flag from '../components/visuals/Flag.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import Icon from '../components/ui/Icon.astro';
+import HowToGet from '../components/sections/HowToGet.astro';
+import ContactBand from '../components/sections/ContactBand.astro';
+import { esimCountries, esimFacts, allEsimPrices } from '../data/esim';
+import { eur } from '../lib/format';
+
+const from = Math.min(...allEsimPrices);
+---
+
+<Base title="SPEX Data eSIM" description={`SPEX Data eSIM — mobile data without a physical SIM for ${esimCountries.map((c) => c.name).join(', ')}. Data only, from ${eur(from)}.`}>
+  <section class="page-hero">
+    <div class="backdrop-grid"></div>
+    <div class="wrap page-hero__grid">
+      <div class="page-hero__copy">
+        <span class="eyebrow" data-reveal>SPEX Data <span class="lc">e</span>SIM</span>
+        <h1 class="display gradient-text" data-reveal data-reveal-delay="1">Mobile data.<br />No physical SIM.</h1>
+        <p class="lead" data-reveal data-reveal-delay="2">Fast digital mobile data for {esimCountries.length} countries. Installed on your device in minutes — nothing to insert, nothing to swap.</p>
+        <div class="esim-facts" data-reveal data-reveal-delay="3">
+          {esimFacts.badges.map((b) => <span class="pill pill--blue"><Icon name="data" />{b}</span>)}
+        </div>
+        <ul class="esim-excludes" data-reveal data-reveal-delay="3">
+          {esimFacts.excludes.map((x) => <li><Icon name="x" />{x}</li>)}
+          <li class="esim-excludes__compat"><Icon name="phone" />{esimFacts.compatibility}</li>
+        </ul>
+        <div class="btn-row" data-reveal data-reveal-delay="4">
+          <a href="#countries" class="btn btn--primary">Choose a country <Icon name="arrow-down" /></a>
+        </div>
+      </div>
+      <div class="esim-hero" aria-hidden="true" data-reveal data-reveal-delay="2">
+        <EsimRender />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--navy" id="countries" aria-labelledby="countries-title">
+    <div class="wrap">
+      <SectionHeading id="countries-title" eyebrow="Select a country" title="Where do you need data?" lead={`Choose a country to see its packages. From ${eur(from)}.`} />
+
+      <div class="esim" data-esim>
+        <div class="countries" role="tablist" aria-label="Countries">
+          {
+            esimCountries.map((c, i) => (
+              <button
+                type="button"
+                role="tab"
+                class="country"
+                id={`tab-${c.code}`}
+                aria-controls={`panel-${c.code}`}
+                aria-selected={i === 0 ? 'true' : 'false'}
+                tabindex={i === 0 ? 0 : -1}
+                data-country={c.code}
+              >
+                <Flag code={c.code} class="country__flag" />
+                <span class="country__name">{c.name}</span>
+                <span class="country__from">from {eur(Math.min(...c.packages.map((p) => p.price)))}</span>
+              </button>
+            ))
+          }
+        </div>
+
+        {
+          esimCountries.map((c) => (
+            <div class="panel" role="tabpanel" id={`panel-${c.code}`} aria-labelledby={`tab-${c.code}`} data-panel={c.code}>
+              <div class="panel__head">
+                <Flag code={c.code} class="panel__flag" />
+                <h3 class="h3">{c.name}</h3>
+                <span class="fine">Data only · {c.packages.length} packages</span>
+              </div>
+              <ul class="packages">
+                {c.packages.map((p) => (
+                  <li class:list={['pkg', p.data === 'Unlimited' && 'pkg--unlimited']}>
+                    <span class="pkg__data">{p.data}</span>
+                    <span class="pkg__days">{p.days} days</span>
+                    <span class="pkg__price">{eur(p.price)}</span>
+                  </li>
+                ))}
+              </ul>
+              <div class="panel__cta">
+                <a href="/contact" class="btn btn--primary">
+                  Request <span class="lc">e</span>SIM <Icon name="arrow" />
+                </a>
+                <span class="fine">Mention “{c.name}” and your package when you contact SPEX.</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="esim-how-title">
+    <div class="wrap">
+      <div class="esim-info">
+        <div class="card esim-info__card" data-reveal>
+          <span class="icon-tile"><Icon name="data" /></span>
+          <h2 id="esim-how-title" class="h3">Data only — by design</h2>
+          <p class="muted">A SPEX Data eSIM provides internet access only. There is no phone number, so it cannot make calls or receive SMS. Use your messengers over data instead.</p>
+        </div>
+        <div class="card esim-info__card" data-reveal data-reveal-delay="1">
+          <span class="icon-tile"><Icon name="esim" /></span>
+          <h2 class="h3">Check your device</h2>
+          <p class="muted">eSIM compatible devices only. Not sure whether your phone supports eSIM? Ask SPEX before ordering.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <HowToGet />
+  <ContactBand title="Request your eSIM." text="Tell us the country and package you need. eSIM requests are handled personally through an official SPEX channel." />
+</Base>
+
+<script>
+  import '../scripts/esim';
+</script>
+
+<style>
+  .esim-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .esim-excludes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+  .esim-excludes li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .esim-excludes :global(svg) {
+    width: 16px;
+    height: 16px;
+    color: var(--muted-2);
+  }
+  .esim-excludes__compat {
+    flex-basis: 100%;
+    color: var(--text);
+  }
+  .esim-excludes__compat :global(svg) {
+    color: var(--electric-soft);
+  }
+  .esim-hero {
+    width: 100%;
+    max-width: 480px;
+    margin-inline: auto;
+    filter: drop-shadow(0 0 40px rgba(47, 123, 255, 0.35));
+  }
+
+  .esim {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .countries {
+    display: grid;
+    gap: 0.6rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));
+  }
+  @media (max-width: 599px) {
+    .countries {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      margin-inline: calc(var(--gutter) * -1);
+      padding: 0.25rem var(--gutter) 0.75rem;
+      scrollbar-width: none;
+    }
+    .country {
+      flex: 0 0 132px;
+      scroll-snap-align: start;
+    }
+  }
+  .country {
+    display: grid;
+    justify-items: start;
+    gap: 0.4rem;
+    padding: 1.1rem 1.1rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.025);
+    text-align: left;
+    cursor: pointer;
+    transition:
+      border-color 0.3s var(--ease),
+      background-color 0.3s var(--ease),
+      transform 0.3s var(--ease);
+  }
+  .country:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-2px);
+  }
+  .country[aria-selected='true'] {
+    border-color: var(--electric);
+    background: rgba(47, 123, 255, 0.12);
+    box-shadow: 0 10px 40px -16px rgba(47, 123, 255, 0.9);
+  }
+  .country :global(.country__flag) {
+    width: 36px;
+    height: 24px;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
+    margin-bottom: 0.4rem;
+  }
+  .country__name {
+    font-weight: 600;
+    color: var(--white);
+  }
+  .country__from {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .panel {
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border-radius: var(--radius);
+    border: 1px solid var(--line-blue);
+    background:
+      radial-gradient(60% 60% at 100% 0%, rgba(47, 123, 255, 0.16), transparent 70%),
+      var(--navy-800);
+    display: grid;
+    gap: 1.5rem;
+  }
+  .panel[hidden] {
+    display: none;
+  }
+  .panel + .panel {
+    margin-top: 0;
+  }
+  .panel__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem;
+  }
+  .panel__head :global(.panel__flag) {
+    width: 40px;
+    height: 27px;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
+  }
+  .packages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 1fr));
+  }
+  @media (min-width: 1100px) {
+    .packages {
+      grid-template-columns: repeat(7, 1fr);
+    }
+  }
+  .pkg {
+    display: grid;
+    gap: 0.15rem;
+    padding: 1.1rem 1.2rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    background: rgba(0, 0, 0, 0.25);
+  }
+  .pkg--unlimited {
+    border-color: var(--line-blue);
+    background: linear-gradient(160deg, rgba(47, 123, 255, 0.22), rgba(47, 123, 255, 0.04));
+  }
+  .pkg__data {
+    font-size: 1.5rem;
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    color: var(--white);
+  }
+  .pkg__days {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .pkg__price {
+    margin-top: 0.6rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--ice);
+  }
+  .panel__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+  .esim-info {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  }
+  .esim-info__card {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+  }
+</style>

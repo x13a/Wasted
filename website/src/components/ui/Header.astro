@@ -1,0 +1,282 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { mainNav } from '../../data/site';
+import { primaryChannels } from '../../data/contact';
+
+const path = Astro.url.pathname.replace(/(\/index)?\.html$/, '').replace(/\/$/, '') || '/';
+const isActive = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(`${href}/`));
+---
+
+<header class="site-header" data-header>
+  <div class="wrap site-header__inner">
+    <a href="/" class="site-header__logo" aria-label="SPEX — home">
+      <Logo />
+    </a>
+
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        {
+          mainNav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label === 'eSIM' ? <><span class="lc">e</span>SIM</> : item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a href="/contact" class="btn btn--primary btn--sm site-header__cta">Contact SPEX</a>
+      <button class="menu-toggle" type="button" popovertarget="mobile-menu" aria-label="Open menu">
+        <Icon name="menu" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="mobile-menu" class="drawer" popover>
+  <div class="drawer__panel">
+    <div class="drawer__top">
+      <Logo />
+      <button class="menu-toggle" type="button" popovertarget="mobile-menu" popovertargetaction="hide" aria-label="Close menu">
+        <Icon name="close" />
+      </button>
+    </div>
+    <nav aria-label="Mobile">
+      <ul class="drawer__nav">
+        {
+          mainNav.map((item, i) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                <span class="drawer__index">{String(i + 1).padStart(2, '0')}</span>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <div class="drawer__bottom">
+      <a href="/contact" class="btn btn--primary btn--block">Contact SPEX</a>
+      <div class="drawer__channels">
+        {
+          primaryChannels.map((c) => (
+            <a href={c.url} target="_blank" rel="noopener noreferrer external" referrerpolicy="no-referrer" aria-label={c.name}>
+              <Icon name={c.id} />
+              <span>{c.name}</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    height: var(--header-h);
+    transition:
+      background-color 0.4s var(--ease),
+      border-color 0.4s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  .site-header.is-scrolled,
+  :global(html:not(.js)) .site-header {
+    background: rgba(2, 4, 10, 0.72);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-bottom-color: var(--line);
+  }
+  .site-header__inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  .site-header__logo {
+    flex: none;
+  }
+  .site-nav {
+    display: none;
+  }
+  .site-nav ul {
+    display: flex;
+    gap: 0.15rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .site-nav a {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.25s var(--ease);
+  }
+  .site-nav a:hover,
+  .site-nav a[aria-current='page'] {
+    color: var(--white);
+  }
+  .site-nav a[aria-current='page']::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    border-radius: 50%;
+    background: var(--electric);
+    box-shadow: 0 0 10px var(--electric);
+  }
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .site-header__cta {
+    display: none;
+  }
+  .menu-toggle {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: rgba(255, 255, 255, 0.04);
+    cursor: pointer;
+  }
+  .menu-toggle :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+
+  @media (min-width: 640px) {
+    .site-header__cta {
+      display: inline-flex;
+    }
+  }
+  @media (min-width: 1120px) {
+    .site-nav {
+      display: block;
+    }
+    .site-header__actions .menu-toggle {
+      display: none;
+    }
+  }
+
+  /* ---------- Slide-out drawer (native popover: no JS required) ---------- */
+  .drawer {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+  }
+  .drawer::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .drawer__panel {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: min(100%, 420px);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem var(--gutter) 2rem;
+    overflow-y: auto;
+    background:
+      radial-gradient(80% 50% at 100% 0%, rgba(47, 123, 255, 0.22), transparent 70%),
+      linear-gradient(180deg, #060b18, #000);
+    border-left: 1px solid var(--line);
+    transform: translateX(100%);
+    transition: transform 0.5s var(--ease);
+  }
+  .drawer:popover-open .drawer__panel {
+    transform: none;
+  }
+  @starting-style {
+    .drawer:popover-open .drawer__panel {
+      transform: translateX(100%);
+    }
+  }
+  .drawer__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: calc(var(--header-h) - 1rem);
+  }
+  .drawer__nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+  }
+  .drawer__nav a {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--white);
+  }
+  .drawer__nav a[aria-current='page'] {
+    color: var(--electric-soft);
+  }
+  .drawer__index {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--muted-2);
+  }
+  .drawer__bottom {
+    margin-top: auto;
+    display: grid;
+    gap: 1rem;
+  }
+  .drawer__channels {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  .drawer__channels a {
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+    padding: 0.85rem 0.5rem;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.03);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .drawer__channels :global(svg) {
+    width: 22px;
+    height: 22px;
+    color: var(--ice);
+  }
+</style>

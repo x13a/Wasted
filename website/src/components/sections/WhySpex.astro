@@ -1,0 +1,99 @@
+---
+import Icon from '../ui/Icon.astro';
+import { whySpex } from '../../data/features';
+import { brand } from '../../data/site';
+---
+
+<section class="section why" id="why" aria-labelledby="why-title">
+  <div class="wrap why__grid">
+    <div class="why__intro" data-reveal>
+      <span class="eyebrow">Technology + service</span>
+      <h2 id="why-title" class="h1 gradient-text">Why SPEX?</h2>
+      <p class="lead">
+        SPEX is not a device reseller. It is a configured setup and a person you can talk to — before, during and after your order.
+      </p>
+      <p class="why__sign">{brand.configured}<br />{brand.outOfBox}</p>
+    </div>
+    <ol class="why__list">
+      {
+        whySpex.map((w, i) => (
+          <li class="why__item" data-reveal data-reveal-delay={String((i % 4) + 1)}>
+            <span class="why__num">0{i + 1}</span>
+            <span class="icon-tile">
+              <Icon name={w.icon} />
+            </span>
+            <div>
+              <h3 class="h3">{w.title}</h3>
+              <p class="muted">{w.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .why__grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+  }
+  @media (min-width: 960px) {
+    .why__grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      align-items: start;
+    }
+    .why__intro {
+      position: sticky;
+      top: calc(var(--header-h) + 3rem);
+    }
+  }
+  .why__intro {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .why__sign {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--electric-soft);
+    line-height: 1.9;
+  }
+  .why__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+  }
+  .why__item {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .why__item:first-child {
+    border-top: 1px solid var(--line);
+  }
+  .why__item > div {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .why__num {
+    padding-top: 0.9rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--muted-2);
+  }
+  @media (max-width: 520px) {
+    .why__item {
+      grid-template-columns: auto 1fr;
+    }
+    .why__num {
+      display: none;
+    }
+  }
+</style>

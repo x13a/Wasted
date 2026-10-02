@@ -1,0 +1,60 @@
+---
+/** Informational list of payment options. No wallet addresses, no checkout. */
+import Icon from '../ui/Icon.astro';
+import { paymentMethods, cryptoAssets, paymentNote } from '../../data/payment';
+---
+
+<div class="card payment" id="payment" data-reveal>
+  <div class="payment__head">
+    <span class="icon-tile"><Icon name="wallet" /></span>
+    <div>
+      <h3 class="h3">Payment information</h3>
+      <p class="muted">Available payment methods may include:</p>
+    </div>
+  </div>
+  <ul class="payment__list">
+    {paymentMethods.map((m) => <li class="pill">{m}</li>)}
+  </ul>
+  <div class="payment__crypto">
+    <span class="fine">Cryptocurrency currently listed</span>
+    <ul class="payment__list">
+      {cryptoAssets.map((c) => <li class="pill pill--blue">{c}</li>)}
+    </ul>
+  </div>
+  <p class="fine">{paymentNote}</p>
+</div>
+
+<style>
+  .payment {
+    display: grid;
+    gap: 1.5rem;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .payment__head {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  .payment__head > div {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .payment__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .payment__list .pill {
+    letter-spacing: 0.06em;
+    text-transform: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+  .payment__crypto {
+    display: grid;
+    gap: 0.6rem;
+  }
+</style>

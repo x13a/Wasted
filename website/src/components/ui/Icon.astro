@@ -1,0 +1,81 @@
+---
+/**
+ * Line icon set (24×24, 1.6 stroke). Inline SVG — no icon font, no external requests.
+ */
+interface Props {
+  name: string;
+  class?: string;
+  label?: string;
+}
+
+const { name, class: className, label } = Astro.props;
+
+const icons: Record<string, string> = {
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  'arrow-down': '<path d="M12 5v14M6 13l6 6 6-6"/>',
+  menu: '<path d="M4 8h16M4 16h16"/>',
+  close: '<path d="M6 6l12 12M18 6L6 18"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  check: '<path d="M20 6L9 17l-5-5"/>',
+  x: '<path d="M7 7l10 10M17 7L7 17"/>',
+  shield: '<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+  lock: '<rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 018 0v3"/><path d="M12 14.5v2.5"/>',
+  wipe: '<path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 12.5a1.5 1.5 0 001.5 1.5h6a1.5 1.5 0 001.5-1.5L17.5 7"/><path d="M10 11v6M14 11v6"/>',
+  usb: '<path d="M12 21V5M12 5l-2.5 3M12 5l2.5 3"/><path d="M12 16l-4-2.5V10"/><circle cx="8" cy="9" r="1.2"/><path d="M12 13.5l4-2V9"/><rect x="14.8" y="7" width="2.4" height="2.4"/><circle cx="12" cy="20" r="1.5"/>',
+  fingerprint:
+    '<path d="M6.5 18.5c1-1.8 1.5-3.8 1.5-6.5a4 4 0 018 0c0 1.2-.1 2.4-.3 3.5"/><path d="M12 12c0 3.5-.8 6.5-2.5 9"/><path d="M4 13.5c.3-1 .5-2.1.5-3.5a7.5 7.5 0 0113.2-4.8"/><path d="M19.5 10c0 3.2-.4 6.2-1.4 9"/><path d="M14.8 17.5c-.4 1.3-1 2.5-1.6 3.5"/>',
+  timer: '<circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M12 2.5V6M18.5 6.5l1.5-1.5"/>',
+  refresh: '<path d="M20 11a8 8 0 00-14.3-4.6L4 8.5"/><path d="M4 3.5v5h5"/><path d="M4 13a8 8 0 0014.3 4.6L20 15.5"/><path d="M20 20.5v-5h-5"/>',
+  wifi: '<path d="M2.5 9a14 14 0 0119 0"/><path d="M5.8 12.5a9 9 0 0112.4 0"/><path d="M9 16a4.5 4.5 0 016 0"/><circle cx="12" cy="19.2" r="1" fill="currentColor"/>',
+  profiles:
+    '<circle cx="9" cy="8.5" r="3.2"/><path d="M3 19.5c.6-3.2 3-5 6-5s5.4 1.8 6 5"/><path d="M15.5 5.6a3.2 3.2 0 010 5.8"/><path d="M17.5 14.8c1.9.7 3.1 2.3 3.5 4.7"/>',
+  vpn: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 10l1.8 4.5L10.6 10M13 14.5V10h1.8a1.4 1.4 0 010 2.8H13M17 14.5V10l0 0"/>',
+  message:
+    '<path d="M20 12a8 8 0 01-11.7 7.1L4 20l1-4A8 8 0 1120 12z"/><rect x="9.2" y="11" width="5.6" height="4" rx="1"/><path d="M10.4 11V9.8a1.6 1.6 0 013.2 0V11"/>',
+  power: '<path d="M12 3v8"/><path d="M6.4 6.6a8 8 0 1011.2 0"/>',
+  grid: '<rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/>',
+  contact: '<path d="M4 6.5A2.5 2.5 0 016.5 4h11A2.5 2.5 0 0120 6.5v8a2.5 2.5 0 01-2.5 2.5H10l-4.5 3.5V17h0A2.5 2.5 0 014 14.5z"/><path d="M8.5 9h7M8.5 12.5h4.5"/>',
+  sim: '<path d="M7 3h7.5L19 7.5V19a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/><rect x="8.5" y="10.5" width="7" height="7" rx="1.2"/><path d="M12 10.5v7M8.5 14h7"/>',
+  esim: '<rect x="4" y="4" width="16" height="16" rx="3"/><rect x="8" y="8" width="8" height="8" rx="1.5"/><path d="M10 4V2M14 4V2M10 22v-2M14 22v-2M4 10H2M4 14H2M22 10h-2M22 14h-2"/>',
+  portable: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 18.5h4"/><path d="M9 7.5h6"/>',
+  'signal-off': '<path d="M3 3l18 18"/><path d="M8.5 8.6a5 5 0 000 6.8M15.5 15.4a5 5 0 001.3-5.1"/><path d="M5.6 5.7a9 9 0 000 12.6M18.4 18.3a9 9 0 001.6-9.6"/>',
+  card: '<rect x="2.5" y="5.5" width="19" height="13" rx="2.5"/><path d="M2.5 10h19M6 14.5h4"/>',
+  key: '<circle cx="8" cy="15" r="4.5"/><path d="M11.2 11.8L20 3M16.5 6.5l2.5 2.5M14 9l2 2"/>',
+  'eye-off': '<path d="M3 3l18 18"/><path d="M10.6 5.1A9.7 9.7 0 0112 5c5 0 8.5 4.5 9.5 7-.4 1-1.2 2.4-2.4 3.7M6.6 6.6C4.6 8 3.2 10 2.5 12c1 2.5 4.5 7 9.5 7 1.7 0 3.2-.5 4.5-1.2"/><path d="M9.9 9.9a3 3 0 004.2 4.2"/>',
+  phone: '<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 5.5h3"/>',
+  router: '<rect x="3" y="11" width="18" height="8" rx="3"/><path d="M7 15h.01M10.5 15h.01"/><path d="M8.5 7.5a5 5 0 017 0M6 5a8.5 8.5 0 0112 0"/>',
+  laptop: '<rect x="4.5" y="5" width="15" height="10" rx="1.5"/><path d="M2.5 19h19l-1.5-4H4z"/>',
+  tablet: '<rect x="4" y="2.5" width="16" height="19" rx="2.5"/><path d="M11 18.5h2"/>',
+  truck: '<path d="M2.5 6.5h11v10h-11z"/><path d="M13.5 9.5h4l3 3.5v3.5h-7"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+  pin: '<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0113 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>',
+  wallet: '<path d="M4 7.5A2.5 2.5 0 016.5 5H18v3"/><rect x="4" y="8" width="16.5" height="11" rx="2.5"/><path d="M16 13.5h1.5"/>',
+  warning: '<path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.4v.1"/>',
+  bag: '<path d="M5 8h14l-1 12.5H6z"/><path d="M8.5 8V6.5a3.5 3.5 0 017 0V8"/>',
+  box: '<path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/>',
+  data: '<path d="M12 3v12M7.5 10.5L12 15l4.5-4.5"/><path d="M4 17.5v1A2.5 2.5 0 006.5 21h11a2.5 2.5 0 002.5-2.5v-1"/>',
+  signal:
+    '<path d="M12 3.2a8.8 8.8 0 00-7.6 13.2L3.3 20.7l4.4-1.1A8.8 8.8 0 1012 3.2z"/><path d="M9.6 2.6a9.6 9.6 0 014.8 0M19.6 6.6a9.6 9.6 0 011.8 4.5M21.4 13a9.6 9.6 0 01-1.8 4.5" stroke-dasharray="2 2.4"/>',
+  threema: '<path d="M12 3.5c-4.8 0-8.5 3.2-8.5 7.2 0 2.3 1.2 4.3 3.1 5.6L5.5 20l4-2c.8.2 1.6.2 2.5.2 4.8 0 8.5-3.2 8.5-7.2S16.8 3.5 12 3.5z"/><rect x="9.3" y="10.2" width="5.4" height="3.8" rx="0.8"/><path d="M10.5 10.2V9a1.5 1.5 0 013 0v1.2"/>',
+  telegram: '<path d="M21 4L2.8 11.1c-.8.3-.8 1.4 0 1.7l4.5 1.6 1.7 5.3c.2.7 1.1.9 1.6.4l2.5-2.4 4.6 3.4c.6.4 1.4.1 1.6-.6L22.2 5.3c.2-.9-.5-1.6-1.2-1.3z"/><path d="M7.3 14.4L17.5 8l-7.8 7.6"/>',
+  instagram: '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.9" fill="currentColor"/>',
+  viber: '<path d="M12 3c4.8 0 8 2.2 8 7.6 0 5.2-3.2 7.4-8 7.4-.7 0-1.3 0-1.9-.1L7 20.5v-3.3C5 16 4 13.8 4 10.6 4 5.2 7.2 3 12 3z"/><path d="M9.2 7.7c.4-.3.9-.2 1.1.2l.7 1.3c.2.4.1.8-.2 1.1l-.4.3c.4 1 1.2 1.8 2.2 2.2l.3-.4c.3-.3.7-.4 1.1-.2l1.3.7c.4.2.5.8.2 1.1-.6.8-1.6 1.1-2.5.7-2-.9-3.4-2.3-4.3-4.3-.3-.9 0-1.9.5-2.7z"/>',
+};
+
+const body = icons[name] ?? icons.check;
+---
+
+<svg
+  class:list={["icon", className]}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.6"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden={label ? undefined : 'true'}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  focusable="false"
+  set:html={body}
+/>

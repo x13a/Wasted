@@ -1,0 +1,107 @@
+---
+/**
+ * Vector device render used until real product photography is supplied
+ * (set `image` on a phone in src/data/phones.ts to use a photo instead).
+ */
+import { uid } from '../../lib/uid';
+import type { PhoneModel } from '../../data/phones';
+
+interface Props {
+  finish?: PhoneModel['finish'];
+  view?: 'front' | 'back';
+  label?: string;
+  class?: string;
+  /** Screen content for the front view. */
+  screen?: 'lock' | 'blank';
+}
+
+const { finish = 'midnight', view = 'front', label = 'SPEX', class: className, screen = 'lock' } = Astro.props;
+
+const finishes: Record<NonNullable<Props['finish']>, [string, string, string]> = {
+  graphite: ['#3b3f47', '#1d2026', '#5b616c'],
+  slate: ['#3d4a60', '#1b2230', '#6a7a94'],
+  obsidian: ['#1c1f26', '#08090c', '#3a3f4a'],
+  midnight: ['#1b2c55', '#0a1228', '#3c5596'],
+  titanium: ['#9aa1ab', '#4b5059', '#d6dbe2'],
+};
+const [c1, c2, c3] = finishes[finish];
+const id = uid('ph');
+---
+
+<svg class={className} viewBox="0 0 300 610" role="img" aria-label={`${label} smartphone`}>
+  <defs>
+    <linearGradient id={`${id}-frame`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color={c3}></stop>
+      <stop offset="0.35" stop-color={c1}></stop>
+      <stop offset="1" stop-color={c2}></stop>
+    </linearGradient>
+    <linearGradient id={`${id}-edge`} x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.35"></stop>
+      <stop offset="0.08" stop-color="#ffffff" stop-opacity="0"></stop>
+      <stop offset="0.92" stop-color="#ffffff" stop-opacity="0"></stop>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.2"></stop>
+    </linearGradient>
+    <radialGradient id={`${id}-glow`} cx="0.7" cy="0.25" r="0.9">
+      <stop offset="0" stop-color="#3b82ff" stop-opacity="0.85"></stop>
+      <stop offset="0.35" stop-color="#1c4fd8" stop-opacity="0.45"></stop>
+      <stop offset="1" stop-color="#02040a" stop-opacity="0"></stop>
+    </radialGradient>
+    <linearGradient id={`${id}-screen`} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b1430"></stop>
+      <stop offset="0.6" stop-color="#03060f"></stop>
+      <stop offset="1" stop-color="#010204"></stop>
+    </linearGradient>
+    <linearGradient id={`${id}-sheen`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.12"></stop>
+      <stop offset="0.4" stop-color="#ffffff" stop-opacity="0"></stop>
+    </linearGradient>
+    <linearGradient id={`${id}-bar`} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22262e"></stop>
+      <stop offset="1" stop-color="#07080b"></stop>
+    </linearGradient>
+    <radialGradient id={`${id}-lens`} cx="0.35" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#3a5ea8"></stop>
+      <stop offset="0.4" stop-color="#0b1020"></stop>
+      <stop offset="1" stop-color="#000"></stop>
+    </radialGradient>
+  </defs>
+
+  {/* body */}
+  <rect x="4" y="4" width="292" height="602" rx="48" fill={`url(#${id}-frame)`}></rect>
+  <rect x="4" y="4" width="292" height="602" rx="48" fill={`url(#${id}-edge)`}></rect>
+
+  {
+    view === 'front' ? (
+      <g>
+        <rect x="13" y="13" width="274" height="584" rx="40" fill="#000"></rect>
+        <rect x="17" y="17" width="266" height="576" rx="37" fill={`url(#${id}-screen)`}></rect>
+        <rect x="17" y="17" width="266" height="576" rx="37" fill={`url(#${id}-glow)`}></rect>
+        <circle cx="150" cy="42" r="7" fill="#000" stroke="#1a1f2b" stroke-width="1.5"></circle>
+        {screen === 'lock' && (
+          <g fill="#fff" text-anchor="middle">
+            <text x="150" y="150" font-size="68" font-weight="300" letter-spacing="-2">12:00</text>
+            <text x="150" y="182" font-size="13" fill-opacity="0.65" letter-spacing="3">SECURE · PRIVATE</text>
+            <g transform="translate(126 470)" fill="none" stroke="#9cc0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M24 4l16 6v12c0 9-6.8 16.6-16 18-9.2-1.4-16-9-16-18V10l16-6z"></path>
+              <path d="M17 23l5 5 9-10"></path>
+            </g>
+            <text x="150" y="545" font-size="12" font-weight="600" letter-spacing="6" fill-opacity="0.9">SPEX</text>
+          </g>
+        )}
+        <rect x="17" y="17" width="266" height="576" rx="37" fill={`url(#${id}-sheen)`}></rect>
+      </g>
+    ) : (
+      <g>
+        <rect x="4" y="4" width="292" height="602" rx="48" fill={`url(#${id}-sheen)`}></rect>
+        <rect x="4" y="88" width="292" height="74" fill={`url(#${id}-bar)`}></rect>
+        <rect x="4" y="88" width="292" height="1.5" fill="#fff" fill-opacity="0.15"></rect>
+        <rect x="40" y="104" width="140" height="42" rx="21" fill="#000" fill-opacity="0.7"></rect>
+        <circle cx="66" cy="125" r="15" fill={`url(#${id}-lens)`} stroke="#2b3140" stroke-width="2"></circle>
+        <circle cx="110" cy="125" r="15" fill={`url(#${id}-lens)`} stroke="#2b3140" stroke-width="2"></circle>
+        <circle cx="154" cy="125" r="10" fill={`url(#${id}-lens)`} stroke="#2b3140" stroke-width="2"></circle>
+        <circle cx="222" cy="125" r="5" fill="#f5e7c8" fill-opacity="0.75"></circle>
+        <text x="150" y="530" text-anchor="middle" font-size="15" font-weight="600" letter-spacing="7" fill="#fff" fill-opacity="0.55">SPEX</text>
+      </g>
+    )
+  }
+</svg>

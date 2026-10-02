@@ -1,0 +1,128 @@
+---
+import CategoryVisual from '../visuals/CategoryVisual.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../ui/Icon.astro';
+import { categories } from '../../data/products';
+import { eur } from '../../lib/format';
+---
+
+<section class="section section--navy" id="ecosystem" aria-labelledby="eco-title">
+  <div class="wrap">
+    <SectionHeading
+      id="eco-title"
+      eyebrow="Six product lines. One standard."
+      title="The SPEX ecosystem"
+      lead="Everything SPEX offers is chosen, prepared and configured with privacy in mind — from the phone in your hand to the connection it uses."
+    />
+    <ul class="eco">
+      {
+        categories.map((c, i) => (
+          <li data-reveal data-reveal-delay={String((i % 3) + 1)}>
+            <a href={c.href} class="eco__card">
+              <div class="eco__visual">
+                <CategoryVisual visual={c.visual} />
+              </div>
+              <div class="eco__body">
+                <span class="eco__index">0{i + 1}</span>
+                <h3 class="eco__name">{c.name}</h3>
+                <p class="muted">{c.text}</p>
+                <div class="eco__foot">
+                  <span class="eco__price">
+                    from <strong>{eur(c.fromPrice)}</strong>
+                  </span>
+                  <span class="link-arrow">
+                    Explore <Icon name="arrow" />
+                  </span>
+                </div>
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .eco {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 700px) {
+    .eco {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1100px) {
+    .eco {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .eco > li {
+    display: flex;
+  }
+  .eco__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(90% 60% at 50% 0%, rgba(47, 123, 255, 0.18), transparent 70%),
+      linear-gradient(180deg, #0a1226, #03050b);
+    overflow: hidden;
+    transition:
+      border-color 0.5s var(--ease),
+      box-shadow 0.5s var(--ease),
+      transform 0.5s var(--ease);
+  }
+  .eco__card:hover {
+    border-color: var(--line-blue);
+    box-shadow: var(--glow);
+    transform: translateY(-4px);
+  }
+  .eco__visual {
+    position: relative;
+    aspect-ratio: 4 / 3;
+  }
+  .eco__body {
+    display: grid;
+    gap: 0.6rem;
+    padding: 0 clamp(1.5rem, 3vw, 2rem) clamp(1.5rem, 3vw, 2rem);
+    flex: 1;
+    align-content: start;
+  }
+  .eco__index {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    color: var(--electric-soft);
+  }
+  .eco__name {
+    font-size: clamp(1.6rem, 2.6vw, 2rem);
+    letter-spacing: -0.035em;
+  }
+  .eco__foot {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .eco__price {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .eco__price strong {
+    color: var(--white);
+    font-weight: 600;
+    font-size: 1rem;
+  }
+</style>

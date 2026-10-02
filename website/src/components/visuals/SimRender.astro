@@ -1,0 +1,40 @@
+---
+import { uid } from '../../lib/uid';
+interface Props {
+  class?: string;
+  label?: string;
+  tone?: 'blue' | 'cyan';
+}
+const { class: className, label = 'SPEX', tone = 'blue' } = Astro.props;
+const id = uid('sim');
+const accent = tone === 'cyan' ? '#38c8ff' : '#2f7bff';
+---
+
+<svg class={className} viewBox="0 0 340 214" role="img" aria-label={`${label} SIM card`}>
+  <defs>
+    <linearGradient id={`${id}-card`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16213d"></stop>
+      <stop offset="0.55" stop-color="#0a1022"></stop>
+      <stop offset="1" stop-color="#04060c"></stop>
+    </linearGradient>
+    <radialGradient id={`${id}-glow`} cx="0.85" cy="0.1" r="0.8">
+      <stop offset="0" stop-color={accent} stop-opacity="0.55"></stop>
+      <stop offset="1" stop-color={accent} stop-opacity="0"></stop>
+    </radialGradient>
+    <linearGradient id={`${id}-chip`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e9eef7"></stop>
+      <stop offset="0.5" stop-color="#9aa6bb"></stop>
+      <stop offset="1" stop-color="#d7deea"></stop>
+    </linearGradient>
+  </defs>
+  <rect x="3" y="3" width="334" height="208" rx="18" fill={`url(#${id}-card)`} stroke="#fff" stroke-opacity="0.12"></rect>
+  <rect x="3" y="3" width="334" height="208" rx="18" fill={`url(#${id}-glow)`}></rect>
+  <path d="M40 58h86l18 18v78a8 8 0 01-8 8H40a8 8 0 01-8-8V66a8 8 0 018-8z" fill="none" stroke="#fff" stroke-opacity="0.18" stroke-dasharray="3 4"></path>
+  <rect x="56" y="84" width="62" height="52" rx="9" fill={`url(#${id}-chip)`}></rect>
+  <g stroke="#6b778c" stroke-width="1.5" fill="none">
+    <path d="M56 101h20M56 119h20M98 101h20M98 119h20M76 84v52M98 84v52"></path>
+  </g>
+  <text x="304" y="54" text-anchor="end" font-size="22" font-weight="650" fill="#fff" letter-spacing="-0.5">{label}</text>
+  <text x="304" y="176" text-anchor="end" font-size="11" font-weight="600" fill="#fff" fill-opacity="0.5" letter-spacing="3">SIM CARD</text>
+  <rect x="200" y="186" width="104" height="3" rx="1.5" fill={accent} fill-opacity="0.8"></rect>
+</svg>

@@ -1,0 +1,45 @@
+---
+import { uid } from '../../lib/uid';
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+const id = uid('es');
+---
+
+<svg class={className} viewBox="0 0 320 320" role="img" aria-label="SPEX Data eSIM">
+  <defs>
+    <radialGradient id={`${id}-halo`}>
+      <stop offset="0" stop-color="#2f7bff" stop-opacity="0.55"></stop>
+      <stop offset="1" stop-color="#2f7bff" stop-opacity="0"></stop>
+    </radialGradient>
+    <linearGradient id={`${id}-chip`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b2d5c"></stop>
+      <stop offset="1" stop-color="#050a18"></stop>
+    </linearGradient>
+  </defs>
+  <circle cx="160" cy="160" r="150" fill={`url(#${id}-halo)`}></circle>
+  <g fill="none" stroke="#6aa6ff" stroke-linecap="round">
+    <circle cx="160" cy="160" r="128" stroke-opacity="0.15"></circle>
+    <circle cx="160" cy="160" r="104" stroke-opacity="0.25" stroke-dasharray="2 8" class="spin"></circle>
+  </g>
+  <g stroke="#6aa6ff" stroke-opacity="0.6" stroke-width="3" stroke-linecap="round">
+    <path d="M128 92v-14M160 92v-14M192 92v-14M128 242v-14M160 242v-14M192 242v-14M92 128h-14M92 160h-14M92 192h-14M242 128h-14M242 160h-14M242 192h-14"></path>
+  </g>
+  <rect x="92" y="92" width="136" height="136" rx="26" fill={`url(#${id}-chip)`} stroke="#6aa6ff" stroke-opacity="0.6" stroke-width="1.5"></rect>
+  <rect x="112" y="112" width="96" height="96" rx="16" fill="none" stroke="#fff" stroke-opacity="0.12"></rect>
+  <text x="160" y="168" text-anchor="middle" font-size="30" font-weight="650" fill="#fff" letter-spacing="-1">eSIM</text>
+  <text x="160" y="192" text-anchor="middle" font-size="9" font-weight="600" fill="#9cc0ff" letter-spacing="3">DATA ONLY</text>
+</svg>
+
+<style>
+  .spin {
+    transform-origin: 160px 160px;
+    animation: spin 40s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
