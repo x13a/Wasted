@@ -179,7 +179,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="• Name — anything you like, for example Wasted.\n• Database password — a strong password you keep safe. It protects the database itself and is never used by this app; you only need it for the Supabase dashboard.\n• Region — keep Auto.\n• Enable Data API — leave it ON, the app talks to the database through it.\n• Automatically expose new tables and Enable automatic RLS — either setting is fine. The setup SQL already enables and forces Row Level Security on every table it creates."
+                    android:text="• Name — anything you like, for example Wasted.\n• Database password — a strong password you keep safe. It protects the database itself and is never used by this app; you only need it for the Supabase dashboard.\n• Region — keep Auto.\n• Enable Data API — leave it ON, the app talks to the database through it.\n• Automatically expose new tables and Enable automatic RLS — either setting is fine. The setup SQL removes whatever access these grant, enables and forces Row Level Security on every table, and allows nothing to anon."
                     android:textAppearance="?attr/textAppearanceBodySmall" />
 
                 <com.google.android.material.button.MaterialButton

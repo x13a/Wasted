@@ -17,6 +17,8 @@ local.properties
 .env
 .env.local
 .env.*.local
+.env.backup*
+.env.*.backup*
 .commandcode/
 archive/
 /keystore/

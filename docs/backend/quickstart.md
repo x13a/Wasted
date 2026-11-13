@@ -5,11 +5,12 @@ Six steps, no CLI or Docker. Details are linked at the bottom.
 1. **Create a free Supabase project** at <https://supabase.com/dashboard> → **New project**.
    Give it a name and a database password (that password protects the database itself and is not
    used by the app). Leave **Region** on Auto. The **Security** defaults are fine as they are:
-   *Enable Data API* must stay on (the app talks to the database through it), while
-   *Automatically expose new tables* and *Enable automatic RLS* can be left either way — the setup
-   SQL grants only `SELECT` to `authenticated`, nothing to `anon`, and enables **and forces** Row
-   Level Security on every table it creates, so the setup alone decides access. Then wait for the
-   project to finish provisioning.
+   *Enable Data API* must stay on (the app talks to the database through it). *Automatically expose
+   new tables* and *Enable automatic RLS* can be left either way: the setup SQL explicitly revokes
+   the inherited grants, re-grants only `SELECT` to `authenticated` and nothing to `anon`, and
+   enables **and forces** Row Level Security on every table it creates. Do not rely on the dashboard
+   leaving them off — a fresh project grants `anon` full table access and `PUBLIC` `EXECUTE` on
+   every function until the setup SQL revokes it. Then wait for the project to finish provisioning.
 2. **Open the app**: Remote Management → **Open setup wizard** → paste the **Project URL** and
    **Publishable key** (never the secret/service-role key).
 3. **Set up the database**: in Supabase, open **SQL Editor**, run the release's `setup.sql` once,

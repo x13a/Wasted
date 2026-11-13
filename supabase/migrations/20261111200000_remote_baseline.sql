@@ -3831,5 +3831,70 @@ select cron.schedule(
     $job$select private.cleanup_remote_history();$job$
 );
 
+-- ─── Lock down default privileges ──────────────────────────────────────────
+-- A brand-new Supabase project has "Automatically expose new tables" ON: an event
+-- trigger grants anon/authenticated full table privileges, and functions get PUBLIC
+-- EXECUTE. The explicit grants above add what we need, but they do not remove those
+-- inherited privileges, so revoke them here instead of relying on project defaults.
+-- This is what makes setup.sql safe on ANY project, whatever the dashboard toggles say.
+
+do $$
+declare
+    tbl record;
+    fn record;
+begin
+    for tbl in
+        select c.oid::regclass as rel
+          from pg_class c
+          join pg_namespace n on n.oid = c.relnamespace
+         where n.nspname = 'public'
+           and c.relkind in ('r', 'p', 'v', 'm', 'S')
+    loop
+        execute format(
+            'revoke all on %s from anon, authenticated, public', tbl.rel
+        );
+    end loop;
+
+    for fn in
+        select p.oid::regprocedure as f
+          from pg_proc p
+          join pg_namespace n on n.oid = p.pronamespace
+         where n.nspname = 'public'
+    loop
+        execute format(
+            'revoke all on function %s from public, anon', fn.f
+        );
+    end loop;
+end;
+$$;
+
+-- Restore exactly the intended surface: service_role keeps everything, authenticated
+-- gets SELECT on the ten app tables and EXECUTE on the owner/device RPCs. Nothing for anon.
+grant all on all tables in schema public to service_role;
+grant select on all tables in schema public to authenticated;
+grant all on all sequences in schema public to service_role;
+
+do $$
+declare
+    fn record;
+begin
+    for fn in
+        select p.oid::regprocedure as f
+          from pg_proc p
+          join pg_namespace n on n.oid = p.pronamespace
+         where n.nspname = 'public'
+           and p.proname <> 'hook_single_owner_signup'
+    loop
+        execute format(
+            'grant execute on function %s to authenticated, service_role', fn.f
+        );
+    end loop;
+end;
+$$;
+
+-- The signup hook is Auth-internal: never callable through the Data API.
+revoke all on function public.hook_single_owner_signup(jsonb) from public, anon, authenticated;
+grant all on function public.hook_single_owner_signup(jsonb) to service_role, supabase_auth_admin;
+
 -- Make the new functions/tables visible to PostgREST immediately.
 notify pgrst, 'reload schema';
