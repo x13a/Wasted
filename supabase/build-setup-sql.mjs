@@ -127,8 +127,13 @@ async function render(header, files) {
     const sql = await readFile(join(migrationsDir, file), "utf8");
     parts.push(`-- ===== ${file} =====\n${sql.trim()}`);
   }
-  parts.push("notify pgrst, 'reload schema';");
-  return parts.join("\n\n") + "\n";
+  // The baseline migration already ends with this reload; only add it for bundles that do not,
+  // so the generated file never carries the same statement twice.
+  const body = parts.join("\n\n");
+  const withReload = /notify pgrst, 'reload schema';\s*$/.test(body)
+    ? body
+    : `${body}\n\nnotify pgrst, 'reload schema';`;
+  return withReload + "\n";
 }
 
 function releaseReadme(release, updates, checksums) {

@@ -184,7 +184,7 @@ export function validateSignIn(email, password) {
 }
 
 /** New-account and changed-password rules share one length floor. */
-export const MIN_PASSWORD_LENGTH = 12;
+export const MIN_PASSWORD_LENGTH = 6;
 
 /**
  * Password change requires the current password, a new one, and an identical confirmation.
@@ -248,10 +248,10 @@ export function validateCreateAccount(email, password, confirmation, handle) {
   if (!password) {
     return { field: "create-password", message: "Enter a password." };
   }
-  if (password.length < 12) {
+  if (password.length < MIN_PASSWORD_LENGTH) {
     return {
       field: "create-password",
-      message: "Password must be at least 12 characters.",
+      message: `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`,
     };
   }
   if (!confirmation) {
@@ -335,7 +335,9 @@ export function friendlyAuthError(message) {
     return "This email is already registered. Sign in instead.";
   }
   if (/password should be|weak password/i.test(text)) {
-    return "Password rejected: use at least 12 characters with mixed character classes.";
+    // The project's Supabase password policy can be stricter than the client floor, so do not
+    // promise a specific length here.
+    return "Password rejected by Supabase: use a longer password with mixed character classes.";
   }
   if (/rate limit|too many/i.test(text)) {
     return "Too many attempts. Wait a moment and try again.";

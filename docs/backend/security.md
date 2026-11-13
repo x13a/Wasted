@@ -100,9 +100,13 @@ URL + publishable key.
 - Emails are trimmed and lowercased before Supabase Auth; the dashboard uses `type=email`,
   `maxlength=254`, and explicit inline validation for empty or malformed values. Supabase validates
   again server-side.
-- Passwords are never trimmed or altered. Create Account requires a confirmed password and at least
-  12 characters; Sign In accepts existing passwords, including shorter ones if the project permits
-  them. Configure the project's minimum password length if you need a server-side floor as well.
+- Passwords are never trimmed or altered. Create Account and Change Password both require a
+  confirmed password and at least 6 characters, matching Supabase's server default
+  (`GOTRUE_PASSWORD_MIN_LENGTH`), so the client and server floors agree. Sign In accepts existing
+  passwords, including shorter ones if the project permits them.
+- Leaked-password protection (HaveIBeenPwned) is **Pro plan and above**, so it cannot be required of
+  the free-plan projects this product targets. Leave it off; the password floor and Supabase rate
+  limits are the available controls.
 - Account names are display names: 1–32 characters, spaces and normal punctuation allowed,
   control characters rejected. They are stored in `public.accounts`; the signup copy is also stored
   in auth metadata as a bootstrap fallback. Device names are 1–80 characters.

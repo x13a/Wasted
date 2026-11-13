@@ -95,6 +95,49 @@ would succeed. Treat the hook as part of installation, not hardening.
 
 ---
 
+## 3.1. Cleaning an existing project (reuse in place)
+
+`setup.sql` is create-only: it has no `DROP`, so it cannot be re-run over an old schema. To reuse
+the same Supabase project for a fresh install, run these in the SQL Editor **in this order**:
+
+```sql
+-- 1. Remove the app schema. This also deletes every app RLS policy, trigger and table.
+drop schema if exists public cascade;
+create schema public;
+-- Restore the exact hosted defaults (owner + ACL) so the project looks like a new one.
+alter schema public owner to pg_database_owner;
+comment on schema public is 'standard public schema';
+grant usage on schema public to public;
+grant usage on schema public to postgres, anon, authenticated, service_role, supabase_auth_admin;
+grant create on schema public to pg_database_owner;
+drop schema if exists private cascade;
+
+-- 2. Remove the old owner identity. The single-owner hook (step 5) blocks every new email signup
+--    while ANY non-anonymous user with an email exists in auth.users, and dropping the app schema
+--    does not touch auth. Deleting these rows is what lets you create the owner again.
+delete from auth.users where is_anonymous is false;
+
+-- 3. Clear the stale migration history so `supabase db push` is usable again (optional).
+delete from supabase_migrations.schema_migrations;
+```
+
+Then:
+
+4. Run `setup.sql` once.
+5. Re-check the four [manual Auth steps](#3-what-the-setup-file-cannot-do-manual-auth-steps).
+   The Before User Created hook is a dashboard setting that survives the schema drop, so it will
+   be pointing at `hook_single_owner_signup` **before** step 4 recreates it — that is expected, but it
+   means anonymous device sign-in fails until `setup.sql` has run.
+6. Run `verify.sql`; every row must say PASS.
+
+**This deletes every device row**, so enrolled devices must enroll again with a new token. Session
+recovery restores an *existing* row for a rotated token; it cannot recreate a deleted one.
+
+Do **not** use this to upgrade a production project: it is only for wiping a project you intend to
+treat as brand new.
+
+---
+
 ## 4. Docker: what actually needs it
 
 Verified against the installed CLI (v2.121.0) with the Docker daemon stopped and started.
@@ -416,6 +459,9 @@ cd web && pnpm test && pnpm build && pnpm build:android-template
   [Equivalence proof](#5-proving-the-shipped-file-equals-the-live-project).
 - **Auth settings are never covered by SQL or `verify.sql`** — verify the
   [manual Auth steps](#3-what-the-setup-file-cannot-do-manual-auth-steps) on every new project.
+- **Reusing an existing project needs extra steps** — dropping `public`/`private` is not enough;
+  the old owner identity in `auth.users` blocks all later signups. See
+  [Cleaning an existing project](#31-cleaning-an-existing-project-reuse-in-place).
 
 ---
 

@@ -168,10 +168,34 @@
                     android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                 <TextView
+                    android:id="@+id/createProjectIntro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="Create a project at supabase.com. Then open Connect (or Settings → API Keys) and copy the Project URL and publishable key. Never copy the secret/service-role key."
+                    android:textColorLink="?attr/colorPrimary"
+                    android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="• Name — anything you like, for example Wasted.\n• Database password — a strong password you keep safe. It protects the database itself and is never used by this app; you only need it for the Supabase dashboard.\n• Region — keep Auto.\n• Enable Data API — leave it ON, the app talks to the database through it.\n• Automatically expose new tables and Enable automatic RLS — either setting is fine. The setup SQL already enables and forces Row Level Security on every table it creates."
+                    android:textAppearance="?attr/textAppearanceBodySmall" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/createProject"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Create new project" />
+
+                <TextView
+                    android:id="@+id/copyKeysHint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColorLink="?attr/colorPrimary"
                     android:textAppearance="?attr/textAppearanceBodyMedium" />
 
                 <com.google.android.material.button.MaterialButton

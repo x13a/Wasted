@@ -3858,5 +3858,3 @@ select cron.schedule(
 
 -- Make the new functions/tables visible to PostgREST immediately.
 notify pgrst, 'reload schema';
-
-notify pgrst, 'reload schema';

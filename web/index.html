@@ -353,7 +353,7 @@
         <label for="create-password">Password</label>
         <div class="password-wrap">
           <input id="create-password" name="password" type="password" autocomplete="new-password"
-                 minlength="12" placeholder="At least 12 characters" required>
+                 minlength="6" placeholder="At least 6 characters" required>
           <button type="button" class="password-toggle" data-password-toggle="create-password"
                   aria-label="Show password" aria-pressed="false">
             <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -364,13 +364,13 @@
             </svg>
           </button>
         </div>
-        <p class="hint">At least 12 characters.</p>
+        <p class="hint">At least 6 characters.</p>
       </div>
       <div class="field">
         <label for="create-password-confirm">Confirm password</label>
         <div class="password-wrap">
           <input id="create-password-confirm" name="passwordConfirm" type="password"
-                 autocomplete="new-password" minlength="12" placeholder="Repeat your password"
+                 autocomplete="new-password" minlength="6" placeholder="Repeat your password"
                  required>
           <button type="button" class="password-toggle" data-password-toggle="create-password-confirm"
                   aria-label="Show password" aria-pressed="false">
@@ -982,7 +982,7 @@
                 <svg class="icon heading-icon" aria-hidden="true"><use href="#icon-lock"/></svg>Change password
               </h4>
               <p class="hint">
-                Enter your current password, then the new one twice. Use at least 12 characters with
+                Enter your current password, then the new one twice. Use at least 6 characters with
                 upper and lower case letters and digits. The new password takes effect immediately; no
                 email is sent and other signed-in browsers stay signed in.
               </p>
@@ -1008,8 +1008,8 @@
                   <label for="account-new-password">New password</label>
                   <div class="password-wrap">
                     <input id="account-new-password" name="newPassword" type="password"
-                           autocomplete="new-password" minlength="12"
-                           placeholder="At least 12 characters" required>
+                           autocomplete="new-password" minlength="6"
+                           placeholder="At least 6 characters" required>
                     <button type="button" class="password-toggle"
                             data-password-toggle="account-new-password"
                             aria-label="Show password" aria-pressed="false">
@@ -1026,7 +1026,7 @@
                   <label for="account-new-password-confirm">Confirm new password</label>
                   <div class="password-wrap">
                     <input id="account-new-password-confirm" name="newPasswordConfirm" type="password"
-                           autocomplete="new-password" minlength="12"
+                           autocomplete="new-password" minlength="6"
                            placeholder="Repeat the new password" required>
                     <button type="button" class="password-toggle"
                             data-password-toggle="account-new-password-confirm"

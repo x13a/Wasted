@@ -11,6 +11,8 @@ import android.view.View
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
+import androidx.core.text.method.LinkMovementMethodCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -107,6 +109,19 @@ class RemoteSetupActivity : AppCompatActivity() {
         binding.newSetupCard.setOnClickListener { showStep(STEP_PROJECT) }
         binding.existingSetupCard.setOnClickListener { showStep(STEP_EXISTING) }
         binding.openProject.setOnClickListener { openProjectPage("") }
+        binding.createProject.setOnClickListener { openUrl("https://supabase.com/dashboard/projects") }
+        renderLinks(
+            binding.createProjectIntro,
+            "Sign in at <a href=\"https://supabase.com/dashboard\">supabase.com/dashboard</a> " +
+                "and press <b>New project</b>. Fill in:",
+        )
+        renderLinks(
+            binding.copyKeysHint,
+            "Wait until the new project finishes provisioning. Then open " +
+                "<a href=\"https://supabase.com/dashboard/projects\">your project</a> → " +
+                "<b>Connect</b> (or <b>Settings → API Keys</b>) and copy the Project URL and " +
+                "publishable key. Never copy the secret/service-role key.",
+        )
         binding.copySetupSql.setOnClickListener { copySetupSql() }
         binding.saveSetupSql.setOnClickListener { saveSqlAsset("setup.sql", "wasted-setup.sql") }
         binding.saveUpdateSql.setOnClickListener { saveUpdateSql() }
@@ -314,6 +329,12 @@ class RemoteSetupActivity : AppCompatActivity() {
     private fun openUrl(url: String) {
         runCatching { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))) }
             .onFailure { snackbar("No browser available.") }
+    }
+
+    /** Renders inline HTML so anchors in the setup copy are tappable links, not plain text. */
+    private fun renderLinks(view: android.widget.TextView, markup: String) {
+        view.text = HtmlCompat.fromHtml(markup, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        view.movementMethod = LinkMovementMethodCompat.getInstance()
     }
 
     private fun writeDashboardPackage(uri: Uri) {

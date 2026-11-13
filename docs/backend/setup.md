@@ -80,7 +80,7 @@ open the URL can attempt to create an account; RLS protects the data.
 Create the owner account before sharing the dashboard URL: the first authenticated owner claims the
 single-owner bootstrap.
 
-1. Open the hosted dashboard → **Create Account** (email, password ≥ 12 characters, confirmed
+1. Open the hosted dashboard → **Create Account** (email, password ≥ 6 characters, confirmed
    password, account name). Signup is direct: the first account becomes the owner immediately and
    no email is sent.
 2. The Before User Created hook rejects every later email/password account. Use the owner account.

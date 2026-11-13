@@ -52,7 +52,7 @@ test("sign-in validation names the exact field", () => {
 test("create-account validation checks password confirmation and handle", () => {
   assert.deepEqual(
     validateCreateAccount("owner@example.com", "short", "short", "Alex"),
-    { field: "create-password", message: "Password must be at least 12 characters." },
+    { field: "create-password", message: "Password must be at least 6 characters." },
   );
   assert.deepEqual(
     validateCreateAccount("owner@example.com", "long-enough-1", "different-1", "Alex"),
@@ -66,6 +66,12 @@ test("create-account validation checks password confirmation and handle", () => 
     validateCreateAccount("owner@example.com", "long-enough-1", "long-enough-1", "John Doe"),
     null,
   );
+  // The floor matches Supabase's server default so the two cannot disagree.
+  assert.deepEqual(validateCreateAccount("owner@example.com", "abcde", "abcde", "John"), {
+    field: "create-password",
+    message: "Password must be at least 6 characters.",
+  });
+  assert.equal(validateCreateAccount("owner@example.com", "abcdef", "abcdef", "John"), null);
 });
 
 test("signup stores the handle in Supabase auth metadata", async () => {
@@ -149,7 +155,7 @@ test("password change requires current, new and matching confirmation", () => {
   );
   assert.equal(
     validatePasswordChange("old-password-1", "short", "short").message,
-    "Password must be at least 12 characters.",
+    "Password must be at least 6 characters.",
   );
   assert.equal(
     validatePasswordChange("same-password-1", "same-password-1", "same-password-1").message,
