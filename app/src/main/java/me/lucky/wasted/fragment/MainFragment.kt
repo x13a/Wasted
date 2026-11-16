@@ -180,21 +180,23 @@ class MainFragment : Fragment() {
     // ─── Protection level + Setup cards ──────────────────────────────────────
 
     /**
-     * Refresh both cards. Cards only show when wipe is enabled and Device Admin is active.
+     * Refresh both cards.
+     *
+     * The protection card only matters while wiping is armed, but the setup card does not: it is
+     * how the user gets Shizuku and Device Owner ready in the first place, and the Remote
+     * Management screen sends them here. Hiding it until wipe is enabled would hide the very steps
+     * the user was told to follow.
      */
     private fun refreshProtectionUI() {
-        val showCards = prefs.isWipeData && admin.isActive()
-        if (!showCards) {
-            binding.protectionCard.visibility = View.GONE
-            binding.setupCard.visibility = View.GONE
-            return
-        }
-        binding.protectionCard.visibility = View.VISIBLE
-        binding.protectionStatus.text = when (admin.getProtectionTier()) {
-            1 -> getString(R.string.protection_tier_1)
-            2 -> getString(R.string.protection_tier_2)
-            3 -> getString(R.string.protection_tier_3)
-            else -> getString(R.string.protection_tier_4)
+        val showProtection = prefs.isWipeData && admin.isActive()
+        binding.protectionCard.visibility = if (showProtection) View.VISIBLE else View.GONE
+        if (showProtection) {
+            binding.protectionStatus.text = when (admin.getProtectionTier()) {
+                1 -> getString(R.string.protection_tier_1)
+                2 -> getString(R.string.protection_tier_2)
+                3 -> getString(R.string.protection_tier_3)
+                else -> getString(R.string.protection_tier_4)
+            }
         }
         updateSetupCard()
     }
