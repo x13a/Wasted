@@ -336,24 +336,72 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="In Supabase → Authentication:\n\n• Providers: enable “Allow anonymous sign-ins”. Remote Management uses this to give each device its own private identity, so your email and password never have to be stored on the device.\n• Providers → Email: keep the Email provider ON (it enables email/password sign-in), but turn “Confirm email” OFF. Signup is direct; no confirmation email is sent.\n• Hooks: open “Before User Created”, turn the hook ON, set Hook type to Postgres, Postgres schema to public, select Postgres function hook_single_owner_signup, and Save. This blocks every later email/password account; anonymous device identities are still allowed.\n• Rate Limits: 10 anonymous/hour/IP and 10 sign-in/sign-up per 5 minutes/IP.\n\nThe first account becomes the owner. No further email accounts can be created, even if someone finds the dashboard URL — this is the security rule for this single-owner dashboard. Anonymous device signups remain allowed for enrollment. Account name changes are in the dashboard; password/account recovery is handled from the Supabase dashboard. CAPTCHA can stay off. If you do not want Remote Management, you can leave anonymous sign-ins off; the owner dashboard still works, but this device cannot enroll or sync."
+                    android:text="Three settings on the same Supabase page. Tap a button, change the setting, then come back here."
                     android:textAppearance="?attr/textAppearanceBodyMedium" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/openAuthSettings"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:text="a. Allow anonymous sign-ins"
+                    android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Turn ON. Each device gets its own private identity, so your email and password are never stored on the phone."
+                    android:textAppearance="?attr/textAppearanceBodySmall" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/openAuthSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="Open Authentication settings" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="b. Confirm email"
+                    android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="On the same page under Providers → Email, keep the Email provider ON and turn Confirm email OFF. Signup is then direct and no email is sent."
+                    android:textAppearance="?attr/textAppearanceBodySmall" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="c. Before User Created hook"
+                    android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Turn the hook ON, choose Hook type Postgres, schema public, function hook_single_owner_signup, then Save. This is what stops a second email account from ever being created."
+                    android:textAppearance="?attr/textAppearanceBodySmall" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/openAuthHooks"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Open Auth Hooks" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="The first account you create becomes the only owner. Later email signups are rejected, even if someone finds your dashboard URL. If you do not want Remote Management, anonymous sign-ins can stay off — the dashboard still works, but this phone cannot enroll or sync."
+                    android:textAppearance="?attr/textAppearanceBodySmall" />
+
             </LinearLayout>
         </ScrollView>
 
