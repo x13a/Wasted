@@ -308,11 +308,16 @@ class RemoteManagementFragment : Fragment() {
 
     private fun showEditDashboardDialog() {
         val dialogBinding = DialogRemoteFieldBinding.inflate(layoutInflater)
+        val savedUrl = configStore.load()?.websiteUrl.orEmpty()
         dialogBinding.hint.text =
             "Paste the HTTPS URL of the hosted dashboard. If it is not hosted yet, use the setup " +
                 "wizard to generate the ZIP, then upload it to your Netlify project."
         dialogBinding.field.hint = "Dashboard URL"
-        dialogBinding.field.editText?.setText(configStore.load()?.websiteUrl.orEmpty())
+        dialogBinding.field.editText?.setText(savedUrl)
+        dialogBinding.clear.setOnClickListener {
+            dialogBinding.field.editText?.setText("")
+        }
+        dialogBinding.clear.visibility = if (savedUrl.isBlank()) View.GONE else View.VISIBLE
 
         val dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Dashboard URL")
@@ -325,6 +330,15 @@ class RemoteManagementFragment : Fragment() {
             dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val raw = dialogBinding.field.editText?.text?.toString().orEmpty().trim()
                 dialogBinding.field.error = null
+                // An empty field is a deliberate clear, not an invalid value.
+                if (raw.isEmpty()) {
+                    configStore.clearWebsiteUrl()
+                    RemoteRuntime.reset()
+                    dialog.dismiss()
+                    snackbar("Dashboard URL cleared.")
+                    refreshState()
+                    return@setOnClickListener
+                }
                 val uri = runCatching { java.net.URI(raw) }.getOrNull()
                 if (uri?.scheme != "https" || uri.host.isNullOrBlank()) {
                     dialogBinding.field.error = "Enter a valid HTTPS URL."
