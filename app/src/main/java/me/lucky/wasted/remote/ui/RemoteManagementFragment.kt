@@ -27,6 +27,8 @@ import me.lucky.wasted.R
 import me.lucky.wasted.Trigger
 import me.lucky.wasted.Utils
 import me.lucky.wasted.admin.DeviceAdminManager
+import me.lucky.wasted.databinding.DialogRemoteConnectionBinding
+import me.lucky.wasted.databinding.DialogRemoteFieldBinding
 import me.lucky.wasted.databinding.FragmentRemoteManagementBinding
 import me.lucky.wasted.remote.RemoteEngine
 import me.lucky.wasted.remote.data.RemoteConfigStore
@@ -58,7 +60,6 @@ class RemoteManagementFragment : Fragment() {
     private lateinit var credentials: RemoteCredentialStore
     private lateinit var adminManager: DeviceAdminManager
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-    private var defaultDashboardStrokeColor = 0
     private var defaultDashboardStatusColor = 0
 
     override fun onCreateView(
@@ -67,7 +68,6 @@ class RemoteManagementFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentRemoteManagementBinding.inflate(inflater, container, false)
-        defaultDashboardStrokeColor = binding.websiteUrl.boxStrokeColor
         defaultDashboardStatusColor = binding.dashboardStatus.currentTextColor
         prefs = Preferences.new(requireContext())
         configStore = RemoteConfigStore.new(requireContext())
@@ -106,40 +106,11 @@ class RemoteManagementFragment : Fragment() {
 
     private fun init() = with(binding) {
         deviceName.editText?.setText(Build.MODEL ?: "")
-        configStore.load()?.let { config ->
-            projectUrl.editText?.setText(config.projectUrl)
-            publishableKey.editText?.setText(config.publishableKey)
-            websiteUrl.editText?.setText(config.websiteUrl)
-        } ?: configStore.loadDraft()?.let { draft ->
-            projectUrl.editText?.setText(draft.projectUrl)
-            publishableKey.editText?.setText(draft.publishableKey)
-        }
         refreshState()
     }
 
     override fun onResume() {
         super.onResume()
-        val config = configStore.load()
-        if (config != null) {
-            if (binding.projectUrl.editText?.text.isNullOrBlank()) {
-                binding.projectUrl.editText?.setText(config.projectUrl)
-            }
-            if (binding.publishableKey.editText?.text.isNullOrBlank()) {
-                binding.publishableKey.editText?.setText(config.publishableKey)
-            }
-            if (binding.websiteUrl.editText?.text.isNullOrBlank()) {
-                binding.websiteUrl.editText?.setText(config.websiteUrl)
-            }
-            refreshState()
-            return
-        }
-        val draft = configStore.loadDraft() ?: return
-        if (binding.projectUrl.editText?.text.isNullOrBlank()) {
-            binding.projectUrl.editText?.setText(draft.projectUrl)
-        }
-        if (binding.publishableKey.editText?.text.isNullOrBlank()) {
-            binding.publishableKey.editText?.setText(draft.publishableKey)
-        }
         refreshState()
     }
 
@@ -147,8 +118,8 @@ class RemoteManagementFragment : Fragment() {
         setupWizard.setOnClickListener {
             startActivity(Intent(requireContext(), RemoteSetupActivity::class.java))
         }
-        saveConfig.setOnClickListener { saveConnection() }
-        saveDashboard.setOnClickListener { saveDashboard() }
+        editConnection.setOnClickListener { showEditConnectionDialog() }
+        editDashboard.setOnClickListener { showEditDashboardDialog() }
         testConnection.setOnClickListener { testConnection() }
         testDashboard.setOnClickListener { testDashboard() }
         openSupabase.setOnClickListener { openUrl("https://supabase.com/dashboard") }
@@ -200,6 +171,17 @@ class RemoteManagementFragment : Fragment() {
         enrollmentProgress.visibility = View.GONE
         openWebsite.isEnabled = !config?.websiteUrl.isNullOrBlank()
         openDashboardFromEnrollment.isEnabled = !config?.websiteUrl.isNullOrBlank()
+        testDashboard.isEnabled = !config?.websiteUrl.isNullOrBlank()
+
+        // The screen renders saved values only; editing happens in the dialogs.
+        projectUrlValue.text = config?.projectUrl ?: draft?.projectUrl ?: "Not set"
+        val key = config?.publishableKey ?: draft?.publishableKey
+        publishableKeyValue.text = if (key.isNullOrBlank()) {
+            "Publishable key: not set"
+        } else {
+            "Publishable key: ${maskKey(key)}"
+        }
+        websiteUrlValue.text = config?.websiteUrl?.takeIf { it.isNotBlank() } ?: "Not set"
 
         val message = buildString {
             if (config == null) {
@@ -242,85 +224,129 @@ class RemoteManagementFragment : Fragment() {
         }
     }
 
-    private fun saveConnection() {
-        with(binding) {
-            val projectUrl = projectUrl.editText?.text?.toString().orEmpty()
-            val publishableKey = publishableKey.editText?.text?.toString().orEmpty()
-            val errors = RemoteConfigValidator.validateConnection(projectUrl, publishableKey)
-            applyConnectionErrors(errors)
-            if (errors.isNotEmpty()) {
-                snackbar("Fix the Supabase connection fields.")
-                return
-            }
+    /**
+     * Editing happens in a dialog so the saved configuration is the single source of truth. The
+     * screen itself only ever renders saved values, which is what keeps a stale URL from being
+     * silently reused: there is no unsaved field to drift out of sync.
+     */
+    private fun showEditConnectionDialog() {
+        val dialogBinding = DialogRemoteConnectionBinding.inflate(layoutInflater)
+        val saved = configStore.load()
+        val draft = if (saved == null) configStore.loadDraft() else null
+        dialogBinding.projectUrl.editText?.setText(saved?.projectUrl ?: draft?.projectUrl.orEmpty())
+        dialogBinding.publishableKey.editText?.setText(
+            saved?.publishableKey ?: draft?.publishableKey.orEmpty(),
+        )
 
-            val existing = configStore.load()
-            val saved = if (existing != null) {
-                configStore.save(
-                    RemoteConfig(projectUrl, publishableKey, existing.websiteUrl),
-                )
-            } else {
-                configStore.saveDraft(projectUrl, publishableKey)
-            }
-            if (saved) {
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Supabase connection")
+            .setView(dialogBinding.root)
+            .setPositiveButton("Save", null)
+            .setNegativeButton(android.R.string.cancel, null)
+            .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val projectUrl = dialogBinding.projectUrl.editText?.text?.toString().orEmpty()
+                val publishableKey = dialogBinding.publishableKey.editText?.text?.toString().orEmpty()
+                dialogBinding.projectUrl.error = null
+                dialogBinding.publishableKey.error = null
+
+                val errors = RemoteConfigValidator.validateConnection(projectUrl, publishableKey)
+                for (error in errors) {
+                    when (error.field) {
+                        RemoteConfigField.PROJECT_URL -> dialogBinding.projectUrl.error = error.message
+                        RemoteConfigField.PUBLISHABLE_KEY ->
+                            dialogBinding.publishableKey.error = error.message
+                        RemoteConfigField.WEBSITE_URL -> Unit
+                    }
+                }
+                if (errors.isNotEmpty()) return@setOnClickListener
+
+                val existing = configStore.load()
+                val changed = existing == null || existing.projectUrl.trim() != projectUrl.trim()
+                val savedOk = if (existing != null) {
+                    configStore.save(
+                        RemoteConfig(projectUrl, publishableKey, existing.websiteUrl),
+                    )
+                } else {
+                    configStore.saveDraft(projectUrl, publishableKey)
+                }
+                if (!savedOk) {
+                    snackbar("Supabase connection could not be saved.")
+                    return@setOnClickListener
+                }
                 RemoteRuntime.reset()
+                dialog.dismiss()
                 snackbar("Supabase connection saved.")
+                // A different project means the saved dashboard URL almost certainly belongs to
+                // the previous one, so offer to clear it instead of quietly reusing it.
+                if (changed && existing?.websiteUrl?.isNotBlank() == true) {
+                    promptClearDashboardUrl()
+                }
                 refreshState()
-            } else {
-                snackbar("Supabase connection could not be saved.")
             }
         }
+        dialog.show()
     }
 
-    private fun saveDashboard() {
-        with(binding) {
-            val config = RemoteConfig(
-                projectUrl = projectUrl.editText?.text?.toString().orEmpty(),
-                publishableKey = publishableKey.editText?.text?.toString().orEmpty(),
-                websiteUrl = websiteUrl.editText?.text?.toString().orEmpty(),
+    private fun promptClearDashboardUrl() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Clear the saved dashboard URL?")
+            .setMessage(
+                "The saved dashboard was built for a different Supabase project. Host the new " +
+                    "dashboard, then set its URL. Keeping the old one would open the wrong site.",
             )
-            val errors = RemoteConfigValidator.validate(
-                config.projectUrl,
-                config.publishableKey,
-                config.websiteUrl,
-            )
-            applyFieldErrors(errors)
-            if (errors.isNotEmpty()) {
-                snackbar("Fix the highlighted fields.")
-                return
+            .setPositiveButton("Clear it") { _, _ ->
+                configStore.clearWebsiteUrl()
+                refreshState()
+                snackbar("Dashboard URL cleared.")
             }
-            if (configStore.save(config)) {
+            .setNegativeButton("Keep", null)
+            .show()
+    }
+
+    private fun showEditDashboardDialog() {
+        val dialogBinding = DialogRemoteFieldBinding.inflate(layoutInflater)
+        dialogBinding.hint.text =
+            "Paste the HTTPS URL of the hosted dashboard. If it is not hosted yet, use the setup " +
+                "wizard to generate the ZIP, then upload it to your Netlify project."
+        dialogBinding.field.hint = "Dashboard URL"
+        dialogBinding.field.editText?.setText(configStore.load()?.websiteUrl.orEmpty())
+
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Dashboard URL")
+            .setView(dialogBinding.root)
+            .setPositiveButton("Save", null)
+            .setNegativeButton(android.R.string.cancel, null)
+            .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val raw = dialogBinding.field.editText?.text?.toString().orEmpty().trim()
+                dialogBinding.field.error = null
+                val uri = runCatching { java.net.URI(raw) }.getOrNull()
+                if (uri?.scheme != "https" || uri.host.isNullOrBlank()) {
+                    dialogBinding.field.error = "Enter a valid HTTPS URL."
+                    return@setOnClickListener
+                }
+                val existing = configStore.load()
+                val draft = if (existing == null) configStore.loadDraft() else null
+                if (existing == null && draft == null) {
+                    dialogBinding.field.error = "Save the Supabase connection first."
+                    return@setOnClickListener
+                }
+                if (!configStore.saveWebsiteUrl(raw)) {
+                    dialogBinding.field.error = "Could not save the dashboard URL."
+                    return@setOnClickListener
+                }
                 RemoteRuntime.reset()
+                dialog.dismiss()
                 snackbar("Dashboard URL saved.")
                 refreshState()
-            } else {
-                snackbar("Dashboard URL could not be saved.")
             }
         }
-    }
-
-    private fun applyConnectionErrors(errors: List<RemoteConfigError>) = with(binding) {
-        projectUrl.error = null
-        publishableKey.error = null
-        for (error in errors) {
-            when (error.field) {
-                RemoteConfigField.PROJECT_URL -> projectUrl.error = error.message
-                RemoteConfigField.PUBLISHABLE_KEY -> publishableKey.error = error.message
-                RemoteConfigField.WEBSITE_URL -> Unit
-            }
-        }
-    }
-
-    private fun applyFieldErrors(errors: List<RemoteConfigError>) = with(binding) {
-        projectUrl.error = null
-        publishableKey.error = null
-        websiteUrl.error = null
-        for (error in errors) {
-            when (error.field) {
-                RemoteConfigField.PROJECT_URL -> projectUrl.error = error.message
-                RemoteConfigField.PUBLISHABLE_KEY -> publishableKey.error = error.message
-                RemoteConfigField.WEBSITE_URL -> websiteUrl.error = error.message
-            }
-        }
+        dialog.show()
     }
 
     private fun testConnection() {
@@ -393,10 +419,10 @@ class RemoteManagementFragment : Fragment() {
     }
 
     private fun testDashboard() {
-        val raw = binding.websiteUrl.editText?.text?.toString()?.trim().orEmpty()
+        val raw = configStore.load()?.websiteUrl?.trim().orEmpty()
         if (raw.isEmpty()) {
             setDashboardTestVisual(false)
-            binding.dashboardStatus.text = "Enter the hosted dashboard URL first."
+            binding.dashboardStatus.text = "Set the dashboard URL first."
             return
         }
         val uri = runCatching { java.net.URI(raw) }.getOrNull()
@@ -448,13 +474,14 @@ class RemoteManagementFragment : Fragment() {
 
     private fun setDashboardTestVisual(success: Boolean) {
         val green = ContextCompat.getColor(requireContext(), R.color.green_500)
-        binding.websiteUrl.setBoxStrokeColor(
-            if (success) green else defaultDashboardStrokeColor,
-        )
         binding.dashboardStatus.setTextColor(
             if (success) green else defaultDashboardStatusColor,
         )
     }
+
+    /** Keys identify a project rather than acting as a secret, but the full value is just noise. */
+    private fun maskKey(key: String): String =
+        if (key.length <= 16) key else "${key.take(12)}…${key.takeLast(4)}"
 
     private fun connectionErrorMessage(error: RemoteError): String = when (error) {
         RemoteError.Network -> "network unavailable. Check your internet connection."

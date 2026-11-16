@@ -120,38 +120,30 @@
                 android:text="In Supabase, open Connect (or Settings → API Keys) and copy the Project URL and publishable key. Never use the secret/service-role key."
                 android:textAppearance="?attr/textAppearanceBodySmall" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/projectUrl"
+            <TextView
+                android:id="@+id/projectUrlValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Project URL">
+                android:text="Not set"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textIsSelectable="true" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textUri" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/publishableKey"
+            <TextView
+                android:id="@+id/publishableKeyValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Publishable key">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="2dp"
+                android:text="Not set"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textIsSelectable="true" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/saveConfig"
+                android:id="@+id/editConnection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Save Supabase connection" />
+                android:text="Edit Supabase connection" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/testConnection"
@@ -192,25 +184,21 @@
                 android:text="If the test returns HTTP 401 or 403, the site is private or password-protected. Make the Netlify project public (or disable password protection), then test again."
                 android:textAppearance="?attr/textAppearanceBodySmall" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/websiteUrl"
+            <TextView
+                android:id="@+id/websiteUrlValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Dashboard URL">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textUri" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:text="Not set"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textIsSelectable="true" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/saveDashboard"
+                android:id="@+id/editDashboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Save dashboard URL" />
+                android:text="Edit dashboard URL" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/testDashboard"

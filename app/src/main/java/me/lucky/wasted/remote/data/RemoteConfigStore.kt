@@ -70,6 +70,24 @@ class RemoteConfigStore(private val prefs: SharedPreferences) {
             .commit()
     }.getOrDefault(false)
 
+    /** Clears just the dashboard URL, used when the linked project changes. */
+    fun clearWebsiteUrl() {
+        runCatching { prefs.edit().remove(KEY_WEBSITE_URL).commit() }
+    }
+
+    /**
+     * Saves only the dashboard URL, taking the connection details from the saved configuration or,
+     * before a dashboard URL exists, from the setup draft. `load()` returns null while any field is
+     * missing, so it cannot be used as the source here.
+     */
+    fun saveWebsiteUrl(websiteUrl: String): Boolean = runCatching {
+        val saved = load()
+        val projectUrl = saved?.projectUrl ?: loadDraft()?.projectUrl ?: return@runCatching false
+        val publishableKey = saved?.publishableKey ?: loadDraft()?.publishableKey
+            ?: return@runCatching false
+        save(RemoteConfig(projectUrl, publishableKey, websiteUrl))
+    }.getOrDefault(false)
+
     fun clearConfiguration() {
         runCatching {
             prefs.edit()

@@ -308,13 +308,25 @@ class RemoteSetupActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Opens a page of the user's project. Before a project URL is entered there is no project to
+     * target yet, so fall back to the dashboard home instead of refusing to open anything — the
+     * user is on step 1 precisely because they have not created a project.
+     */
     private fun openProjectPage(suffix: String) {
+        val path = if (suffix.isEmpty()) "" else "/$suffix"
         val ref = projectRef()
         if (ref == null) {
-            snackbar("Enter a valid Supabase project URL first.")
+            // No project URL yet: the user is on step 1 and still has to create the project.
+            openUrl(
+                if (path.isEmpty() || path == "/sql/new") {
+                    "https://supabase.com/dashboard"
+                } else {
+                    "https://supabase.com/dashboard/projects"
+                },
+            )
             return
         }
-        val path = if (suffix.isEmpty()) "" else "/$suffix"
         openUrl("https://supabase.com/dashboard/project/$ref$path")
     }
 
