@@ -45,6 +45,10 @@ object RemoteErrors {
                 // Checked before the generic "revoked" rule below: a revoked device needs a new
                 // enrollment, while a revoked token just needs a fresh one.
                 text.contains("device revoked", ignoreCase = true) -> RemoteError.Authentication
+                // The caller is signed in but not with a device identity (for example an owner
+                // session). Only a new anonymous session can fix it.
+                text.contains("anonymous device identity", ignoreCase = true) ->
+                    RemoteError.Authentication
                 text.contains("revision conflict", ignoreCase = true) -> RemoteError.Conflict
                 text.contains("state conflict", ignoreCase = true) -> RemoteError.Conflict
                 text.contains("illegal transition", ignoreCase = true) -> RemoteError.Conflict

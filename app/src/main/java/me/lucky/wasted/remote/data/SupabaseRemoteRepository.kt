@@ -308,12 +308,17 @@ class SupabaseRemoteRepository(
     }
 
     private fun mapError(error: Throwable): RemoteError = when (error) {
-        is RestException -> RemoteErrors.classify(
-            statusCode = error.statusCode,
-            sqlState = (error as? PostgrestRestException)?.code,
-            isNetwork = false,
-            message = error.error,
-        )
+        is RestException -> {
+            // The sanitized reason hides the server text from the UI, so log it here: without it
+            // a misclassified enrollment failure is impossible to diagnose.
+            Log.w(TAG, "REST ${error.statusCode} ${(error as? PostgrestRestException)?.code}: ${error.error}")
+            RemoteErrors.classify(
+                statusCode = error.statusCode,
+                sqlState = (error as? PostgrestRestException)?.code,
+                isNetwork = false,
+                message = error.error,
+            )
+        }
         is IOException -> RemoteError.Network
         else -> RemoteErrors.classify(
             statusCode = null,

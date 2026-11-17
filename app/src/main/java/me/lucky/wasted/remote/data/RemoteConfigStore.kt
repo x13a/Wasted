@@ -39,15 +39,28 @@ class RemoteConfigStore(private val prefs: SharedPreferences) {
             runCatching { prefs.edit().putBoolean(KEY_REMOTE_ENABLED, value).apply() }
         }
 
+    /**
+     * The saved configuration, or null when the Supabase connection is unusable.
+     *
+     * The dashboard URL is optional here: remote sync only needs the project URL and key, and the
+     * user may legitimately clear the dashboard URL (for example after switching projects) without
+     * that disabling an already enrolled device. A blank URL is therefore "no dashboard yet", not
+     * an invalid connection.
+     */
     fun load(): RemoteConfig? = runCatching {
         val projectUrl = prefs.getString(KEY_PROJECT_URL, null) ?: return@runCatching null
         val publishableKey = prefs.getString(KEY_PUBLISHABLE_KEY, null) ?: return@runCatching null
-        val websiteUrl = prefs.getString(KEY_WEBSITE_URL, null) ?: return@runCatching null
+        val websiteUrl = prefs.getString(KEY_WEBSITE_URL, null).orEmpty().trim()
 
-        val errors = RemoteConfigValidator.validate(projectUrl, publishableKey, websiteUrl)
-        if (errors.isNotEmpty()) return@runCatching null
+        if (RemoteConfigValidator.validateConnection(projectUrl, publishableKey).isNotEmpty()) {
+            return@runCatching null
+        }
+        if (websiteUrl.isNotEmpty()) {
+            val errors = RemoteConfigValidator.validate(projectUrl, publishableKey, websiteUrl)
+            if (errors.isNotEmpty()) return@runCatching null
+        }
 
-        RemoteConfig(projectUrl.trim(), publishableKey.trim(), websiteUrl.trim())
+        RemoteConfig(projectUrl.trim(), publishableKey.trim(), websiteUrl)
     }.getOrNull()
 
     fun save(config: RemoteConfig): Boolean = runCatching {
@@ -56,12 +69,23 @@ class RemoteConfigStore(private val prefs: SharedPreferences) {
             publishableKey = config.publishableKey.trim(),
             websiteUrl = config.websiteUrl.trim(),
         )
-        val errors = RemoteConfigValidator.validate(
-            normalized.projectUrl,
-            normalized.publishableKey,
-            normalized.websiteUrl,
-        )
-        if (errors.isNotEmpty()) return@runCatching false
+        // Only the connection is mandatory; the dashboard URL may be blank (not hosted yet).
+        if (RemoteConfigValidator.validateConnection(
+                normalized.projectUrl,
+                normalized.publishableKey,
+            ).isNotEmpty()
+        ) {
+            return@runCatching false
+        }
+        if (normalized.websiteUrl.isNotEmpty() &&
+            RemoteConfigValidator.validate(
+                normalized.projectUrl,
+                normalized.publishableKey,
+                normalized.websiteUrl,
+            ).isNotEmpty()
+        ) {
+            return@runCatching false
+        }
 
         prefs.edit()
             .putString(KEY_PROJECT_URL, normalized.projectUrl)

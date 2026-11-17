@@ -676,8 +676,8 @@ class RemoteManagementFragment : Fragment() {
                 "the backend rejected the request. Check that setup.sql ran and that you are " +
                     "claiming a token from your own dashboard."
             RemoteError.Validation ->
-                "the token was not recognised. Copy it again from the dashboard — it must be the " +
-                    "64-character lowercase hex value."
+                "the backend rejected this enrollment. Check the token was copied in full from " +
+                    "your dashboard, then try again."
             RemoteError.BackendUnavailable ->
                 "the backend function is still loading. Wait a few seconds and try again."
             is RemoteError.RateLimited ->

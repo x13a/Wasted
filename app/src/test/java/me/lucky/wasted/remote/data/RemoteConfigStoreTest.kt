@@ -4,6 +4,7 @@ import me.lucky.wasted.remote.domain.RemoteConfig
 import me.lucky.wasted.testing.InMemorySharedPreferences
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -58,12 +59,33 @@ class RemoteConfigStoreTest {
         assertTrue(store.canStartRemoteWork())
     }
 
+    /**
+     * The dashboard URL is optional: remote sync needs only the project URL and key, and the user
+     * can clear the dashboard URL without disabling an enrolled device. A missing dashboard URL is
+     * therefore "no dashboard yet", not a partial invalid configuration.
+     */
     @Test
-    fun `partial stored config fails closed`() {
+    fun `connection without a dashboard url is still usable`() {
         val prefs = InMemorySharedPreferences()
         prefs.edit()
             .putString("project_url", validConfig.projectUrl)
             .putString("publishable_key", validConfig.publishableKey)
+            .commit()
+        val store = RemoteConfigStore(prefs)
+
+        val loaded = store.load()
+
+        assertNotNull(loaded)
+        assertEquals(validConfig.projectUrl, loaded?.projectUrl)
+        assertEquals("", loaded?.websiteUrl)
+        assertTrue(store.isConfigured)
+    }
+
+    @Test
+    fun `connection is unusable without a publishable key`() {
+        val prefs = InMemorySharedPreferences()
+        prefs.edit()
+            .putString("project_url", validConfig.projectUrl)
             .commit()
         val store = RemoteConfigStore(prefs)
         assertNull(store.load())
