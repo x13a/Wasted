@@ -284,6 +284,12 @@ class RemoteManagementFragment : Fragment() {
                 if (changed && existing?.websiteUrl?.isNotBlank() == true) {
                     promptClearDashboardUrl()
                 }
+                // The stored anonymous session belongs to the previous project. Its user id does
+                // not exist in the new database, so any claim would fail on the auth.users foreign
+                // key. Drop the identity now and let the next sync create a fresh one.
+                if (changed) {
+                    credentials.clearSession()
+                }
                 refreshState()
             }
         }
@@ -639,7 +645,7 @@ class RemoteManagementFragment : Fragment() {
                     credentials.appliedDeviceSettingsRevision = 0
                     "Enrolled as ${device.name}."
                 } catch (e: Exception) {
-                    "Enrollment failed: ${e.message}"
+                    "Enrollment failed: ${enrollmentFailureReason(e)}"
                 }
             }
             binding.enrollmentProgress.visibility = View.GONE
@@ -650,6 +656,37 @@ class RemoteManagementFragment : Fragment() {
             }
             snackbar(message)
             refreshState()
+        }
+    }
+
+    /**
+     * Turns an enrollment failure into the next action. The sanitized reason alone ("request
+     * rejected") does not tell the owner whether to make a new token, reset the device, or retry.
+     */
+    private fun enrollmentFailureReason(e: Exception): String {
+        val error = (e as? RemoteException)?.error
+        return when (error) {
+            is RemoteError.Conflict ->
+                "this token has expired or was already used. Create a new enrollment token in the " +
+                    "dashboard and try again."
+            RemoteError.Authentication ->
+                "this device's session is no longer valid. Tap Reset enrollment, then claim a new " +
+                    "token."
+            RemoteError.RlsDenied ->
+                "the backend rejected the request. Check that setup.sql ran and that you are " +
+                    "claiming a token from your own dashboard."
+            RemoteError.Validation ->
+                "the token was not recognised. Copy it again from the dashboard — it must be the " +
+                    "64-character lowercase hex value."
+            RemoteError.BackendUnavailable ->
+                "the backend function is still loading. Wait a few seconds and try again."
+            is RemoteError.RateLimited ->
+                "too many attempts. Wait a minute and try again."
+            RemoteError.Network ->
+                "no network connection. Check your internet and try again."
+            is RemoteError.Server ->
+                "Supabase returned an error. Wait a moment and try again."
+            else -> e.message ?: "unexpected error."
         }
     }
 

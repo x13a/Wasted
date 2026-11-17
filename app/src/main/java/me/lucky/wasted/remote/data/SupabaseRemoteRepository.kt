@@ -77,7 +77,7 @@ class SupabaseRemoteRepository(
     val isAvailable: Boolean
         get() = configStore.canStartRemoteWork()
 
-    override suspend fun ensureAnonymousSession() = guarded {
+    override suspend fun ensureAnonymousSession(forceNew: Boolean) = guarded {
         authMutex.withLock {
             val supabase = requireClient()
             // autoLoadFromStorage is asynchronous; without this wait a fresh client can race the
@@ -86,6 +86,16 @@ class SupabaseRemoteRepository(
             // Refresh tokens are single-use. A background auto-refresh racing this explicit
             // refresh consumes the token twice; the losing request then clears the session.
             supabase.auth.stopAutoRefreshForCurrentSession()
+            if (forceNew) {
+                // The stored identity no longer exists server-side; replace it before retrying.
+                supabase.auth.clearSession()
+                supabase.auth.signInAnonymously()
+                supabase.auth.stopAutoRefreshForCurrentSession()
+                credentialStore.recoveryPending = false
+                credentialStore.recoveryBlocked = false
+                Log.i(TAG, "Replaced a stale anonymous session")
+                return@withLock
+            }
             if (credentialStore.recoveryBlocked) {
                 throw RemoteException(RemoteError.Authentication)
             }
@@ -206,12 +216,27 @@ class SupabaseRemoteRepository(
     override suspend fun claimEnrollment(params: ClaimEnrollmentParams): RemoteDeviceDto = guarded {
         Log.d(TAG, "claim_device_enrollment")
         val body = json.encodeToJsonElement(ClaimEnrollmentParams.serializer(), params).jsonObject
-        val device = requireClient().postgrest.rpc("claim_device_enrollment", body)
-            .decodeAs<RemoteDeviceDto>()
+        val device = try {
+            requireClient().postgrest.rpc("claim_device_enrollment", body)
+                .decodeAs<RemoteDeviceDto>()
+        } catch (e: Throwable) {
+            // The stored anonymous identity can disappear server-side (cleanup job, project reset,
+            // or a session restored from another install). The JWT still looks valid, so the claim
+            // fails on the auth.users foreign key. Start a clean anonymous session and retry once:
+            // the token is untouched, so this is safe and saves the user a manual reset.
+            if (!isMissingAuthIdentity(e)) throw e
+            Log.i(TAG, "Device identity vanished; starting a new anonymous session and retrying")
+            ensureAnonymousSession(forceNew = true)
+            requireClient().postgrest.rpc("claim_device_enrollment", body)
+                .decodeAs<RemoteDeviceDto>()
+        }
         credentialStore.recoveryPending = false
         credentialStore.recoveryBlocked = false
         device
     }
+
+    private fun isMissingAuthIdentity(error: Throwable): Boolean =
+        error is RestException && (error as? PostgrestRestException)?.code == "23503"
 
     override suspend fun reconcile(params: ReconcileParams): RemoteReconcileResponse = guarded {
         val body = json.encodeToJsonElement(ReconcileParams.serializer(), params).jsonObject

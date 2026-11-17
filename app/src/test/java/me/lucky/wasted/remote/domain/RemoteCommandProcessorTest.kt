@@ -18,7 +18,7 @@ class RemoteCommandProcessorTest {
         val transitions = mutableListOf<TransitionCommandParams>()
         val failures = ArrayDeque<Throwable>()
 
-        override suspend fun ensureAnonymousSession() = Unit
+        override suspend fun ensureAnonymousSession(forceNew: Boolean) = Unit
 
         override suspend fun claimEnrollment(params: ClaimEnrollmentParams): RemoteDeviceDto =
             error("not used")

@@ -34,17 +34,25 @@ object RemoteErrors {
         if (statusCode == 401) return RemoteError.Authentication
         if (statusCode == 403 || sqlState == "42501") return RemoteError.RlsDenied
         if (sqlState == "PGRST202") return RemoteError.BackendUnavailable
+        // The device identity was removed server-side (for example by the anonymous-identity
+        // cleanup) while this phone still held a valid JWT, so the insert violated the auth.users
+        // foreign key. Only a new anonymous session can fix it, so treat it as authentication.
+        if (sqlState == "23503") return RemoteError.Authentication
 
         val text = message.orEmpty()
         return when {
             sqlState == "P0001" || sqlState == null -> when {
+                // Checked before the generic "revoked" rule below: a revoked device needs a new
+                // enrollment, while a revoked token just needs a fresh one.
+                text.contains("device revoked", ignoreCase = true) -> RemoteError.Authentication
                 text.contains("revision conflict", ignoreCase = true) -> RemoteError.Conflict
                 text.contains("state conflict", ignoreCase = true) -> RemoteError.Conflict
                 text.contains("illegal transition", ignoreCase = true) -> RemoteError.Conflict
                 text.contains("expired", ignoreCase = true) -> RemoteError.Conflict
+                text.contains("already used", ignoreCase = true) -> RemoteError.Conflict
+                text.contains("revoked", ignoreCase = true) -> RemoteError.Conflict
                 text.contains("not supported", ignoreCase = true) -> RemoteError.Validation
                 text.contains("not found", ignoreCase = true) -> RemoteError.Validation
-                text.contains("device revoked", ignoreCase = true) -> RemoteError.Authentication
                 text.contains("authentication required", ignoreCase = true) -> RemoteError.Authentication
                 text.isBlank() -> RemoteError.Unknown(null)
                 else -> RemoteError.Validation

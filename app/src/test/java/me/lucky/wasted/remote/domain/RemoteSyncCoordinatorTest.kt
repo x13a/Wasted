@@ -48,7 +48,7 @@ class RemoteSyncCoordinatorTest {
         var gate: CompletableDeferred<Unit>? = null
         var response: RemoteReconcileResponse? = null
 
-        override suspend fun ensureAnonymousSession() {
+        override suspend fun ensureAnonymousSession(forceNew: Boolean) {
             ensureCalls++
         }
 
