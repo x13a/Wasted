@@ -11,12 +11,14 @@ import androidx.fragment.app.Fragment
 
 import me.lucky.wasted.Preferences
 import me.lucky.wasted.databinding.FragmentRecastBinding
+import me.lucky.wasted.settings.LocalSettingsApplier
 
 class RecastFragment : Fragment() {
     private lateinit var binding: FragmentRecastBinding
     private lateinit var ctx: Context
     private lateinit var prefs: Preferences
     private lateinit var prefsdb: Preferences
+    private val applier by lazy { LocalSettingsApplier.create(ctx) }
 
     private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         prefs.copyTo(prefsdb, key)
@@ -58,19 +60,19 @@ class RecastFragment : Fragment() {
 
     private fun setup() = binding.apply {
         enabled.setOnCheckedChangeListener { _, isChecked ->
-            prefs.isRecastEnabled = isChecked
+            applier.setRecastEnabled(isChecked)
         }
         action.editText?.doAfterTextChanged {
-            prefs.recastAction = it?.toString()?.trim() ?: return@doAfterTextChanged
+            applier.setRecastAction(it?.toString() ?: return@doAfterTextChanged)
         }
         receiver.editText?.doAfterTextChanged {
-            prefs.recastReceiver = it?.toString()?.trim() ?: return@doAfterTextChanged
+            applier.setRecastReceiver(it?.toString() ?: return@doAfterTextChanged)
         }
         extraKey.editText?.doAfterTextChanged {
-            prefs.recastExtraKey = it?.toString()?.trim() ?: return@doAfterTextChanged
+            applier.setRecastExtraKey(it?.toString() ?: return@doAfterTextChanged)
         }
         extraValue.editText?.doAfterTextChanged {
-            prefs.recastExtraValue = it?.toString()?.trim() ?: return@doAfterTextChanged
+            applier.setRecastExtraValue(it?.toString() ?: return@doAfterTextChanged)
         }
     }
 }

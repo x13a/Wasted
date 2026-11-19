@@ -1,0 +1,21 @@
+{
+  "name": "wasted-dashboard",
+  "private": true,
+  "version": "3.0.0",
+  "type": "module",
+  "description": "Lightweight, portable static dashboard for the Wasted remote-management backend.",
+  "scripts": {
+    "dev": "vite",
+    "build": "node build.mjs",
+    "build:android-template": "node build-android-template.mjs",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "vite": "^8.3.5"
+  },
+  "packageManager": "pnpm@12.18.0"
+}

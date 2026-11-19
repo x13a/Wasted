@@ -1,0 +1,1487 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta id="theme-color-meta" name="theme-color" content="#111113">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Wasted Remote">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="./icons/favicon-48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon-180.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="./icons/apple-touch-icon-167.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="./icons/apple-touch-icon-152.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="./icons/apple-touch-icon-120.png">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src https://*.supabase.co wss://*.supabase.co; img-src 'self' data:; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'">
+  <script>
+    // Apply an explicit saved theme before CSS paints; System uses the media query.
+    try {
+      const theme = localStorage.getItem("wasted_dashboard_theme");
+      if (theme === "light" || theme === "dark") {
+        document.documentElement.dataset.theme = theme;
+      }
+    } catch (_) {}
+  </script>
+  <script>
+    // Defense in depth; production hosts must also send frame-ancestors 'none'.
+    if (window.top !== window.self) {
+      try { window.top.location = window.self.location; }
+      catch (_) { document.documentElement.hidden = true; }
+    }
+    // Remove legacy auth callback fragments from the address bar and history.
+    if (/(?:access_token|refresh_token|error_description|error_code)=/.test(location.hash)) {
+      history.replaceState(null, "", location.pathname + location.search);
+    }
+  </script>
+  <title>Wasted Remote</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<svg class="icon-sprite" aria-hidden="true" focusable="false">
+  <symbol id="icon-shield" viewBox="0 0 24 24">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+    <path d="m9 12 2 2 4-4"/>
+  </symbol>
+  <symbol id="icon-devices" viewBox="0 0 24 24">
+    <rect x="7" y="2" width="10" height="20" rx="2"/>
+    <path d="M11 18h2"/>
+  </symbol>
+  <symbol id="icon-controls" viewBox="0 0 24 24">
+    <path d="M4 7h16M4 12h16M4 17h16"/>
+    <circle cx="9" cy="7" r="2"/>
+    <circle cx="15" cy="12" r="2"/>
+    <circle cx="8" cy="17" r="2"/>
+  </symbol>
+  <symbol id="icon-account" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="4"/>
+    <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>
+  </symbol>
+  <symbol id="icon-help" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="M9.2 9a3 3 0 1 1 4.5 2.6c-.9.5-1.7 1.1-1.7 2.4"/>
+    <path d="M12 17h.01"/>
+  </symbol>
+  <symbol id="icon-activity" viewBox="0 0 24 24">
+    <path d="M3 12h4l2.2-7 4.1 14 2.2-7H21"/>
+  </symbol>
+  <symbol id="icon-battery" viewBox="0 0 24 24">
+    <rect x="2.5" y="7" width="17" height="10" rx="2"/>
+    <path d="M22 10v4M6 10v4M10 10v4"/>
+  </symbol>
+  <symbol id="icon-bug" viewBox="0 0 24 24">
+    <path d="M8 9V7a4 4 0 0 1 8 0v2M6 13H3M21 13h-3M7 18l-2 2M17 18l2 2M7 8l-2-2M17 8l2-2"/>
+    <rect x="6" y="9" width="12" height="10" rx="4"/>
+    <path d="M12 10v6"/>
+  </symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="M12 7v5l3 2"/>
+  </symbol>
+  <symbol id="icon-usb" viewBox="0 0 24 24">
+    <path d="M12 4v11"/>
+    <path d="m9 7 3-3 3 3"/>
+    <circle cx="12" cy="17" r="2"/>
+    <path d="M8 13 6 15v2M16 13l2 2v2M6 15H4M18 15h2"/>
+  </symbol>
+  <symbol id="icon-chevron-down" viewBox="0 0 24 24">
+    <path d="m6 9 6 6 6-6"/>
+  </symbol>
+  <symbol id="icon-chevron-right" viewBox="0 0 24 24">
+    <path d="m9 6 6 6-6 6"/>
+  </symbol>
+  <symbol id="icon-eye" viewBox="0 0 24 24">
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
+    <circle cx="12" cy="12" r="3"/>
+  </symbol>
+  <symbol id="icon-eye-off" viewBox="0 0 24 24">
+    <path d="m3 3 18 18M10.6 6.2A11 11 0 0 1 12 6c6.5 0 10 6 10 6a18 18 0 0 1-3.1 3.7M6.3 6.4C3.6 8.2 2 12 2 12s3.5 7 10 7a10 10 0 0 0 4-.8"/>
+  </symbol>
+  <symbol id="icon-send" viewBox="0 0 24 24">
+    <path d="m3 11 18-8-8 18-2.5-7.5L3 11Z"/>
+    <path d="m10.5 13.5 4-4"/>
+  </symbol>
+  <symbol id="icon-list" viewBox="0 0 24 24">
+    <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+  </symbol>
+  <symbol id="icon-mail" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="14" rx="2"/>
+    <path d="m3 7 9 6 9-6"/>
+  </symbol>
+  <symbol id="icon-target" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9"/>
+    <circle cx="12" cy="12" r="5"/>
+    <circle cx="12" cy="12" r="1"/>
+  </symbol>
+  <symbol id="icon-login" viewBox="0 0 24 24">
+    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+    <path d="m10 17 5-5-5-5M15 12H3"/>
+  </symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24">
+    <path d="m4 12 5 5L20 6"/>
+  </symbol>
+  <symbol id="icon-close" viewBox="0 0 24 24">
+    <path d="m6 6 12 12M18 6 6 18"/>
+  </symbol>
+  <symbol id="icon-server" viewBox="0 0 24 24">
+    <rect x="3" y="4" width="18" height="6" rx="2"/>
+    <rect x="3" y="14" width="18" height="6" rx="2"/>
+    <path d="M7 7h.01M7 17h.01"/>
+  </symbol>
+  <symbol id="icon-signout" viewBox="0 0 24 24">
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+    <path d="m16 17 5-5-5-5"/>
+    <path d="M21 12H9"/>
+  </symbol>
+  <symbol id="icon-plus" viewBox="0 0 24 24">
+    <path d="M12 5v14M5 12h14"/>
+  </symbol>
+  <symbol id="icon-copy" viewBox="0 0 24 24">
+    <rect x="9" y="9" width="11" height="11" rx="2"/>
+    <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>
+  </symbol>
+  <symbol id="icon-save" viewBox="0 0 24 24">
+    <path d="M5 3h11l3 3v15H5z"/>
+    <path d="M8 3v6h8V3"/>
+    <path d="M8 21v-7h8v7"/>
+  </symbol>
+  <symbol id="icon-lock" viewBox="0 0 24 24">
+    <path d="M7 10V7a5 5 0 0 1 10 0v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1Zm2 0h6V7a3 3 0 0 0-6 0v3Z"/>
+  </symbol>
+  <symbol id="icon-reset" viewBox="0 0 24 24">
+    <path d="M3 12a9 9 0 1 0 3-6.7L3 8"/>
+    <path d="M3 3v5h5"/>
+  </symbol>
+  <symbol id="icon-warning" viewBox="0 0 24 24">
+    <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>
+    <path d="M12 9v4"/>
+    <path d="M12 17h.01"/>
+  </symbol>
+  <symbol id="icon-pencil" viewBox="0 0 24 24">
+    <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10Z"/>
+    <path d="m13.5 7.5 3 3"/>
+  </symbol>
+  <symbol id="icon-trash" viewBox="0 0 24 24">
+    <path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/>
+  </symbol>
+  <symbol id="icon-download" viewBox="0 0 24 24">
+    <path d="M12 3v12"/>
+    <path d="m7 10 5 5 5-5"/>
+    <path d="M5 21h14"/>
+  </symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24">
+    <path d="M4 8h16M10 15h10"/>
+  </symbol>
+  <symbol id="icon-monitor" viewBox="0 0 24 24">
+    <rect x="3" y="4" width="18" height="13" rx="2"/>
+    <path d="M8 21h8M12 17v4"/>
+  </symbol>
+  <symbol id="icon-sun" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+  </symbol>
+  <symbol id="icon-moon" viewBox="0 0 24 24">
+    <path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/>
+  </symbol>
+  <symbol id="icon-search" viewBox="0 0 24 24">
+    <circle cx="10.5" cy="10.5" r="6.5"/>
+    <path d="m16 16 5 5"/>
+  </symbol>
+  <symbol id="icon-sort" viewBox="0 0 24 24">
+    <path d="M4 7h10M4 12h7M4 17h4M18 5v14M15 16l3 3 3-3"/>
+  </symbol>
+  <symbol id="icon-grid" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="7" height="7" rx="1"/>
+    <rect x="14" y="3" width="7" height="7" rx="1"/>
+    <rect x="3" y="14" width="7" height="7" rx="1"/>
+    <rect x="14" y="14" width="7" height="7" rx="1"/>
+  </symbol>
+</svg>
+
+<header class="app-header">
+  <div class="brand">
+    <h1 id="app-title">
+      <img class="brand-mark app-icon" src="./icons/icon-192.png" alt=""
+           width="32" height="32">
+      <span class="brand-title">Wasted Remote</span>
+    </h1>
+    <span class="brand-sub">Self-hosted remote control</span>
+  </div>
+  <button id="menu-toggle" type="button" class="quiet menu-toggle"
+          aria-label="Open menu" aria-expanded="false" aria-controls="header-actions">
+    <svg class="icon" aria-hidden="true"><use href="#icon-menu"/></svg>
+  </button>
+  <div id="header-actions" class="header-actions">
+    <div class="menu-theme">
+      <p class="menu-heading">Appearance</p>
+      <div class="theme-options" role="group" aria-label="Theme">
+        <button type="button" class="theme-option" data-theme-option="system"
+                aria-pressed="true" title="Follow the system light or dark appearance">
+          <svg class="icon" aria-hidden="true"><use href="#icon-monitor"/></svg>
+          <span>System</span>
+        </button>
+        <button type="button" class="theme-option" data-theme-option="light"
+                aria-pressed="false" title="Always use the light theme">
+          <svg class="icon" aria-hidden="true"><use href="#icon-sun"/></svg>
+          <span>Light</span>
+        </button>
+        <button type="button" class="theme-option" data-theme-option="dark"
+                aria-pressed="false" title="Always use the dark theme">
+          <svg class="icon" aria-hidden="true"><use href="#icon-moon"/></svg>
+          <span>Dark</span>
+        </button>
+      </div>
+    </div>
+    <div id="menu-connection" class="menu-connection" hidden>
+      <p class="menu-heading">Supabase connection</p>
+      <div class="menu-field">
+        <span class="menu-field-label">Project URL</span>
+        <div class="menu-value-row">
+          <code id="menu-project-url" class="menu-value"></code>
+          <button id="copy-project-url" type="button" class="quiet menu-copy"
+                  aria-label="Copy project URL" title="Copy project URL">
+            <svg class="icon" aria-hidden="true"><use href="#icon-copy"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="menu-field">
+        <span class="menu-field-label">Publishable key</span>
+        <div class="menu-value-row">
+          <code id="menu-publishable-key" class="menu-value"></code>
+          <button id="copy-publishable-key" type="button" class="quiet menu-copy"
+                  aria-label="Copy publishable key" title="Copy publishable key">
+            <svg class="icon" aria-hidden="true"><use href="#icon-copy"/></svg>
+          </button>
+        </div>
+      </div>
+      <div id="menu-dashboard-url-field" class="menu-field" hidden>
+        <span class="menu-field-label">Dashboard URL</span>
+        <div class="menu-value-row">
+          <code id="menu-dashboard-url" class="menu-value"></code>
+          <button id="copy-dashboard-url" type="button" class="quiet menu-copy"
+                  aria-label="Copy dashboard URL" title="Copy dashboard URL">
+            <svg class="icon" aria-hidden="true"><use href="#icon-copy"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-divider" id="menu-divider" hidden></div>
+    <button id="install-app" type="button" class="quiet">
+      <svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg>
+      <span class="button-label">Install app</span>
+    </button>
+    <button id="sign-out" type="button" class="quiet menu-danger" hidden>
+      <svg class="icon" aria-hidden="true"><use href="#icon-signout"/></svg>
+      <span class="button-label">Sign out</span>
+    </button>
+  </div>
+</header>
+
+<div id="config-error" class="banner error" role="alert" hidden></div>
+
+<main id="main">
+  <p id="offline-banner" class="banner error" role="alert" hidden>
+    Offline — sign-in, commands, settings saves, enrollment, and refresh are unavailable until the
+    connection returns. Cached data may be shown where available.
+  </p>
+
+  <section id="boot-loading" class="panel narrow dashboard-loading" role="status" aria-live="polite">
+    <span class="loading-spinner" aria-hidden="true"></span>
+    <div>
+      <strong>Starting dashboard…</strong>
+      <p class="muted">Checking your session.</p>
+    </div>
+  </section>
+
+  <section id="auth-section" aria-labelledby="auth-title" class="panel narrow" hidden>
+    <div class="auth-brand">
+      <span class="auth-mark" aria-hidden="true">
+        <svg class="icon"><use href="#icon-shield"/></svg>
+      </span>
+      <div>
+        <p class="eyebrow">Owner access</p>
+        <h2 id="auth-title">Sign In</h2>
+        <p id="auth-subtitle" class="section-desc">Sign in to manage your devices.</p>
+      </div>
+    </div>
+
+    <form id="sign-in-form" novalidate>
+      <div class="field">
+        <label for="sign-in-email" title="The owner email for this dashboard. Devices never receive this email.">Email</label>
+        <input id="sign-in-email" name="email" type="email" autocomplete="username"
+               autocapitalize="none" spellcheck="false"
+               maxlength="254" placeholder="you@example.com" required>
+      </div>
+      <div class="field">
+        <label for="sign-in-password" title="Your dashboard password. It is never stored on enrolled devices.">Password</label>
+        <div class="password-wrap">
+          <input id="sign-in-password" name="password" type="password" autocomplete="current-password"
+                 placeholder="Your password" required>
+          <button type="button" class="password-toggle" data-password-toggle="sign-in-password"
+                  aria-label="Show password" aria-pressed="false">
+            <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 5c-5.5 0-9.5 5-10 7 .5 2 4.5 7 10 7s9.5-5 10-7c-.5-2-4.5-7-10-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
+            </svg>
+            <svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M3 3l18 18-1.4 1.4L3 4.4V3zm9 2c-1.6 0-3.1.4-4.4 1.1l2.3 2.3c.7-.3 1.4-.5 2.1-.5 2.2 0 4 1.8 4 4 0 .7-.2 1.4-.5 2l2.3 2.3C19.7 15.1 21 13.5 21 12c-.5-2-4.5-7-9-7zM3 12c.5 2 4.5 7 9 7 1.6 0 3.1-.4 4.4-1.1l-2.3-2.3c-.7.3-1.4.5-2.1.5-2.2 0-4-1.8-4-4 0-.7.2-1.4.5-2L6.3 8.3C4.3 9.5 3.4 11 3 12z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="sign-in" type="submit" class="primary">
+          <svg class="icon" aria-hidden="true"><use href="#icon-login"/></svg>
+          <span class="button-label">Sign In</span>
+        </button>
+      </div>
+    </form>
+
+    <form id="create-account-form" novalidate hidden>
+      <div class="field">
+        <label for="create-email">Email</label>
+        <input id="create-email" name="email" type="email" autocomplete="email"
+               autocapitalize="none" spellcheck="false"
+               maxlength="254" placeholder="you@example.com" required>
+      </div>
+      <div class="field">
+        <label for="create-password">Password</label>
+        <div class="password-wrap">
+          <input id="create-password" name="password" type="password" autocomplete="new-password"
+                 minlength="6" placeholder="At least 6 characters" required>
+          <button type="button" class="password-toggle" data-password-toggle="create-password"
+                  aria-label="Show password" aria-pressed="false">
+            <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 5c-5.5 0-9.5 5-10 7 .5 2 4.5 7 10 7s9.5-5 10-7c-.5-2-4.5-7-10-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
+            </svg>
+            <svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M3 3l18 18-1.4 1.4L3 4.4V3zm9 2c-1.6 0-3.1.4-4.4 1.1l2.3 2.3c.7-.3 1.4-.5 2.1-.5 2.2 0 4 1.8 4 4 0 .7-.2 1.4-.5 2l2.3 2.3C19.7 15.1 21 13.5 21 12c-.5-2-4.5-7-9-7zM3 12c.5 2 4.5 7 9 7 1.6 0 3.1-.4 4.4-1.1l-2.3-2.3c-.7.3-1.4.5-2.1.5-2.2 0-4-1.8-4-4 0-.7.2-1.4.5-2L6.3 8.3C4.3 9.5 3.4 11 3 12z"/>
+            </svg>
+          </button>
+        </div>
+        <p class="hint">At least 6 characters.</p>
+      </div>
+      <div class="field">
+        <label for="create-password-confirm">Confirm password</label>
+        <div class="password-wrap">
+          <input id="create-password-confirm" name="passwordConfirm" type="password"
+                 autocomplete="new-password" minlength="6" placeholder="Repeat your password"
+                 required>
+          <button type="button" class="password-toggle" data-password-toggle="create-password-confirm"
+                  aria-label="Show password" aria-pressed="false">
+            <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 5c-5.5 0-9.5 5-10 7 .5 2 4.5 7 10 7s9.5-5 10-7c-.5-2-4.5-7-10-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
+            </svg>
+            <svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M3 3l18 18-1.4 1.4L3 4.4V3zm9 2c-1.6 0-3.1.4-4.4 1.1l2.3 2.3c.7-.3 1.4-.5 2.1-.5 2.2 0 4 1.8 4 4 0 .7-.2 1.4-.5 2l2.3 2.3C19.7 15.1 21 13.5 21 12c-.5-2-4.5-7-9-7zM3 12c.5 2 4.5 7 9 7 1.6 0 3.1-.4 4.4-1.1l-2.3-2.3c-.7.3-1.4.5-2.1.5-2.2 0-4-1.8-4-4 0-.7.2-1.4.5-2L6.3 8.3C4.3 9.5 3.4 11 3 12z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="create-handle">Account name</label>
+        <input id="create-handle" name="handle" type="text" autocomplete="off" maxlength="32"
+               placeholder="John Cockpit"
+               title="1–32 characters; spaces and normal punctuation are allowed" required>
+        <p class="hint">Shown in the dashboard. 1–32 characters; spaces are allowed.</p>
+      </div>
+      <div class="actions">
+        <button id="create-account" type="submit" class="primary">
+          <svg class="icon" aria-hidden="true"><use href="#icon-plus"/></svg>
+          <span class="button-label">Create Account</span>
+        </button>
+      </div>
+    </form>
+
+    <p class="auth-switch">
+      <span id="show-create-line">New here?
+        <button id="show-create" type="button" class="link">Create an account</button>
+      </span>
+      <span id="show-sign-in-line" hidden>Already have an account?
+        <button id="show-sign-in" type="button" class="link">Sign in</button>
+      </span>
+    </p>
+
+    <p class="hint auth-policy">The first account becomes the owner. No email confirmation is used, and later signups are rejected.</p>
+
+    <p id="auth-message" class="message" role="status"></p>
+
+    <details class="help">
+      <summary><svg class="icon summary-icon" aria-hidden="true"><use href="#icon-help"/></svg>Setup guide</summary>
+      <div class="help-body">
+        <ol>
+          <li><strong>Create a free Supabase project</strong> at
+            <a id="setup-project-link" href="https://supabase.com/dashboard"
+               target="_blank" rel="noopener noreferrer">supabase.com/dashboard</a>.</li>
+          <li>In the Wasted app, open <strong>Remote Management → Open setup wizard</strong>.
+            Paste the project URL and publishable key from the Supabase Connect dialog or
+            Settings → API Keys. Never use the secret/service-role key.</li>
+          <li>In Supabase, open the
+            <a id="setup-sql-link" href="https://supabase.com/dashboard"
+               target="_blank" rel="noopener noreferrer">SQL Editor</a>
+            and run the setup SQL copied from the wizard (one paste). Then in
+            <a id="setup-auth-link" href="https://supabase.com/dashboard"
+               target="_blank" rel="noopener noreferrer">Authentication → Providers</a>:
+            enable “Allow anonymous sign-ins”. Under <strong>Providers → Email</strong>, keep the
+            <strong>Email provider ON</strong> (it enables email/password sign-in), but turn
+            <strong>Confirm email OFF</strong>.
+            Then open <a id="setup-hooks-link" href="https://supabase.com/dashboard"
+               target="_blank" rel="noopener noreferrer">Authentication → Hooks</a> → <strong>Before User Created</strong>:
+            turn the hook ON, set <strong>Hook type: Postgres</strong>, <strong>Postgres schema: public</strong>,
+            select <strong>Postgres function: <code>hook_single_owner_signup</code></strong>, and click Save.</li>
+          <li>In the wizard, <strong>save the deployable ZIP</strong>. In
+            <a id="setup-netlify-link" href="https://app.netlify.com/"
+               target="_blank" rel="noopener noreferrer">Netlify</a>, choose
+            <strong>Add new project → Deploy manually</strong> and upload the ZIP. For later
+            updates, use that same project → <strong>Deploys</strong> and upload the new ZIP.</li>
+          <li>Open your new dashboard URL and create the owner account before sharing the URL;
+            this project allows one owner.</li>
+          <li>In the app, paste the hosted URL into Remote Management, Save, and Enable.
+            Create an enrollment token on the Devices tab and claim it in the app.</li>
+          <li>Send Reset Timer here and confirm the device card updates.</li>
+        </ol>
+        <p class="muted">
+          <strong>Owner signup:</strong> signup is direct and no email is sent. The first account
+          becomes the owner. This dashboard is deliberately single-owner: the Before User Created
+          hook blocks every later email/password signup, even if someone finds the dashboard URL,
+          while anonymous device identities remain allowed. Keep the URL private until the owner
+          account exists.
+        </p>
+        <p class="muted">
+          <strong>Changing your account:</strong> use the Account section to see the signed-in email
+          and change the display name. Password reset or account recovery is handled by the Supabase
+          project owner from the Supabase dashboard, because this setup deliberately does not depend
+          on email delivery.
+        </p>
+        <p class="muted">
+          <strong>Account name:</strong> saved to your Supabase account. Sign in on another
+          browser and the same name appears under Account. You can change it there later.
+        </p>
+        <p class="muted">
+          The dashboard package contains only your project URL and publishable key — these are
+          public by design, so sharing it does not leak secrets. Anyone who can open the hosted
+          dashboard can attempt to create an account, though your data stays protected by the
+          database rules. Keep the URL private if you do not want that. Never share your Supabase
+          password or a secret key.
+        </p>
+        <p class="muted">
+          <strong>Updating:</strong> upload the new ZIP to the same Netlify project through
+          <strong>Deploys</strong>. Do not replace only <code>index.html</code>, and do not create a
+          new site; that changes the URL and requires updating Remote Management.
+        </p>
+      </div>
+    </details>
+  </section>
+
+  <section id="dashboard" hidden aria-labelledby="dashboard-title">
+    <div class="dashboard-header">
+      <div>
+        <p class="eyebrow">Control panel</p>
+        <h2 id="dashboard-title"><svg class="icon heading-icon" aria-hidden="true"><use href="#icon-shield"/></svg>Remote dashboard</h2>
+        <p class="section-desc">
+          Monitor enrolled devices, set global defaults or per-device overrides, and send commands to
+          all devices or only the ones you select. Values are reported by the device; commands apply
+          at its next sync.
+        </p>
+      </div>
+      <p id="account-line" class="account-chip"></p>
+    </div>
+
+    <section id="dashboard-loading" class="dashboard-loading" role="status" aria-live="polite" hidden>
+      <span class="loading-spinner" aria-hidden="true"></span>
+      <div>
+        <strong id="dashboard-loading-title">Loading dashboard…</strong>
+        <p id="dashboard-loading-detail" class="muted">Fetching your devices and settings.</p>
+      </div>
+      <button id="dashboard-retry" type="button" class="small" hidden>
+        <svg class="icon" aria-hidden="true"><use href="#icon-refresh"/></svg>
+        <span class="button-label">Retry</span>
+      </button>
+    </section>
+
+    <section id="command-progress" class="command-progress" aria-live="polite" hidden>
+      <div class="command-progress-head">
+        <div>
+          <p class="eyebrow">Command activity</p>
+          <h3 id="command-progress-title">Sending command…</h3>
+          <p id="command-progress-detail" class="muted"></p>
+        </div>
+        <div class="command-progress-side">
+          <span id="command-progress-status"></span>
+          <button id="command-progress-dismiss" type="button" class="small quiet"
+                  title="Dismiss the live command activity panel; this does not cancel the command">
+            <svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg>
+            <span class="button-label">Dismiss</span>
+          </button>
+        </div>
+      </div>
+      <ul id="command-progress-list" class="command-progress-list"></ul>
+    </section>
+
+    <div class="dashboard-layout">
+      <nav class="dashboard-nav" role="tablist" aria-label="Dashboard sections">
+        <button id="tab-devices" type="button" class="dashboard-tab" role="tab"
+                aria-selected="true" aria-controls="panel-devices" tabindex="0"
+                data-dashboard-tab="devices" title="Devices: fleet summary, device cards, and enrollment">
+          <svg class="icon" aria-hidden="true"><use href="#icon-devices"/></svg>
+          <span>Devices</span>
+        </button>
+        <button id="tab-controls" type="button" class="dashboard-tab" role="tab"
+                aria-selected="false" aria-controls="panel-controls" tabindex="-1"
+                data-dashboard-tab="controls" title="Controls: global defaults, limits, and targeted commands">
+          <svg class="icon" aria-hidden="true"><use href="#icon-controls"/></svg>
+          <span>Controls</span>
+        </button>
+        <button id="tab-account" type="button" class="dashboard-tab" role="tab"
+                aria-selected="false" aria-controls="panel-account" tabindex="-1"
+                data-dashboard-tab="account" title="Account: signed-in email and display name">
+          <svg class="icon" aria-hidden="true"><use href="#icon-account"/></svg>
+          <span>Account</span>
+        </button>
+        <button id="tab-help" type="button" class="dashboard-tab" role="tab"
+                aria-selected="false" aria-controls="panel-help" tabindex="-1"
+                data-dashboard-tab="help" title="Help: setup, field definitions, safe testing, and safety notes">
+          <svg class="icon" aria-hidden="true"><use href="#icon-help"/></svg>
+          <span>Help</span>
+        </button>
+      </nav>
+
+      <div class="dashboard-panels">
+        <section id="panel-devices" class="tab-panel" role="tabpanel"
+                 aria-labelledby="tab-devices" data-dashboard-panel="devices">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Fleet</p>
+              <h3><svg class="icon heading-icon" aria-hidden="true"><use href="#icon-devices"/></svg>Enrolled devices</h3>
+              <p class="section-desc">
+                Each card is a device enrolled from the Wasted app. Debug Mode blocks destructive
+                commands; settings and timers still sync.
+              </p>
+            </div>
+          </div>
+
+          <div id="device-summary" class="stat-grid" aria-live="polite"></div>
+          <div class="device-toolbar">
+            <div class="device-toolbar-row">
+              <label class="device-search" for="device-search">
+                <svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg>
+                <input id="device-search" type="search" autocomplete="off"
+                       placeholder="Search device name or ID" aria-label="Search devices">
+              </label>
+              <label class="device-sort" for="device-sort">
+                <svg class="icon" aria-hidden="true"><use href="#icon-sort"/></svg>
+                <span>Sort</span>
+                <select id="device-sort">
+                  <option value="default">Enrollment order</option>
+                  <option value="name">Name A–Z</option>
+                  <option value="recent">Last contact</option>
+                  <option value="enrolled">Enrollment date</option>
+                  <option value="battery">Battery level</option>
+                  <option value="connection">Active first</option>
+                </select>
+              </label>
+              <div class="layout-switch" role="group" aria-label="Device layout">
+                <button type="button" class="layout-option" data-device-layout="grid"
+                        aria-pressed="true" title="Show device cards in a grid">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-grid"/></svg>
+                  <span>Cards</span>
+                </button>
+                <button type="button" class="layout-option" data-device-layout="list"
+                        aria-pressed="false" title="Show device cards in a single column">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-list"/></svg>
+                  <span>List</span>
+                </button>
+              </div>
+            </div>
+            <div class="device-filter-row">
+              <div class="filter-chips" role="group" aria-label="Filter devices">
+                <button type="button" class="filter-chip" data-device-filter="all" aria-pressed="true">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-devices"/></svg>
+                  All <span data-filter-count="all">0</span>
+                </button>
+                <button type="button" class="filter-chip" data-device-filter="active" aria-pressed="false">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-activity"/></svg>
+                  Active <span data-filter-count="active">0</span>
+                </button>
+                <button type="button" class="filter-chip" data-device-filter="inactive" aria-pressed="false">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-clock"/></svg>
+                  Inactive <span data-filter-count="inactive">0</span>
+                </button>
+                <button type="button" class="filter-chip" data-device-filter="debug" aria-pressed="false">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-bug"/></svg>
+                  Debug ON <span data-filter-count="debug">0</span>
+                </button>
+                <button type="button" class="filter-chip" data-device-filter="low-battery" aria-pressed="false">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-battery"/></svg>
+                  Low battery <span data-filter-count="low-battery">0</span>
+                </button>
+                <button type="button" class="filter-chip" data-device-filter="notes" aria-pressed="false">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-pencil"/></svg>
+                  With notes <span data-filter-count="notes">0</span>
+                </button>
+              </div>
+              <p id="device-result-count" class="muted" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div id="devices" class="device-grid" aria-live="polite"></div>
+
+          <section class="panel" aria-labelledby="enroll-title">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">New device</p>
+                <h3 id="enroll-title"><svg class="icon heading-icon" aria-hidden="true"><use href="#icon-plus"/></svg>Enroll a device</h3>
+                <p class="section-desc">
+                  Create a single-use token, then enter it in the app:
+                  <strong>Remote Management → Enrollment token → Claim</strong>. The token is
+                  entered in the app, not on this page; each token pairs one device.
+                </p>
+              </div>
+            </div>
+            <ul class="hint-list">
+              <li id="enroll-token-validity">Valid for the configured lifetime and usable once.</li>
+              <li>Each device needs its own token.</li>
+              <li>Tokens are independent; you can create several while setting up devices.</li>
+              <li>The token links the device's private identity to this account; your email/password is never stored on the device.</li>
+              <li>The app must use the same project URL and publishable key configured on this page.</li>
+              <li>Anyone with the token can enroll a device to this account — share it only with your own device.</li>
+            </ul>
+            <div class="actions">
+              <button id="create-token" type="button"
+                      title="Create a single-use enrollment token using the saved lifetime">
+                <svg class="icon" aria-hidden="true"><use href="#icon-plus"/></svg>
+                <span class="button-label">Create enrollment token</span>
+              </button>
+            </div>
+            <div id="token-output" hidden>
+              <p class="token" id="token-value"></p>
+              <p class="muted" id="token-expiry"></p>
+              <p class="hint">
+                Open the Wasted app → Remote Management → <strong>4. Enroll this device</strong>,
+                paste this token, and tap <strong>Claim enrollment</strong>. The token is not entered
+                on this page.
+              </p>
+              <button id="copy-token" type="button" class="quiet"
+                      title="Copy the token to the clipboard">
+                <svg class="icon" aria-hidden="true"><use href="#icon-copy"/></svg>
+                <span class="button-label">Copy token</span>
+              </button>
+              <p class="hint">
+                Copied tokens remain in the operating-system clipboard/history. Overwrite the clipboard
+                after enrollment.
+              </p>
+            </div>
+          </section>
+        </section>
+
+        <section id="panel-controls" class="tab-panel" role="tabpanel"
+                 aria-labelledby="tab-controls" data-dashboard-panel="controls" hidden>
+          <section class="panel" aria-labelledby="settings-title">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Global defaults</p>
+                <h3 id="settings-title"><svg class="icon heading-icon" aria-hidden="true"><use href="#icon-controls"/></svg>Global trigger settings</h3>
+                <p class="section-desc">
+                  These values apply to every device that has not overridden the field. Lock trigger
+                  arms the lock workflow; Lock delay sets how long it waits after screen-off/lock;
+                  USB trigger is separate. All three are saved together in one global version. A
+                  device override wins until you clear it in that device's Settings. Wipe data remains
+                  phone-local and is never changed by this page.
+                </p>
+              </div>
+            </div>
+            <form id="settings-form" novalidate>
+              <div class="setting-row">
+                <div class="setting-copy">
+                  <span id="lock-trigger-title" class="setting-title">
+                    <svg class="icon field-icon" aria-hidden="true"><use href="#icon-lock"/></svg>Lock trigger
+                    <button type="button" class="info-button"
+                            data-info="Global default for the lock workflow. It arms the countdown; it does not wipe data by itself. A device override wins until cleared."
+                            aria-label="About the global Lock trigger" title="Global default for the lock workflow. It arms the countdown; it does not wipe data by itself. A device override wins until cleared.">?</button>
+                  </span>
+                  <p id="lock-trigger-hint" class="hint">
+                    Global default for the lock workflow. Devices with a Lock trigger override use
+                    their own value. When the countdown finishes, Wasted locks the phone; if Wipe data
+                    is on, the reset starts (Debug Mode blocks the wipe).
+                  </p>
+                </div>
+                <label class="switch" aria-label="Lock trigger enabled"
+                       title="Turn the global Lock trigger ON to arm the lock countdown for devices that inherit this value.">
+                  <input id="lock-trigger" name="lockTrigger" type="checkbox"
+                         aria-labelledby="lock-trigger-title" aria-describedby="lock-trigger-hint">
+                  <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+                </label>
+              </div>
+              <div class="setting-row">
+                <div class="setting-copy">
+                  <span class="setting-title">
+                    <svg class="icon field-icon" aria-hidden="true"><use href="#icon-clock"/></svg>
+                    <label for="lock-minutes">Lock delay setting (minutes, not countdown)</label>
+                    <button type="button" class="info-button"
+                            data-info="This is the wait after the phone locks or its screen turns off, not the live countdown. It runs only when the Lock trigger is ON. Enter whole minutes; devices with an override use their own value."
+                            aria-label="About the global lock delay" title="This is the wait after the phone locks or its screen turns off, not the live countdown. It runs only when the Lock trigger is ON. Enter whole minutes; devices with an override use their own value.">?</button>
+                  </span>
+                  <p id="lock-hint" class="hint">
+                    How long the phone waits after it locks or its screen turns off before firing
+                    the Lock trigger. It runs only when the Lock trigger is ON. Enter whole minutes:
+                    10080 = 7 days, 1440 = 1 day, 90 = 1 hour 30 minutes, 60 = 1 hour.
+                  </p>
+                  <p id="lock-human" class="hint"></p>
+                </div>
+                <input id="lock-minutes" name="lockMinutes" type="number" min="1" max="525600"
+                       step="1" inputmode="numeric" placeholder="10080" aria-describedby="lock-hint lock-human"
+                       title="1–525600 minutes (1 minute to 1 year)" required class="compact-input">
+              </div>
+              <div class="setting-row">
+                <div class="setting-copy">
+                  <span id="usb-title" class="setting-title">
+                    <svg class="icon field-icon" aria-hidden="true"><use href="#icon-usb"/></svg>USB trigger enabled
+                    <button type="button" class="info-button"
+                            data-info="Global default for the USB trigger. When ON, connecting USB data while the phone is locked can fire it. It is independent of the Lock trigger and delay."
+                            aria-label="About the global USB trigger" title="Global default for the USB trigger. When ON, connecting USB data while the phone is locked can fire it. It is independent of the Lock trigger and delay.">?</button>
+                  </span>
+                  <p id="usb-hint" class="hint">
+                    When enabled, connecting USB data while the device is locked can fire the
+                    USB trigger. This is independent of the Lock trigger and delay.
+                  </p>
+                </div>
+                <label class="switch" aria-label="USB trigger enabled"
+                       title="Turn the global USB trigger ON to let USB data fire the trigger on locked devices that inherit this value.">
+                  <input id="usb-trigger" name="usbTrigger" type="checkbox"
+                         aria-labelledby="usb-title" aria-describedby="usb-hint">
+                  <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+                </label>
+              </div>
+              <div class="actions">
+                <button type="submit" class="primary"
+                        title="Save these global defaults; devices without overrides apply them">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-save"/></svg>
+                  <span class="button-label">Save global settings</span>
+                </button>
+                <span id="settings-revision" class="muted"></span>
+                <button id="settings-info" type="button" class="info-button"
+                        aria-label="About settings version" title="The version increases each time account settings are saved. Devices apply the newest version.">?</button>
+              </div>
+              <p id="settings-message" class="message" role="status"></p>
+            </form>
+          </section>
+
+          <section class="panel" aria-labelledby="limits-title">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Custom limits</p>
+                <h3 id="limits-title"><svg class="icon heading-icon" aria-hidden="true"><use href="#icon-clock"/></svg>Command &amp; enrollment limits</h3>
+                <p class="section-desc">
+                  These defaults are enforced by the backend when a command or enrollment token is
+                  created. Shorten them to avoid stale actions; lengthen them to give offline devices
+                  more time. Changing a limit affects new commands only.
+                </p>
+              </div>
+            </div>
+            <form id="limits-form" novalidate>
+              <div class="limit-grid">
+                <div class="field">
+                  <label for="limit-enrollment"><svg class="icon field-icon" aria-hidden="true"><use href="#icon-plus"/></svg>Enrollment token lifetime (minutes)</label>
+                  <input id="limit-enrollment" name="enrollment" type="number" min="1" max="60"
+                         step="1" inputmode="numeric" class="compact-input"
+                         title="How long a new one-time enrollment token remains valid before it expires." required>
+                  <p class="hint">A new token must be claimed within this many minutes. Existing tokens keep the lifetime they were created with. Default 10 minutes.</p>
+                </div>
+                <div class="field">
+                  <label for="limit-lock"><svg class="icon field-icon" aria-hidden="true"><use href="#icon-lock"/></svg>Lock Devices: offline wait time (minutes)</label>
+                  <input id="limit-lock" name="lock" type="number" min="1" max="10080"
+                         step="1" inputmode="numeric" class="compact-input"
+                         title="If a selected phone is offline, how long the Lock Devices command remains ready before it expires." required>
+                  <p class="hint">If a selected phone is offline, keep the Lock Devices command ready for this many minutes. After that it expires and is not applied. Default 5 minutes.</p>
+                </div>
+                <div class="field">
+                  <label for="limit-force-reset"><svg class="icon field-icon" aria-hidden="true"><use href="#icon-warning"/></svg>Force Reset: offline wait time (minutes)</label>
+                  <input id="limit-force-reset" name="forceReset" type="number" min="1" max="10080"
+                         step="1" inputmode="numeric" class="compact-input"
+                         title="If a selected phone is offline, how long the Force Reset command remains ready before it expires." required>
+                  <p class="hint">If a selected phone is offline, keep the factory-reset request ready for this many minutes. After that it expires and is not applied. A shorter wait is safer. Default 10 minutes.</p>
+                </div>
+                <div class="field">
+                  <label for="limit-reset-timer"><svg class="icon field-icon" aria-hidden="true"><use href="#icon-reset"/></svg>Reset Timer: offline wait time (minutes)</label>
+                  <input id="limit-reset-timer" name="resetTimer" type="number" min="1" max="10080"
+                         step="1" inputmode="numeric" class="compact-input"
+                         title="If a selected phone is offline, how long the Reset Timer command remains ready before it expires." required>
+                  <p class="hint">If a selected phone is offline, keep the Reset Timer request ready for this many minutes. After that it expires and is not applied. Default 24 hours.</p>
+                </div>
+                <div class="field">
+                  <label for="limit-debug-on"><svg class="icon field-icon" aria-hidden="true"><use href="#icon-bug"/></svg>Debug Mode ON: offline wait time (minutes)</label>
+                  <input id="limit-debug-on" name="debugOn" type="number" min="1" max="10080"
+                         step="1" inputmode="numeric" class="compact-input"
+                         title="If a selected phone is offline, how long the Debug Mode ON command remains ready before it expires." required>
+                  <p class="hint">If the phone is offline, keep the request to turn Debug Mode ON ready for this many minutes. After that it expires. Default 24 hours.</p>
+                </div>
+                <div class="field">
+                  <label for="limit-debug-off"><svg class="icon field-icon" aria-hidden="true"><use href="#icon-bug"/></svg>Debug Mode OFF: offline wait time (minutes)</label>
+                  <input id="limit-debug-off" name="debugOff" type="number" min="1" max="10080"
+                         step="1" inputmode="numeric" class="compact-input"
+                         title="If a selected phone is offline, how long the Debug Mode OFF command remains ready before it expires." required>
+                  <p class="hint">If the phone is offline, keep the request to turn Debug Mode OFF ready for this many minutes. OFF allows destructive commands, so keep this short. Default 10 minutes.</p>
+                </div>
+              </div>
+              <div class="actions">
+                <button type="submit" class="primary"
+                        title="Save the limits used for newly created commands and tokens">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-save"/></svg>
+                  <span class="button-label">Save limits</span>
+                </button>
+                <button id="limits-reset" type="button" class="quiet"
+                        title="Fill the fields with the documented defaults; review and save">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-reset"/></svg>
+                  <span class="button-label">Restore defaults</span>
+                </button>
+                <span id="limits-revision" class="muted"></span>
+                <button id="limits-info" type="button" class="info-button"
+                        aria-label="About command and enrollment limits"
+                        title="Limits are stored with your account and applied server-side. Changing them does not alter commands or tokens that already exist.">?</button>
+              </div>
+              <p id="limits-message" class="message" role="status"></p>
+            </form>
+          </section>
+
+          <section class="panel" aria-labelledby="commands-title">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Remote commands</p>
+                <h3 id="commands-title"><svg class="icon heading-icon" aria-hidden="true"><use href="#icon-send"/></svg>Targeted actions</h3>
+                <p class="section-desc">
+                  Choose all enrolled devices or select specific devices in Command targets. Every command is
+                  confirmed with the exact target list and applies at the next sync. Repeating the
+                  same action keeps only the newest queued copy; different actions stay independent.
+                  Command activity shows each target move from queued to received, executing, and its
+                  final result.
+                </p>
+              </div>
+            </div>
+            <fieldset class="target-picker">
+              <legend><svg class="icon field-icon" aria-hidden="true"><use href="#icon-target"/></svg>Command targets</legend>
+              <label title="Send the command to every enrolled device, including devices that are currently offline. Offline devices receive it on reconnect, subject to the command expiry."><input id="target-all" type="radio" name="command-target" value="all"> All enrolled devices</label>
+              <label title="Send the command only to the devices checked below. At least one device must be selected."><input id="target-selected" type="radio" name="command-target" value="selected" checked> Selected devices</label>
+              <span id="target-summary" class="muted">0 selected</span>
+              <div id="target-device-list" class="target-device-list" aria-live="polite"></div>
+            </fieldset>
+            <p class="muted" id="action-scope"></p>
+            <div class="command-grid">
+              <div class="command-card">
+                <button id="lock-devices" type="button" class="primary"
+                        title="Lock the screen on the selected target devices; requires two confirmations">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg>
+                  <span class="button-label">Lock Devices</span>
+                </button>
+                <p class="hint">
+                  Locks the screen on the selected target devices. It does not wipe data or change
+                  any settings. Confirm twice before sending.
+                </p>
+              </div>
+              <div class="command-card">
+                <button id="reset-timer" type="button"
+                        title="Restart the lock countdown on the selected target devices">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-reset"/></svg>
+                  <span class="button-label">Reset Timer</span>
+                </button>
+                <p class="hint">
+                  Restarts the lock countdown on the selected target devices where the Lock trigger
+                  is enabled and the countdown is active. Unlocked devices and devices with Lock
+                  trigger OFF stay inactive. The card updates from the device's next status report,
+                  not a simulated value.
+                </p>
+              </div>
+              <div class="command-card danger-zone">
+                <button id="force-reset" type="button" class="danger"
+                        title="Queue a factory reset; requires Debug Mode OFF and a typed confirmation">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-warning"/></svg>
+                  <span class="button-label">Force Reset</span>
+                </button>
+                <p class="hint">
+                  Queues a factory reset on the selected target devices. Only executes on devices
+                  with Debug Mode OFF; devices with Debug Mode ON are blocked and reported. It is
+                  independent of the phone's local Wipe data switch, so it still resets. You must type
+                  RESET to confirm.
+                </p>
+              </div>
+            </div>
+            <p id="command-disabled-hint" class="hint" hidden></p>
+            <p id="commands-message" class="message" role="status"></p>
+          </section>
+        </section>
+
+        <section id="panel-account" class="tab-panel" role="tabpanel"
+                 aria-labelledby="tab-account" data-dashboard-panel="account" hidden>
+          <section id="account-panel" class="panel" hidden aria-labelledby="account-title">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Owner profile</p>
+                <h3 id="account-title"><svg class="icon heading-icon" aria-hidden="true"><use href="#icon-account"/></svg>Account</h3>
+                <p class="section-desc">
+                  This name is saved to your Supabase account and shown in every browser where you sign in.
+                </p>
+              </div>
+            </div>
+            <form id="account-form" novalidate>
+              <div class="field">
+                <label for="account-handle">Account name</label>
+                <input id="account-handle" name="accountHandle" type="text" autocomplete="off"
+                       maxlength="32" placeholder="John Cockpit" required
+                       title="1–32 characters. This display name is shown in every signed-in browser; it does not affect devices.">
+                <p class="hint">Shown in the dashboard. 1–32 characters; spaces are allowed.</p>
+              </div>
+              <div class="actions">
+                <button type="submit" class="primary">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-save"/></svg>
+                  <span class="button-label">Save name</span>
+                </button>
+              </div>
+              <p id="account-message" class="message" role="status"></p>
+            </form>
+
+            <section class="account-credential" aria-labelledby="account-email-title">
+              <h4 id="account-email-title">
+                <svg class="icon heading-icon" aria-hidden="true"><use href="#icon-mail"/></svg>Email address
+              </h4>
+              <dl class="account-facts">
+                <dt title="The owner email used only for this dashboard; devices do not receive it."><svg class="icon field-icon" aria-hidden="true"><use href="#icon-mail"/></svg>Signed-in email</dt>
+                <dd class="account-email-row">
+                  <span id="account-email">—</span>
+                  <button id="account-email-toggle" type="button" class="icon-button"
+                          aria-label="Hide signed-in email" aria-pressed="false"
+                          title="Hide the signed-in email">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-eye"/></svg>
+                  </button>
+                </dd>
+              </dl>
+              <p class="hint">
+                The sign-in email is not editable here, because an email change sends confirmation
+                emails and is easy to get wrong. Change it in your Supabase project instead:
+              </p>
+              <ol class="hint">
+                <li>Open
+                  <a id="account-users-link" href="https://supabase.com/dashboard"
+                     target="_blank" rel="noopener noreferrer">Authentication → Users</a>
+                  in your Supabase project.</li>
+                <li>Your owner account is the only one that is not anonymous.</li>
+                <li>Open its menu, choose <strong>Edit user</strong>, enter the new email, and save.</li>
+                <li>Return here and sign in with the new address.</li>
+              </ol>
+              <p class="hint">
+                The new address works for sign-in right away. Enrolled devices are unaffected — they
+                authenticate with their own anonymous identities, not your email.
+              </p>
+            </section>
+
+            <section class="account-credential" aria-labelledby="account-password-title">
+              <h4 id="account-password-title">
+                <svg class="icon heading-icon" aria-hidden="true"><use href="#icon-lock"/></svg>Change password
+              </h4>
+              <p class="hint">
+                Enter your current password, then the new one twice. Use at least 6 characters with
+                upper and lower case letters and digits. The new password takes effect immediately; no
+                email is sent and other signed-in browsers stay signed in.
+              </p>
+              <form id="account-password-form" novalidate>
+                <div class="field">
+                  <label for="account-current-password">Current password</label>
+                  <div class="password-wrap">
+                    <input id="account-current-password" name="currentPassword" type="password"
+                           autocomplete="current-password" placeholder="Your current password" required>
+                    <button type="button" class="password-toggle"
+                            data-password-toggle="account-current-password"
+                            aria-label="Show password" aria-pressed="false">
+                      <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M12 5c-5.5 0-9.5 5-10 7 .5 2 4.5 7 10 7s9.5-5 10-7c-.5-2-4.5-7-10-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
+                      </svg>
+                      <svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M3 3l18 18-1.4 1.4L3 4.4V3zm9 2c-1.6 0-3.1.4-4.4 1.1l2.3 2.3c.7-.3 1.4-.5 2.1-.5 2.2 0 4 1.8 4 4 0 .7-.2 1.4-.5 2l2.3 2.3C19.7 15.1 21 13.5 21 12c-.5-2-4.5-7-9-7zM3 12c.5 2 4.5 7 9 7 1.6 0 3.1-.4 4.4-1.1l-2.3-2.3c-.7.3-1.4.5-2.1.5-2.2 0-4-1.8-4-4 0-.7.2-1.4.5-2L6.3 8.3C4.3 9.5 3.4 11 3 12z"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="account-new-password">New password</label>
+                  <div class="password-wrap">
+                    <input id="account-new-password" name="newPassword" type="password"
+                           autocomplete="new-password" minlength="6"
+                           placeholder="At least 6 characters" required>
+                    <button type="button" class="password-toggle"
+                            data-password-toggle="account-new-password"
+                            aria-label="Show password" aria-pressed="false">
+                      <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M12 5c-5.5 0-9.5 5-10 7 .5 2 4.5 7 10 7s9.5-5 10-7c-.5-2-4.5-7-10-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
+                      </svg>
+                      <svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M3 3l18 18-1.4 1.4L3 4.4V3zm9 2c-1.6 0-3.1.4-4.4 1.1l2.3 2.3c.7-.3 1.4-.5 2.1-.5 2.2 0 4 1.8 4 4 0 .7-.2 1.4-.5 2l2.3 2.3C19.7 15.1 21 13.5 21 12c-.5-2-4.5-7-9-7zM3 12c.5 2 4.5 7 9 7 1.6 0 3.1-.4 4.4-1.1l-2.3-2.3c-.7.3-1.4.5-2.1.5-2.2 0-4-1.8-4-4 0-.7.2-1.4.5-2L6.3 8.3C4.3 9.5 3.4 11 3 12z"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="account-new-password-confirm">Confirm new password</label>
+                  <div class="password-wrap">
+                    <input id="account-new-password-confirm" name="newPasswordConfirm" type="password"
+                           autocomplete="new-password" minlength="6"
+                           placeholder="Repeat the new password" required>
+                    <button type="button" class="password-toggle"
+                            data-password-toggle="account-new-password-confirm"
+                            aria-label="Show password" aria-pressed="false">
+                      <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M12 5c-5.5 0-9.5 5-10 7 .5 2 4.5 7 10 7s9.5-5 10-7c-.5-2-4.5-7-10-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
+                      </svg>
+                      <svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M3 3l18 18-1.4 1.4L3 4.4V3zm9 2c-1.6 0-3.1.4-4.4 1.1l2.3 2.3c.7-.3 1.4-.5 2.1-.5 2.2 0 4 1.8 4 4 0 .7-.2 1.4-.5 2l2.3 2.3C19.7 15.1 21 13.5 21 12c-.5-2-4.5-7-9-7zM3 12c.5 2 4.5 7 9 7 1.6 0 3.1-.4 4.4-1.1l-2.3-2.3c-.7.3-1.4.5-2.1.5-2.2 0-4-1.8-4-4 0-.7.2-1.4.5-2L6.3 8.3C4.3 9.5 3.4 11 3 12z"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="actions">
+                  <button type="submit" class="primary">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg>
+                    <span class="button-label">Update password</span>
+                  </button>
+                </div>
+                <p id="account-password-message" class="message" role="status"></p>
+              </form>
+            </section>
+          </section>
+        </section>
+
+        <section id="panel-help" class="tab-panel" role="tabpanel"
+                 aria-labelledby="tab-help" data-dashboard-panel="help" hidden>
+          <details class="help" id="how-it-works" open>
+            <summary><svg class="icon summary-icon" aria-hidden="true"><use href="#icon-shield"/></svg>How this works</summary>
+            <div class="help-body">
+              <p>
+                This page was generated by the Wasted app and hosted by you. It connects directly
+                from your browser to your own Supabase project: sign-in, data, and commands all live
+                there. There is no dashboard server; the browser only queues a command, and the
+                enrolled app performs the actual reset after its own Debug Mode checks.
+              </p>
+              <p>
+                Your email/password is only for this dashboard. Devices do not receive it. Instead,
+                the app creates a private, unnamed identity for each device, and the one-time
+                enrollment token links that identity to your account. That is why device enrollment
+                asks for a token, not an email.
+              </p>
+              <p>
+                Anonymous sign-ins are how those device identities are created. They can be left off
+                if you do not want Remote Management; your owner account still works, but devices
+                cannot enroll or sync. Rate limits and automatic cleanup of unused identities limit
+                abuse.
+              </p>
+              <ol>
+                <li>In Supabase, run the setup SQL, enable anonymous sign-ins, keep the Email
+                  provider on, turn Confirm email off, and enable the Before User Created
+                  single-owner hook.</li>
+                <li>Create the first account on this page; it becomes the owner immediately.</li>
+                <li>In the app, paste this page's URL under Remote Management, Save, and Enable.</li>
+                <li>Create an enrollment token on the Devices tab, then claim it in the app.</li>
+                <li>The device appears after its first sync.</li>
+              </ol>
+              <p class="muted">
+                The header menu shows the configured Project URL, publishable key, and hosted
+                Dashboard URL with copy buttons. The connection values are baked into this page and
+                the Dashboard URL comes from the address you are using, so reading or copying them
+                makes no Supabase request. The publishable key is public by design; never paste a
+                secret or service-role key here.
+              </p>
+            </div>
+          </details>
+
+          <details class="help">
+            <summary><svg class="icon summary-icon" aria-hidden="true"><use href="#icon-list"/></svg>What each device field means</summary>
+            <div class="help-body">
+              <dl>
+                <dt>Connection</dt>
+                <dd>
+                  <strong>Active</strong> means the device contacted the server within the last
+                  150 seconds; <strong>Inactive</strong> means it has not. The exact last-contact time
+                  is shown below. Commands stay queued until it
+                  reconnects, subject to the configurable limits in Controls
+                  (<span id="help-command-expiry">default: Reset Timer 24 hours; Force Reset and
+                  Debug Mode OFF 10 minutes; Debug Mode ON 24 hours</span>).
+                </dd>
+                <dt>Live countdown</dt>
+                <dd>
+                  The live remaining countdown before the Lock trigger fires, shown in days, hours,
+                  minutes, and seconds. It starts after the phone locks or its screen turns off,
+                  stops when the phone is unlocked, and stays inactive when the Lock trigger is OFF.
+                  The value is extrapolated every second from the last real device report, so it is
+                  labelled estimated while running.
+                </dd>
+                <dt>Lock trigger</dt>
+                <dd>
+                  The switch that arms the lock workflow. The saved value is the device override
+                  when one exists, otherwise the global default. Green ON means armed; red OFF means
+                  disarmed. When the countdown finishes, Wasted locks the phone and, if Wipe data is
+                  on, starts the reset (Debug Mode still blocks the wipe).
+                </dd>
+                <dt>Lock delay setting</dt>
+                <dd>
+                  The wait after screen-off/lock before the Lock trigger fires. It runs only while
+                  the Lock trigger is ON. “Device reports” is the phone's delay, converted from whole
+                  minutes and shown with only non-zero units. “Saved setting” is the device
+                  override, otherwise the global default. Wipe data is a phone-local setting and is
+                  not changed by the dashboard.
+                </dd>
+                <dt>USB trigger</dt>
+                <dd>
+                  When ON, a USB data connection while the phone is locked can fire the trigger.
+                  Green ON means armed; red OFF means disabled. “Device reports” is the phone's value;
+                  “Saved setting” is the device override, otherwise the global default. Changing
+                  the switch on the phone affects only that phone and does not rewrite either target;
+                  the card shows the mismatch until they agree.
+                </dd>
+                <dt>Battery</dt>
+                <dd>
+                  Battery percentage and charging state reported at the last status sync, with a
+                  filled battery icon. Green is healthy, amber is 21–50%, red is 20% or less, and a
+                  dashed grey/unknown icon means the phone did not report a value; unknown is not the
+                  same as 0%. The value updates about once a minute, not continuously.
+                </dd>
+                <dt>Settings status</dt>
+                <dd>
+                  <strong>Current</strong> is green and means the device has applied the latest
+                  global and per-device override revisions. <strong>Pending</strong> is amber and
+                  means the next sync is still outstanding. The applied time is recorded by the
+                  server when the device reports a new revision.
+                </dd>
+                <dt>Settings version</dt>
+                <dd>
+                  Global and device versions are independent. Saving global settings increments the
+                  global version; saving a device override increments only that device's version.
+                  Devices apply the saved value from both. Neither version needs to match by hand.
+                </dd>
+                <dt>Device settings</dt>
+                <dd>
+                  Each card's Settings button overrides Lock trigger, Lock delay, or USB trigger for
+                  that device only. Check Inherit global to remove an override. Global saves never
+                  clear overrides; no other device is affected.
+                </dd>
+                <dt>Device notes</dt>
+                <dd>
+                  Private owner-only notes attached to one device. Use the Notes section on a device
+                  card to add or edit up to 4000 characters. Notes are stored in Supabase and are
+                  never shown in the Wasted app or sent to the phone.
+                </dd>
+                <dt>Command targets</dt>
+                <dd>
+                  Choose All enrolled devices or select devices in the Command targets list. The
+                  command confirmation lists the exact count and names. Selected targets must be
+                  enrolled and owned; a revoked or empty selection is rejected before any command is
+                  queued. A newer copy of the same action replaces older queued copies for that
+                  device; other actions remain queued independently.
+                </dd>
+                <dt>Command &amp; enrollment limits</dt>
+                <dd>
+                  Controls how long commands and enrollment tokens stay valid. Defaults are the
+                  normal values; changes apply to new commands and tokens only. Existing queued work
+                  keeps the expiry it was created with.
+                </dd>
+                <dt>Debug Mode</dt>
+                <dd>
+                  Green ON blocks destructive remote commands (Force Reset); red OFF allows them.
+                  Reset Timer and settings sync keep working. Enable/Disable sends a command to that
+                  device only.
+                </dd>
+                <dt>Reset support</dt>
+                <dd>
+                  Whether this device can run a reset at all with its current Device Admin/Device
+                  Owner protections. Android 14+ installs that are not Device Owner may use a
+                  best-effort wipe rather than a full factory reset.
+                </dd>
+                <dt>Last command</dt>
+                <dd>
+                  The newest remote command for this device and its state (queued, executing,
+                  applied, blocked, failed, …).
+                </dd>
+              </dl>
+            </div>
+          </details>
+
+          <details class="help">
+            <summary><svg class="icon summary-icon" aria-hidden="true"><use href="#icon-download"/></svg>Install this dashboard</summary>
+            <div class="help-body">
+              <p>
+                On Chrome or Edge, use the browser install icon or the <strong>Install app</strong>
+                action in the header menu. On iPhone/iPad, use
+                <strong>Share → Add to Home Screen</strong>.
+                On macOS Safari, use <strong>File → Add to Dock</strong>.
+              </p>
+              <p class="muted">
+                Firefox desktop does not install manifest-based web apps natively. Firefox Android
+                adds a browser shortcut instead of a standalone app.
+              </p>
+            </div>
+          </details>
+
+          <details class="help" id="help-testing">
+            <summary><svg class="icon summary-icon" aria-hidden="true"><use href="#icon-target"/></svg>How to test safely</summary>
+            <div class="help-body">
+              <ol>
+                <li>In the app, open Remote Management and confirm it is enabled and enrolled.</li>
+                <li>Turn <strong>Lock trigger</strong> ON in the dashboard if you are testing the
+                  lock delay. Turn <strong>Debug Mode</strong> ON before testing any reset path.</li>
+                <li>Change Lock delay or USB trigger here, press
+                  <strong>Save trigger settings</strong>, and wait for the device card to report the
+                  new value. The app should update without reopening it.</li>
+                <li>Press <strong>Reset Timer</strong> and confirm the Lock countdown restarts only
+                  while the phone is locked and the Lock trigger is ON.</li>
+                <li>Test <strong>Force Reset</strong> only with Debug Mode ON. It must be blocked and
+                  reported; do not test a real wipe on a device you need.</li>
+              </ol>
+              <p class="muted">
+                A local change in the app is reported back as the device value, but it does not
+                rewrite the global or device target. Use the device's Settings button for one device;
+                use Global settings for every device that inherits the field. Select one or more
+                devices in Command targets before sending a command, or choose All enrolled devices.
+              </p>
+              <p class="muted">
+                When the countdown completes, Wasted fires the Lock trigger: it locks the phone. If
+                Wipe data is ON, it then starts the reset; Debug Mode blocks that wipe. After the
+                delay has elapsed the countdown stops until the phone is locked again.
+              </p>
+            </div>
+          </details>
+
+          <details class="help">
+            <summary><svg class="icon summary-icon" aria-hidden="true"><use href="#icon-warning"/></svg>Safety notes</summary>
+            <div class="help-body">
+              <p>
+                Force Reset is destructive and cannot be undone. It is blocked when Debug Mode is ON
+                and requires typing <strong>RESET</strong> in the confirmation dialog. It does not
+                consult the phone's local Wipe data switch; that switch only controls trigger
+                behavior. Force Reset is an explicit reset command.
+              </p>
+              <p>
+                <strong>Lock Devices</strong> only locks the screen on the selected targets; it never
+                wipes or changes settings. It asks twice, and an offline device ignores it after the
+                configured Lock Devices expiry (default 5 minutes).
+              </p>
+              <p>
+                Revoking a device stops remote commands but does not wipe it. Reset enrollment in the
+                app is separate and local; it does not remove the dashboard device record. The
+                record is retained for audit, and revoking it stops remote access.
+              </p>
+            </div>
+          </details>
+        </section>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<dialog id="install-dialog" aria-labelledby="install-title">
+  <form method="dialog">
+    <h2 id="install-title">Install this app</h2>
+    <p id="install-message"></p>
+    <div class="actions">
+      <button value="close" class="primary">
+        <svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg>
+        <span class="button-label">Close</span>
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="confirm-dialog" aria-labelledby="confirm-title">
+  <form method="dialog">
+    <h2 id="confirm-title"></h2>
+    <p id="confirm-message"></p>
+    <div class="field" id="confirm-typed-field" hidden>
+      <label for="confirm-typed">Type <strong id="confirm-phrase"></strong> to confirm</label>
+      <input id="confirm-typed" type="text" autocomplete="off">
+    </div>
+    <div class="actions">
+      <button id="confirm-cancel" value="cancel" formnovalidate>Cancel</button>
+      <button id="confirm-ok" value="ok" class="danger">Confirm</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="rename-dialog" aria-labelledby="rename-title">
+  <form method="dialog">
+    <h2 id="rename-title">Rename device</h2>
+    <div class="field">
+      <label for="rename-device-name">Device name</label>
+      <input id="rename-device-name" type="text" maxlength="80" autocomplete="off" required>
+      <p class="hint">1–80 characters. This name is only shown in the dashboard.</p>
+    </div>
+    <div class="actions">
+      <button value="cancel" formnovalidate>
+        <svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg>
+        <span class="button-label">Cancel</span>
+      </button>
+      <button value="ok" class="primary">
+        <svg class="icon" aria-hidden="true"><use href="#icon-save"/></svg>
+        <span class="button-label">Save name</span>
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="notes-dialog" aria-labelledby="notes-title">
+  <form method="dialog" id="notes-form">
+    <h2 id="notes-title"><svg class="icon heading-icon" aria-hidden="true"><use href="#icon-pencil"/></svg>Device notes</h2>
+    <p id="notes-device-name" class="muted"></p>
+    <div class="field">
+      <label for="device-notes">Private notes</label>
+      <textarea id="device-notes" rows="6" maxlength="4000"
+                placeholder="Add context, a location, or anything useful about this device."></textarea>
+      <p id="notes-count" class="hint">0 / 4000 characters</p>
+      <p class="hint">Only the dashboard owner can read these notes. They are stored in your Supabase project and are not sent to the device.</p>
+    </div>
+    <p id="notes-message" class="message" role="status"></p>
+    <div class="actions">
+      <button value="cancel" formnovalidate>
+        <svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg>
+        <span class="button-label">Cancel</span>
+      </button>
+      <button id="notes-save" value="ok" class="primary">
+        <svg class="icon" aria-hidden="true"><use href="#icon-save"/></svg>
+        <span class="button-label">Save notes</span>
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="device-settings-dialog" aria-labelledby="device-settings-title">
+  <form method="dialog" id="device-settings-form">
+    <h2 id="device-settings-title">Device settings</h2>
+    <p id="device-settings-name" class="muted"></p>
+    <p class="hint" id="ds-intro">
+      Each option is either inherited from the account-wide global defaults or overridden for this
+      device. Check <strong>Inherit global</strong> to remove this device's saved override and use the
+      current global value. A saved override applies only to this device and takes effect at its next
+      sync.
+    </p>
+    <div class="setting-row">
+      <div class="setting-copy">
+        <span id="ds-lock-trigger-title" class="setting-title">
+          <svg class="icon field-icon" aria-hidden="true"><use href="#icon-lock"/></svg>Lock trigger
+        </span>
+        <p class="hint" id="ds-lock-trigger-hint">
+          Arms the lock workflow on this device. When ON, locking the phone starts the delay; when
+          the delay finishes Wasted locks the phone and, if Wipe data is ON, starts the reset. It does
+          not wipe data by itself.
+        </p>
+        <p class="hint" id="ds-lock-trigger-global"></p>
+        <label class="inherit-label"
+               title="Use the account-wide Lock trigger. This removes the device override.">
+          <input id="ds-lock-trigger-inherit" type="checkbox"
+                 aria-describedby="ds-lock-trigger-hint ds-lock-trigger-global"> Inherit global
+        </label>
+      </div>
+      <label class="switch" aria-label="Device Lock trigger override">
+        <input id="ds-lock-trigger" type="checkbox" aria-describedby="ds-lock-trigger-hint ds-lock-trigger-global">
+        <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+      </label>
+    </div>
+    <div class="setting-row">
+      <div class="setting-copy">
+        <label for="ds-lock-minutes">
+          <svg class="icon field-icon" aria-hidden="true"><use href="#icon-clock"/></svg>Lock delay setting (minutes)
+        </label>
+        <p class="hint" id="ds-lock-minutes-hint">
+          Wait after this device locks or its screen turns off before the Lock trigger fires. This is
+          a setting, not the live countdown. Enter whole minutes; 10080 = 7 days. It only runs while
+          the Lock trigger is ON.
+        </p>
+        <p class="hint" id="ds-lock-minutes-global"></p>
+        <label class="inherit-label"
+               title="Use the account-wide Lock delay. This removes the device override.">
+          <input id="ds-lock-minutes-inherit" type="checkbox"
+                 aria-describedby="ds-lock-minutes-hint ds-lock-minutes-global"> Inherit global
+        </label>
+      </div>
+      <input id="ds-lock-minutes" type="number" min="1" max="525600" step="1"
+             inputmode="numeric" class="compact-input"
+             aria-describedby="ds-lock-minutes-hint ds-lock-minutes-global">
+    </div>
+    <div class="setting-row">
+      <div class="setting-copy">
+        <span id="ds-usb-trigger-title" class="setting-title">
+          <svg class="icon field-icon" aria-hidden="true"><use href="#icon-usb"/></svg>USB trigger
+        </span>
+        <p class="hint" id="ds-usb-trigger-hint">
+          When ON, connecting USB data while this device is locked can fire the USB trigger. It is
+          independent of the Lock trigger and does not change the lock delay.
+        </p>
+        <p class="hint" id="ds-usb-trigger-global"></p>
+        <label class="inherit-label"
+               title="Use the account-wide USB trigger. This removes the device override.">
+          <input id="ds-usb-trigger-inherit" type="checkbox"
+                 aria-describedby="ds-usb-trigger-hint ds-usb-trigger-global"> Inherit global
+        </label>
+      </div>
+      <label class="switch" aria-label="Device USB trigger override">
+        <input id="ds-usb-trigger" type="checkbox" aria-describedby="ds-usb-trigger-hint ds-usb-trigger-global">
+        <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+      </label>
+    </div>
+    <input id="device-settings-revision" type="hidden">
+    <input id="device-settings-device-id" type="hidden">
+    <p id="device-settings-message" class="message" role="status"></p>
+    <div class="actions">
+      <button value="cancel" formnovalidate>
+        <svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg>
+        <span class="button-label">Cancel</span>
+      </button>
+      <button id="device-settings-save" value="ok" class="primary">
+        <svg class="icon" aria-hidden="true"><use href="#icon-save"/></svg>
+        <span class="button-label">Save device settings</span>
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden>
+  <span id="toast-message"></span>
+  <button id="toast-close" type="button" class="toast-close"
+          aria-label="Dismiss notification" title="Dismiss notification">
+    <svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg>
+  </button>
+</div>
+
+<footer>
+  <span id="footer-product">Wasted Remote</span>
+  <a id="footer-version" class="muted" href="https://github.com/anonfaded/wasted"
+     target="_blank" rel="noopener noreferrer" title="Open the Wasted repository on GitHub"></a>
+  <span class="footer-links">
+    <a id="footer-privacy" href="#" target="_blank" rel="noopener noreferrer" hidden>Privacy</a>
+    <a id="footer-support" href="#" target="_blank" rel="noopener noreferrer" hidden>Support</a>
+  </span>
+</footer>
+
+<script>
+  const isLocalPreview = ["localhost", "127.0.0.1", "::1"].includes(location.hostname);
+  const forcePwaPreview = new URLSearchParams(location.search).has("pwa");
+  if (isLocalPreview && !forcePwaPreview && "serviceWorker" in navigator) {
+    // Remove old dev service workers so they cannot serve stale UI during HMR.
+    navigator.serviceWorker.getRegistrations()
+      .then((registrations) => Promise.all(registrations.map((registration) => registration.unregister())))
+      .catch(() => {});
+    if ("caches" in window) {
+      caches.keys()
+        .then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
+        .catch(() => {});
+    }
+  } else if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js").catch(() => {
+        // Service worker registration is skipped when the host does not provide one.
+      });
+    });
+  }
+</script>
+<!-- __WASTED_CONFIG__ -->
+<script type="module" src="assets/app.js" defer></script>
+</body>
+</html>

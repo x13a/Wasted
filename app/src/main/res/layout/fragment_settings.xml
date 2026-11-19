@@ -9,10 +9,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/security_settings"
+                    android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/biometricUnlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/biometric_unlock"
+                    android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/biometric_unlock_description"
+                    android:textAppearance="?attr/textAppearanceBodySmall" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp" />
 
             <CheckBox
                 android:id="@+id/panicKit"
@@ -115,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layoutDirection="rtl"
                 android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:text="@string/trigger_lock" />
+                android:text="@string/trigger_lock_switch" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -134,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layoutDirection="rtl"
                 android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:text="@string/trigger_usb" />
+                android:text="@string/trigger_usb_switch" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -159,6 +184,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/trigger_application_description"
+                android:textAppearance="?attr/textAppearanceBodySmall" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="12dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/lockNow"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/lock_now" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/lock_now_help"
                 android:textAppearance="?attr/textAppearanceBodySmall" />
 
         </LinearLayout>

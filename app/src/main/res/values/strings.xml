@@ -11,9 +11,11 @@
     <string name="shortcut_label">Panic</string>
     <string name="trigger_lock_time_hint">time</string>
     <string name="trigger_lock_time_error">7d / 48h / 120m</string>
-    <string name="trigger_lock_time_helper_text">How much time to wait. Modifiers: [d]ays [h]ours [m]inutes</string>
+    <string name="trigger_lock_time_helper_text">How long Wasted waits after the screen turns off or the phone locks before firing the Lock trigger. Use d for days, h for hours, m for minutes (for example 7d, 48h, 120m).</string>
+    <string name="trigger_lock_remote_note">Remote Management can turn the Lock trigger on or off and change this delay globally or for this device only. A device override takes precedence over the global setting. The countdown starts after screen-off/lock and stops when you unlock. When it completes, Wasted locks the phone; if Wipe data is ON locally, the reset starts, unless Debug Mode blocks it. Wipe data itself is not changed by Remote Management.</string>
     <string name="trigger_tile_delay_description">Safe delay before it will fire. Gives you some time to cancel fire if you will tap a tile accidentally.</string>
     <string name="notification_channel_default_name">Default</string>
+    <string name="notification_channel_remote_name">Remote events</string>
     <string name="foreground_service_notification_title">Guard</string>
     <string name="trigger_panic_kit">PanicKit</string>
     <string name="trigger_tile">Tile</string>
@@ -22,6 +24,9 @@
     <string name="trigger_notification">Notification</string>
     <string name="trigger_lock">Lock</string>
     <string name="trigger_usb">USB</string>
+    <string name="trigger_lock_switch">Lock trigger</string>
+    <string name="trigger_usb_switch">USB trigger</string>
+    <string name="nav_lock_delay">Lock delay</string>
     <string name="trigger_application">Application</string>
     <string name="copied_popup">Copied</string>
     <string name="main">Main</string>
@@ -37,8 +42,8 @@
     <string name="trigger_shortcut_description">Enable icon shortcut. It is a button you will see when you make a long tap on the Wasted icon.</string>
     <string name="trigger_broadcast_description">Enable broadcast receiver. It is useful to communicate with another Android apps. For example you can fire Wasted from Tasker using this.</string>
     <string name="trigger_notification_description">Enable device notification listener. It will scan all notifications it has access to for the secret code. When found it will fire.</string>
-    <string name="trigger_lock_description">Enable lock job scheduler. It will schedule a job every time you turn off a device screen and cancel it every time you unlock a device. When you do not unlock a device for X time a job will fire.</string>
-    <string name="trigger_usb_description">Enable USB state receiver. When you make a USB data connection while a device is locked it will fire. It must not fire on charger, only on device and accessory.</string>
+    <string name="trigger_lock_description">Lock trigger. Enable the lock job scheduler. It schedules a job when you turn off the screen and cancels it when you unlock the phone. If the phone stays locked for the Lock delay (set under Lock delay in the menu), the job fires. Remote Management can turn this Lock trigger on or off and change that delay globally or for this device only; a device override wins over the global value.</string>
+    <string name="trigger_usb_description">USB trigger. When enabled, a USB data connection while the phone is locked fires the trigger. It does not fire on a charger, only on a USB device or accessory. Remote Management can change it globally or for this device only; a device override wins. Changing it in this phone\'s Settings changes only this phone.</string>
     <string name="trigger_application_description">Enable fake application. It will add fake messenger applications. Launching them will fire Wasted.</string>
     <string name="signal">Signal</string>
     <string name="telegram">Telegram</string>
@@ -51,4 +56,38 @@
     <string name="receiver">receiver</string>
     <string name="extra_key">extra key</string>
     <string name="extra_value">extra value</string>
+
+    <!-- Protection level indicator -->
+    <string name="protection_level_header">Protection Level</string>
+    <string name="protection_tier_1">🔒 Full — Factory reset on trigger</string>
+    <string name="protection_tier_2">⚡ Strong — App data cleared + TRIM on trigger</string>
+    <string name="protection_tier_3">📁 Partial — Photos and files deleted on trigger</string>
+    <string name="protection_tier_4">⚠️ Minimal — Only Wasted data cleared</string>
+
+    <!-- Security / app lock -->
+    <string name="security_settings">Security</string>
+    <string name="biometric_unlock">Biometric app unlock</string>
+    <string name="biometric_unlock_description">Ask for biometrics or your device credential when Wasted opens. Turn this off to open the app without a prompt.</string>
+
+    <!-- Home help -->
+    <string name="home_help_button">How this screen works</string>
+    <string name="lock_now">Lock now</string>
+    <string name="lock_now_help">Requires Device Admin. Locks the screen only; it does not wipe data or change any trigger setting.</string>
+    <string name="lock_now_confirm_title">Lock this device now?</string>
+    <string name="lock_now_confirm_message">This locks the screen. It does not wipe data or change any settings.</string>
+    <string name="lock_now_confirm_again_title">Confirm lock</string>
+    <string name="lock_now_confirm_again_message">Send the lock command now? You will need to unlock the phone locally.</string>
+    <string name="lock_now_admin_required">Device Admin must be active before Wasted can lock the screen.</string>
+    <string name="application_help_title">Fake apps</string>
+    <string name="application_help_body">Optional decoy icons. Opening one fires Wasted like a trigger; these are not real messaging apps.</string>
+    <string name="notification_help_body">Wasted reads notifications it has access to and fires when the secret code appears. Use Notification access in Android settings to grant or revoke it.</string>
+    <string name="home_help_title">How this screen works</string>
+    <string name="home_help_body">WHAT THIS SCREEN DOES\n\nWasted locks and optionally resets this phone when a configured trigger fires. This screen controls the code and what a reset includes.\n\nSECRET CODE\n\n• The large code is the secret used by notification and other code-based triggers. Keep it private.\n• The code background is red when no trigger is enabled and yellow when at least one is. Wipe data alone does not change it.\n\nTOP BUTTONS\n\n• Copy — copies the code.\n• Edit — changes the code.\n• Settings — opens Wasted settings.\n\nWIPE OPTIONS\n\n• Wipe data — when Wasted fires, it locks the phone and starts a reset. If off, it only locks.\n• Wipe eSIM — also erases the eSIM when supported. Available when Wipe data is on.\n• Protection Level — how complete the reset will be on this phone.\n• Setup card — the next step for stronger protection.\n\nBOTTOM BUTTON\n\n• ON — arms Wasted. Device Admin must be active.\n• OFF — disarms Wasted; triggers do nothing.\n\nWHEN IT FIRES\n\nWith Wasted ON, a matching trigger locks the phone. If Wipe data is on, it then starts the reset.</string>
+
+    <!-- Setup card -->
+    <string name="setup_card_header">Enhance Protection</string>
+    <string name="files_access_hint">Also: grant All Files Access for file deletion on wipe</string>
+    <string name="files_access_action">Grant Files Access</string>
+    <string name="proceed">Proceed</string>
+    <string name="cancel">Cancel</string>
 </resources>

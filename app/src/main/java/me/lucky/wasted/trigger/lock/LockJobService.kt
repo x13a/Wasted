@@ -8,6 +8,7 @@ import me.lucky.wasted.Utils
 
 class LockJobService : JobService() {
     override fun onStartJob(params: JobParameters?): Boolean {
+        TimerCoordinator.create(this).onTimerFired()
         Utils(this).fire(Trigger.LOCK)
         return false
     }

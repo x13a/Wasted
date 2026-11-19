@@ -6,12 +6,19 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import androidx.core.content.ContextCompat
 
 import me.lucky.wasted.admin.DeviceAdminManager
+import me.lucky.wasted.admin.ResetExecutor
+import me.lucky.wasted.admin.ResetResult
+import me.lucky.wasted.remote.data.RemoteConfigStore
+import me.lucky.wasted.remote.work.RemoteBootJobService
+import me.lucky.wasted.remote.work.RemoteRecoveryWorker
 import me.lucky.wasted.trigger.notification.NotificationListenerService
 import me.lucky.wasted.trigger.panic.PanicConnectionActivity
 import me.lucky.wasted.trigger.panic.PanicResponderActivity
+import me.lucky.wasted.trigger.shared.ForegroundRequirement
 import me.lucky.wasted.trigger.shared.ForegroundService
 import me.lucky.wasted.trigger.shared.RestartReceiver
 import me.lucky.wasted.trigger.shortcut.ShortcutActivity
@@ -21,6 +28,8 @@ import me.lucky.wasted.trigger.usb.UsbReceiver
 
 class Utils(private val ctx: Context) {
     companion object {
+        private const val TAG = "Utils"
+
         fun setFlag(key: Int, value: Int, enabled: Boolean) =
             when(enabled) {
                 true -> key.or(value)
@@ -29,6 +38,7 @@ class Utils(private val ctx: Context) {
     }
 
     private val prefs by lazy { Preferences.new(ctx) }
+    private val remoteConfigStore by lazy { RemoteConfigStore.new(ctx) }
 
     fun setEnabled(enabled: Boolean) {
         val triggers = prefs.triggers
@@ -90,15 +100,29 @@ class Utils(private val ctx: Context) {
         val enabled = prefs.isEnabled
         val triggers = prefs.triggers
         val isUSB = triggers.and(Trigger.USB.value) != 0
-        val foregroundEnabled = enabled && (triggers.and(Trigger.LOCK.value) != 0 || isUSB)
+        val p2pEnabled = prefs.p2pEnabled
+        val remoteEnabled = remoteConfigStore.remoteEnabled && remoteConfigStore.isConfigured
+        val foregroundEnabled =
+            ForegroundRequirement.isRequired(enabled, triggers, p2pEnabled, remoteEnabled)
         setForegroundEnabled(foregroundEnabled)
         setComponentEnabled(RestartReceiver::class.java, foregroundEnabled)
+        if (remoteEnabled) {
+            RemoteBootJobService.schedule(ctx)
+            RemoteRecoveryWorker.schedulePeriodic(ctx)
+        }
         setComponentEnabled(UsbReceiver::class.java, enabled && isUSB)
+        // Stop P2P network when user has disabled P2P
+        if (!p2pEnabled) {
+            me.lucky.wasted.p2p.P2PController.instanceOrNull()?.stop()
+        }
     }
 
     private fun setForegroundEnabled(enabled: Boolean) =
         Intent(ctx.applicationContext, ForegroundService::class.java).also {
-            if (enabled) ContextCompat.startForegroundService(ctx.applicationContext, it)
+            if (enabled) ContextCompat.startForegroundService(
+                ctx.applicationContext,
+                it.setAction(ForegroundService.ACTION_RECONFIGURE),
+            )
             else ctx.stopService(it)
         }
 
@@ -121,7 +145,17 @@ class Utils(private val ctx: Context) {
         val admin = DeviceAdminManager(ctx)
         try {
             admin.lockNow()
-            if (prefs.isWipeData && safe) admin.wipeData()
+            if (prefs.isWipeData && safe) {
+                when (val result = ResetExecutor.create(ctx).execute()) {
+                    is ResetResult.DebugBlocked ->
+                        Log.i(TAG, "Debug Mode ON — wipe blocked (trigger=$trigger)")
+                    is ResetResult.NotSupported ->
+                        Log.e(TAG, "Wipe not supported: ${result.message}")
+                    is ResetResult.Failed ->
+                        Log.e(TAG, "Wipe failed: ${result.message}")
+                    is ResetResult.Initiated -> Unit
+                }
+            }
         } catch (exc: SecurityException) {}
         if (prefs.isRecastEnabled && safe) recast()
     }

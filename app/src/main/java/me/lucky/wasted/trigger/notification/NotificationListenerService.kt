@@ -27,8 +27,10 @@ class NotificationListenerService : NotificationListenerService() {
         super.onNotificationPosted(sbn)
         if (sbn == null) return
         val secret = prefs.secret
-        assert(secret.isNotEmpty())
-        if (sbn.notification.extras[Notification.EXTRA_TEXT]?.toString()?.trim() != secret) return
+        // Fail closed: never match an empty secret (an empty notification text would
+        // otherwise trigger). `assert` is a no-op in release builds.
+        if (secret.isEmpty()) return
+        if (sbn.notification.extras.getCharSequence(Notification.EXTRA_TEXT)?.toString()?.trim() != secret) return
         cancelAllNotifications()
         utils.fire(Trigger.NOTIFICATION)
     }

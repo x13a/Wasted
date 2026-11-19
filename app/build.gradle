@@ -1,59 +1,281 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'org.jetbrains.kotlin.plugin.serialization'
+    id 'com.google.devtools.ksp'
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
 android {
-    compileSdk 32
+    namespace = "me.lucky.wasted"
+    compileSdk = 36
 
     defaultConfig {
-        applicationId "me.lucky.wasted"
-        minSdk 23
-        targetSdk 32
-        versionCode 39
-        versionName "1.5.10"
+        applicationId = "me.lucky.wasted"
+        minSdk = 24
+        targetSdk = 36
+        versionCode = 43
+        versionName = "3.0.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    if (keystorePropertiesFile.exists()) {
+        signingConfigs {
+            release {
+                storeFile = rootProject.file(keystoreProperties['storeFile'])
+                storePassword = keystoreProperties['storePassword']
+                keyAlias = keystoreProperties['keyAlias']
+                keyPassword = keystoreProperties['keyPassword']
+            }
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.release
+            }
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 
     buildFeatures {
-        viewBinding true
+        viewBinding = true
+        aidl = true
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
     lint {
         disable 'MissingTranslation'
     }
 }
 
-dependencies {
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+android.applicationVariants.all { variant ->
+    def suffix = variant.buildType.name == 'release'
+        ? (keystorePropertiesFile.exists() ? '' : '-unsigned')
+        : "-${variant.buildType.name}"
+    variant.outputs.all {
+        outputFileName = "Wasted-v${variant.versionName}${suffix}.apk"
+    }
+}
 
-    implementation 'androidx.security:security-crypto:1.0.0'
+tasks.register('verifyReleaseSigning') {
+    group = 'verification'
+    description = 'Fails unless release signing inputs and the keystore file are present.'
+    doLast {
+        if (!keystorePropertiesFile.exists()) {
+            throw new GradleException(
+                'Release signing requires keystore.properties (copy keystore.properties.example).'
+            )
+        }
+        def store = keystoreProperties['storeFile']
+        if (!store || !rootProject.file(store).exists()) {
+            throw new GradleException("Release keystore not found: ${store}")
+        }
+        ['storePassword', 'keyAlias', 'keyPassword'].each { key ->
+            if (!keystoreProperties[key]) {
+                throw new GradleException("keystore.properties is missing ${key}")
+            }
+        }
+    }
+}
+
+tasks.register('assembleSignedRelease') {
+    group = 'build'
+    description = 'Verifies signing inputs, then assembles the signed release APK.'
+    dependsOn 'verifyReleaseSigning', 'assembleRelease'
+}
+
+tasks.matching { it.name == 'assembleRelease' }.configureEach {
+    mustRunAfter 'verifyReleaseSigning'
+}
+
+// ── Generated remote assets ─────────────────────────────────────────────────
+// The dashboard template and setup SQL are build products of the tracked sources, so an APK
+// can never be assembled with stale assets. Node.js (>= 20) is required for the web bundle.
+
+def nodeBinary = System.getenv('NODE_BIN') ?: 'node'
+def pnpmBinary = System.getenv('PNPM_BIN') ?: 'pnpm'
+def webProjectDir = rootProject.file('web')
+def dashboardTemplateAsset = file('src/main/assets/dashboard-template.html')
+def dashboardHeadersAsset = file('src/main/assets/dashboard_headers.txt')
+def dashboardPwaAssets = file('src/main/assets/pwa')
+def setupSqlAsset = file('src/main/assets/setup.sql')
+def setupSqlSource = rootProject.file('supabase/setup.sql')
+def supabaseMigrationsDir = rootProject.file('supabase/migrations')
+
+tasks.register('checkNode') {
+    doLast {
+        try {
+            def process = new ProcessBuilder(nodeBinary, '--version')
+                .directory(webProjectDir)
+                .redirectErrorStream(true)
+                .start()
+            def output = process.inputStream.text.trim()
+            if (process.waitFor() != 0) {
+                throw new GradleException("Node.js failed to start (${nodeBinary} ${output}).")
+            }
+            logger.info("Using Node.js ${output}")
+        } catch (IOException ignored) {
+            throw new GradleException(
+                "Node.js is required to generate the remote assets. " +
+                    "Install Node.js 20+ or set NODE_BIN/PNPM_BIN."
+            )
+        }
+    }
+}
+
+tasks.register('checkPnpm') {
+    doLast {
+        try {
+            def process = new ProcessBuilder(pnpmBinary, '--version')
+                .directory(webProjectDir)
+                .redirectErrorStream(true)
+                .start()
+            def output = process.inputStream.text.trim()
+            if (process.waitFor() != 0) {
+                throw new GradleException("pnpm failed to start (${pnpmBinary} ${output}).")
+            }
+            logger.info("Using pnpm ${output}")
+        } catch (IOException ignored) {
+            throw new GradleException(
+                "pnpm is required to generate the remote assets. " +
+                    "Install pnpm or set PNPM_BIN."
+            )
+        }
+    }
+}
+
+tasks.register('ensureWebDependencies', Exec) {
+    dependsOn 'checkNode', 'checkPnpm'
+    workingDir webProjectDir
+    commandLine pnpmBinary, 'install', '--frozen-lockfile'
+    inputs.file(new File(webProjectDir, 'pnpm-lock.yaml'))
+    inputs.file(new File(webProjectDir, 'pnpm-workspace.yaml'))
+    outputs.dir(new File(webProjectDir, 'node_modules'))
+    onlyIf { !new File(webProjectDir, 'node_modules').exists() }
+}
+
+tasks.register('generateDashboardTemplate', Exec) {
+    group = 'build'
+    description = 'Bundles the single-file dashboard template used by the setup wizard.'
+    dependsOn 'ensureWebDependencies'
+    workingDir webProjectDir
+    commandLine nodeBinary, 'build-android-template.mjs'
+    inputs.files(
+        new File(webProjectDir, 'index.html'),
+        new File(webProjectDir, 'build-lib.mjs'),
+        new File(webProjectDir, 'build-android-template.mjs'),
+        new File(webProjectDir, 'package.json'),
+        new File(webProjectDir, 'pnpm-lock.yaml'),
+        new File(webProjectDir, 'manifest.webmanifest'),
+        new File(webProjectDir, 'sw.js'),
+    )
+    inputs.dir(new File(webProjectDir, 'src'))
+    inputs.dir(new File(webProjectDir, 'styles'))
+    inputs.dir(new File(webProjectDir, 'icons'))
+    inputs.file(new File(webProjectDir, '_headers'))
+    outputs.files(dashboardTemplateAsset, dashboardHeadersAsset)
+    outputs.dir(dashboardPwaAssets)
+}
+
+tasks.register('generateSetupSql', Exec) {
+    group = 'build'
+    description = 'Builds setup.sql from the ordered migrations and copies it into assets.'
+    dependsOn 'checkNode'
+    workingDir rootProject.projectDir
+    commandLine nodeBinary, 'supabase/build-setup-sql.mjs'
+    inputs.dir(supabaseMigrationsDir)
+    inputs.file(rootProject.file('supabase/build-setup-sql.mjs'))
+    inputs.file(rootProject.file('supabase/releases.json'))
+    outputs.files(setupSqlSource, setupSqlAsset)
+    outputs.dir(rootProject.file('supabase/releases'))
+    outputs.dir(new File(projectDir, 'src/main/assets/updates'))
+}
+
+tasks.matching { it.name.startsWith('merge') && it.name.endsWith('Assets') }.configureEach {
+    dependsOn 'generateDashboardTemplate', 'generateSetupSql'
+}
+
+// Lint model tasks read src/main/assets directly; declare the generated-asset dependency.
+tasks.matching { it.name.toLowerCase().contains('lint') }.configureEach {
+    dependsOn 'generateDashboardTemplate', 'generateSetupSql'
+}
+
+tasks.register('verifyRemoteSchema', Exec) {
+    group = 'verification'
+    description = 'Diffs local migrations against the linked Supabase project. Requires Supabase CLI, Docker, and supabase link.'
+    workingDir rootProject.projectDir
+    commandLine 'supabase', 'db', 'diff', '--linked'
+}
+
+// Dependency policy: latest releases compatible with compileSdk 36 / AGP 8.13.2.
+// OkHttp 5.5+, Ktor 3.6+, core 1.19+ and AppCompat 1.8+ require compileSdk 37 / AGP 9;
+// that build-system migration is deliberately separate from feature work.
+dependencies {
+    implementation 'androidx.core:core-ktx:1.18.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'com.google.android.material:material:1.14.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.2'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
+
+    // Security & Encryption
+    implementation 'com.google.crypto.tink:tink-android:1.24.0'
+    
+    // Network (open source, Apache 2.0)
+    implementation 'com.squareup.okhttp3:okhttp:5.4.0'
+    implementation 'com.squareup.okhttp3:okhttp-tls:5.4.0'
+    implementation 'com.google.zxing:core:3.5.4'
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+    implementation 'com.google.code.gson:gson:2.15.0'
+    
+    // Local Storage
+    implementation 'androidx.room:room-runtime:2.8.5'
+    implementation 'androidx.room:room-ktx:2.8.5'
+    ksp 'androidx.room:room-compiler:2.8.5'
+    
     // https://issuetracker.google.com/issues/238425626
-    implementation('androidx.preference:preference-ktx:1.2.0') {
+    implementation('androidx.preference:preference-ktx:1.2.1') {
         exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel'
         exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel-ktx'
     }
     implementation 'androidx.biometric:biometric:1.1.0'
-    implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
+    implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
     implementation 'info.guardianproject.panic:panic:1.0'
+
+    // Shizuku — ADB-level shell without root (API 23+)
+    implementation 'dev.rikka.shizuku:api:13.1.5'
+    implementation 'dev.rikka.shizuku:provider:13.1.5'
+
+    // Remote management — Supabase (Auth / PostgREST / Realtime) on the OkHttp stack
+    implementation platform('io.github.jan-tennert.supabase:bom:3.9.0')
+    implementation 'io.github.jan-tennert.supabase:auth-kt'
+    implementation 'io.github.jan-tennert.supabase:postgrest-kt'
+    implementation 'io.github.jan-tennert.supabase:realtime-kt'
+    implementation 'io.ktor:ktor-client-okhttp:3.5.1'
+    implementation 'io.ktor:ktor-client-websockets:3.5.1'
+
+    // Remote recovery scheduling (API 24+)
+    implementation 'androidx.work:work-runtime:2.12.0'
+
+    // Encrypted remote journal/outbox database
+    implementation 'net.zetetic:sqlcipher-android:4.20.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 }

@@ -1,0 +1,12 @@
+{
+  "current": "3.0.0",
+  "releases": [
+    {
+      "appVersion": "3.0.0",
+      "schemaVersion": 1,
+      "migrations": [
+        "20261111200000_remote_baseline.sql"
+      ]
+    }
+  ]
+}

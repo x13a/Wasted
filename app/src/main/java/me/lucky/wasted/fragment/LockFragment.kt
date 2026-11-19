@@ -13,6 +13,7 @@ import java.util.regex.Pattern
 import me.lucky.wasted.Preferences
 import me.lucky.wasted.R
 import me.lucky.wasted.databinding.FragmentLockBinding
+import me.lucky.wasted.settings.LocalSettingsApplier
 
 class LockFragment : Fragment() {
     companion object {
@@ -25,11 +26,16 @@ class LockFragment : Fragment() {
     private lateinit var ctx: Context
     private lateinit var prefs: Preferences
     private lateinit var prefsdb: Preferences
+    private val applier by lazy { LocalSettingsApplier.create(ctx) }
     private val lockCountPattern by lazy {
         Pattern.compile("^[1-9]\\d*[$MODIFIER_DAYS$MODIFIER_HOURS$MODIFIER_MINUTES]$") }
+    private var applyingRemote = false
 
     private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         prefs.copyTo(prefsdb, key)
+        if (key == "trigger_lock_count") {
+            binding.root.post { renderTimer() }
+        }
     }
 
     override fun onCreateView(
@@ -57,18 +63,23 @@ class LockFragment : Fragment() {
         ctx = requireContext()
         prefs = Preferences(ctx)
         prefsdb = Preferences(ctx, encrypted = false)
-        binding.apply {
-            val count = prefs.triggerLockCount
-            time.editText?.setText(when {
-                count % (24 * 60) == 0 -> "${count / 24 / 60}$MODIFIER_DAYS"
-                count % 60 == 0 -> "${count / 60}$MODIFIER_HOURS"
-                else -> "$count$MODIFIER_MINUTES"
-            })
-        }
+        renderTimer()
+    }
+
+    private fun renderTimer() {
+        applyingRemote = true
+        val count = prefs.triggerLockCount
+        binding.time.editText?.setText(when {
+            count % (24 * 60) == 0 -> "${count / 24 / 60}$MODIFIER_DAYS"
+            count % 60 == 0 -> "${count / 60}$MODIFIER_HOURS"
+            else -> "$count$MODIFIER_MINUTES"
+        })
+        applyingRemote = false
     }
 
     private fun setup() = binding.apply {
         time.editText?.doAfterTextChanged {
+            if (applyingRemote) return@doAfterTextChanged
             val str = it?.toString() ?: ""
             if (!lockCountPattern.matcher(str).matches()) {
                 time.error = ctx.getString(R.string.trigger_lock_time_error)
@@ -80,12 +91,13 @@ class LockFragment : Fragment() {
             try {
                 i = str.dropLast(1).toInt()
             } catch (exc: NumberFormatException) { return@doAfterTextChanged }
-            prefs.triggerLockCount = when (modifier) {
+            val minutes = when (modifier) {
                 MODIFIER_DAYS -> i * 24 * 60
                 MODIFIER_HOURS -> i * 60
                 MODIFIER_MINUTES -> i
                 else -> return@doAfterTextChanged
             }
+            applier.setLockTimerMinutes(minutes)
             time.error = null
         }
     }

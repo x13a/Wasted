@@ -10,15 +10,15 @@ import androidx.fragment.app.Fragment
 
 import me.lucky.wasted.ApplicationOption
 import me.lucky.wasted.Preferences
-import me.lucky.wasted.Utils
 import me.lucky.wasted.databinding.FragmentApplicationBinding
+import me.lucky.wasted.settings.LocalSettingsApplier
 
 class ApplicationFragment : Fragment() {
     private lateinit var binding: FragmentApplicationBinding
     private lateinit var ctx: Context
     private lateinit var prefs: Preferences
     private lateinit var prefsdb: Preferences
-    private val utils by lazy { Utils(ctx) }
+    private val applier by lazy { LocalSettingsApplier.create(ctx) }
 
     private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         prefs.copyTo(prefsdb, key)
@@ -60,36 +60,16 @@ class ApplicationFragment : Fragment() {
 
     private fun setup() = binding.apply {
         signal.setOnCheckedChangeListener { _, isChecked ->
-            prefs.triggerApplicationOptions = Utils.setFlag(
-                prefs.triggerApplicationOptions,
-                ApplicationOption.SIGNAL.value,
-                isChecked,
-            )
-            utils.updateApplicationEnabled()
+            applier.setApplicationOption(ApplicationOption.SIGNAL, isChecked)
         }
         telegram.setOnCheckedChangeListener { _, isChecked ->
-            prefs.triggerApplicationOptions = Utils.setFlag(
-                prefs.triggerApplicationOptions,
-                ApplicationOption.TELEGRAM.value,
-                isChecked,
-            )
-            utils.updateApplicationEnabled()
+            applier.setApplicationOption(ApplicationOption.TELEGRAM, isChecked)
         }
         threema.setOnCheckedChangeListener { _, isChecked ->
-            prefs.triggerApplicationOptions = Utils.setFlag(
-                prefs.triggerApplicationOptions,
-                ApplicationOption.THREEMA.value,
-                isChecked,
-            )
-            utils.updateApplicationEnabled()
+            applier.setApplicationOption(ApplicationOption.THREEMA, isChecked)
         }
         session.setOnCheckedChangeListener { _, isChecked ->
-            prefs.triggerApplicationOptions = Utils.setFlag(
-                prefs.triggerApplicationOptions,
-                ApplicationOption.SESSION.value,
-                isChecked,
-            )
-            utils.updateApplicationEnabled()
+            applier.setApplicationOption(ApplicationOption.SESSION, isChecked)
         }
     }
 }

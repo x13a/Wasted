@@ -13,3 +13,21 @@
 .externalNativeBuild
 .cxx
 local.properties
+.idea/*
+.env
+.env.local
+.env.*.local
+.env.backup*
+.env.*.backup*
+.commandcode/
+archive/
+/keystore/
+keystore.properties
+evidence/
+web/node_modules/
+web/dist/
+web/assets/
+.netlify/
+
+# Archived pre-release migrations kept locally for reference only
+supabase/archive/

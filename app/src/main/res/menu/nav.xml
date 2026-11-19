@@ -21,7 +21,7 @@
 
         <item
             android:id="@+id/nav_trigger_lock"
-            android:title="@string/trigger_lock" />
+            android:title="@string/nav_lock_delay" />
 
         <item
             android:id="@+id/nav_trigger_application"
@@ -32,6 +32,16 @@
     <item
         android:id="@+id/nav_recast"
         android:title="@string/recast"
+        android:checkable="true" />
+
+    <item
+        android:id="@+id/nav_p2p"
+        android:title="P2P Network"
+        android:checkable="true" />
+
+    <item
+        android:id="@+id/nav_remote"
+        android:title="Remote Management"
         android:checkable="true" />
 
 </menu>

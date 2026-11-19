@@ -10,12 +10,14 @@ import androidx.fragment.app.Fragment
 
 import me.lucky.wasted.Preferences
 import me.lucky.wasted.databinding.FragmentTileBinding
+import me.lucky.wasted.settings.LocalSettingsApplier
 
 class TileFragment : Fragment() {
     private lateinit var binding: FragmentTileBinding
     private lateinit var ctx: Context
     private lateinit var prefs: Preferences
     private lateinit var prefsdb: Preferences
+    private val applier by lazy { LocalSettingsApplier.create(ctx) }
 
     private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         prefs.copyTo(prefsdb, key)
@@ -56,7 +58,7 @@ class TileFragment : Fragment() {
             String.format("%.1f", it)
         }
         delay.addOnChangeListener { _, value, _ ->
-            prefs.triggerTileDelay = (value * 1000).toLong()
+            applier.setTileDelay((value * 1000).toLong())
         }
     }
 }

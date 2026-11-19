@@ -3,26 +3,36 @@ package me.lucky.wasted.fragment
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.widget.CompoundButton
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+
 import me.lucky.wasted.Preferences
+import me.lucky.wasted.R
 import me.lucky.wasted.Trigger
-import me.lucky.wasted.Utils
+import me.lucky.wasted.admin.DeviceAdminManager
 import me.lucky.wasted.databinding.FragmentSettingsBinding
+import me.lucky.wasted.settings.LocalSettingsApplier
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
     private lateinit var ctx: Context
     private lateinit var prefs: Preferences
     private lateinit var prefsdb: Preferences
-    private val utils by lazy { Utils(ctx) }
+    private val applier by lazy { LocalSettingsApplier.create(ctx) }
+    private val admin by lazy { DeviceAdminManager(ctx) }
+    private var applyingRemote = false
 
     private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         prefs.copyTo(prefsdb, key)
+        if (key == "triggers") {
+            binding.root.post { renderTriggers() }
+        }
     }
 
     override fun onCreateView(
@@ -50,6 +60,12 @@ class SettingsFragment : Fragment() {
         ctx = requireContext()
         prefs = Preferences(ctx)
         prefsdb = Preferences(ctx, encrypted = false)
+        binding.biometricUnlock.isChecked = prefs.isBiometricUnlockEnabled
+        renderTriggers()
+    }
+
+    private fun renderTriggers() {
+        applyingRemote = true
         binding.apply {
             val triggers = prefs.triggers
             panicKit.isChecked = triggers.and(Trigger.PANIC_KIT.value) != 0
@@ -62,41 +78,62 @@ class SettingsFragment : Fragment() {
             usb.isChecked = triggers.and(Trigger.USB.value) != 0
             application.isChecked = triggers.and(Trigger.APPLICATION.value) != 0
         }
+        applyingRemote = false
+    }
+
+    private fun confirmLockNow() {
+        if (!admin.isActive()) {
+            MaterialAlertDialogBuilder(ctx)
+                .setTitle(R.string.lock_now_confirm_title)
+                .setMessage(R.string.lock_now_admin_required)
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+            return
+        }
+        MaterialAlertDialogBuilder(ctx)
+            .setTitle(R.string.lock_now_confirm_title)
+            .setMessage(R.string.lock_now_confirm_message)
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton("Continue") { _, _ -> confirmLockNowAgain() }
+            .show()
+    }
+
+    private fun confirmLockNowAgain() {
+        MaterialAlertDialogBuilder(ctx)
+            .setTitle(R.string.lock_now_confirm_again_title)
+            .setMessage(R.string.lock_now_confirm_again_message)
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(R.string.lock_now) { _, _ ->
+                runCatching { admin.lockNow() }.onFailure {
+                    MaterialAlertDialogBuilder(ctx)
+                        .setTitle(R.string.lock_now_confirm_title)
+                        .setMessage(R.string.lock_now_admin_required)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show()
+                }
+            }
+            .show()
     }
 
     private fun setup() = binding.apply {
-        panicKit.setOnCheckedChangeListener { _, isChecked ->
-            prefs.triggers = Utils.setFlag(prefs.triggers, Trigger.PANIC_KIT.value, isChecked)
-            utils.setPanicKitEnabled(isChecked && prefs.isEnabled)
+        lockNow.setOnClickListener { confirmLockNow() }
+        biometricUnlock.setOnCheckedChangeListener { _, isChecked ->
+            prefs.isBiometricUnlockEnabled = isChecked
         }
-        tile.setOnCheckedChangeListener { _, isChecked ->
-            prefs.triggers = Utils.setFlag(prefs.triggers, Trigger.TILE.value, isChecked)
-            utils.setTileEnabled(isChecked && prefs.isEnabled)
-        }
-        shortcut.setOnCheckedChangeListener { _, isChecked ->
-            prefs.triggers = Utils.setFlag(prefs.triggers, Trigger.SHORTCUT.value, isChecked)
-            utils.setShortcutEnabled(isChecked && prefs.isEnabled)
-        }
-        broadcast.setOnCheckedChangeListener { _, isChecked ->
-            prefs.triggers = Utils.setFlag(prefs.triggers, Trigger.BROADCAST.value, isChecked)
-            utils.setBroadcastEnabled(isChecked && prefs.isEnabled)
-        }
-        notification.setOnCheckedChangeListener { _, isChecked ->
-            prefs.triggers =
-                Utils.setFlag(prefs.triggers, Trigger.NOTIFICATION.value, isChecked)
-            utils.setNotificationEnabled(isChecked && prefs.isEnabled)
-        }
-        lock.setOnCheckedChangeListener { _, isChecked ->
-            prefs.triggers = Utils.setFlag(prefs.triggers, Trigger.LOCK.value, isChecked)
-            utils.updateForegroundRequiredEnabled()
-        }
-        usb.setOnCheckedChangeListener { _, isChecked ->
-            prefs.triggers = Utils.setFlag(prefs.triggers, Trigger.USB.value, isChecked)
-            utils.updateForegroundRequiredEnabled()
-        }
-        application.setOnCheckedChangeListener { _, isChecked ->
-            prefs.triggers = Utils.setFlag(prefs.triggers, Trigger.APPLICATION.value, isChecked)
-            utils.updateApplicationEnabled()
+        val triggerViews = listOf<Pair<CompoundButton, Trigger>>(
+            panicKit to Trigger.PANIC_KIT,
+            tile to Trigger.TILE,
+            shortcut to Trigger.SHORTCUT,
+            broadcast to Trigger.BROADCAST,
+            notification to Trigger.NOTIFICATION,
+            lock to Trigger.LOCK,
+            usb to Trigger.USB,
+            application to Trigger.APPLICATION,
+        )
+        for ((view, trigger) in triggerViews) {
+            view.setOnCheckedChangeListener { _, isChecked ->
+                if (!applyingRemote) applier.setTrigger(trigger, isChecked)
+            }
         }
     }
 }

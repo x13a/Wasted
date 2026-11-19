@@ -6,8 +6,8 @@ import android.os.Build
 import android.os.UserManager
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
+import me.lucky.wasted.security.LegacyEncryptedPreferencesReader
+import me.lucky.wasted.security.TinkEncryptedSharedPreferences
 
 class Preferences(ctx: Context, encrypted: Boolean = true) {
     companion object {
@@ -24,6 +24,13 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
         private const val RECAST_RECEIVER = "recast_receiver"
         private const val RECAST_EXTRA_KEY = "recast_extra_key"
         private const val RECAST_EXTRA_VALUE = "recast_extra_value"
+        private const val REMOTE_RESET_CONFIRMATION = "remote_reset_confirmation"
+        private const val BIOMETRIC_UNLOCK = "biometric_unlock"
+        private const val DEBUG_MODE = "debug_mode"
+        private const val TIMER_SCHEDULED_AT = "timer_scheduled_at"
+        private const val TIMER_DURATION_MINUTES = "timer_duration_minutes"
+
+        private const val P2P_ACTIVE = "p2p_enabled"
 
         private const val TRIGGERS = "triggers"
         private const val TRIGGER_LOCK_COUNT = "trigger_lock_count"
@@ -44,13 +51,12 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
     }
 
     private val prefs: SharedPreferences = if (encrypted) {
-        val mk = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
-        EncryptedSharedPreferences.create(
-            FILE_NAME,
-            mk,
+        TinkEncryptedSharedPreferences.create(
             ctx,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
+            FILE_NAME,
+            legacyEntriesProvider = {
+                LegacyEncryptedPreferencesReader.readEntries(ctx, FILE_NAME)
+            },
         )
     } else {
         val context = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
@@ -115,6 +121,39 @@ class Preferences(ctx: Context, encrypted: Boolean = true) {
     var recastExtraValue: String
         get() = prefs.getString(RECAST_EXTRA_VALUE, "") ?: ""
         set(value) = prefs.edit { putString(RECAST_EXTRA_VALUE, value) }
+
+    var p2pEnabled: Boolean
+        get() = prefs.getBoolean(P2P_ACTIVE, false)
+        set(value) = prefs.edit { putBoolean(P2P_ACTIVE, value) }
+
+    var remoteResetConfirmationEnabled: Boolean
+        get() = prefs.getBoolean(REMOTE_RESET_CONFIRMATION, false)
+        set(value) = prefs.edit { putBoolean(REMOTE_RESET_CONFIRMATION, value) }
+
+    /** Defaults ON to preserve the existing app-lock behavior. */
+    var isBiometricUnlockEnabled: Boolean
+        get() = runCatching { prefs.getBoolean(BIOMETRIC_UNLOCK, true) }.getOrDefault(true)
+        set(value) = prefs.edit { putBoolean(BIOMETRIC_UNLOCK, value) }
+
+    /** Fail-closed: ON when missing, corrupt, or unreadable. */
+    var isDebugMode: Boolean
+        get() = runCatching { prefs.getBoolean(DEBUG_MODE, true) }.getOrDefault(true)
+        set(value) {
+            runCatching { prefs.edit { putBoolean(DEBUG_MODE, value) } }
+        }
+
+    fun initializeDebugModeIfMissing() {
+        if (runCatching { prefs.contains(DEBUG_MODE) }.getOrDefault(false)) return
+        runCatching { prefs.edit { putBoolean(DEBUG_MODE, true) } }
+    }
+
+    var timerScheduledAtMs: Long
+        get() = prefs.getLong(TIMER_SCHEDULED_AT, 0L)
+        set(value) = prefs.edit { putLong(TIMER_SCHEDULED_AT, value) }
+
+    var timerDurationMinutes: Int
+        get() = prefs.getInt(TIMER_DURATION_MINUTES, 0)
+        set(value) = prefs.edit { putInt(TIMER_DURATION_MINUTES, value) }
 
     fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) =
         prefs.registerOnSharedPreferenceChangeListener(listener)

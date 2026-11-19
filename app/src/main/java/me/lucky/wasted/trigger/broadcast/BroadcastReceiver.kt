@@ -16,7 +16,10 @@ class BroadcastReceiver : BroadcastReceiver() {
         fun panic(context: Context, intent: Intent?, trigger: Trigger) {
             if (intent?.action != ACTION) return
             val secret = Preferences.new(context).secret
-            assert(secret.isNotEmpty())
+            // Fail closed: an empty stored secret must never match an empty/absent extra,
+            // otherwise any app could fire a lock/wipe broadcast. `assert` is a no-op in
+            // release builds, so this is an explicit guard.
+            if (secret.isEmpty()) return
             if (intent.getStringExtra(KEY)?.trim() != secret) return
             Utils(context).fire(trigger)
         }
